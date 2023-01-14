@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 
 class Localization
 {
@@ -12,15 +11,14 @@ class Localization
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next)
     {
-        /* Set new lang with the use of session */
-        if (session()->has('lang')) {
-            App::setLocale(session()->get('lang'));
-        }
+        $locale = ($request->hasHeader('X-localization')) ? $request->header('X-localization') : 'en';
+        app()->setLocale($locale);
+
         return $next($request);
     }
 }

@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\HomeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,14 +13,6 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Auth::routes();
-//Language Translation
-Route::get('index/{locale}', [HomeController::class, 'lang']);
-
-Route::get('/', [HomeController::class, 'root'])->name('root');
-
-//Update User Details
-Route::post('/update-profile/{id}', [HomeController::class, 'updateProfile'])->name('updateProfile');
-Route::post('/update-password/{id}', [HomeController::class, 'updatePassword'])->name('updatePassword');
-
-Route::get('{any}', [HomeController::class, 'index'])->name('index');
+Route::get('/', function () {
+    return view('welcome');
+});
