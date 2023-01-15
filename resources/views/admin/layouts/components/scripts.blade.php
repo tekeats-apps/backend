@@ -7,6 +7,6 @@
 <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/toastify-js'></script>
 <script type='text/javascript' src='{{ URL::asset('assets/libs/choices.js/choices.js.min.js') }}'></script>
 <script type='text/javascript' src='{{ URL::asset('assets/libs/flatpickr/flatpickr.min.js') }}'></script>
-
+<script type='text/javascript' src='{{ URL::asset('assets/js/app.js') }}'></script>
 @yield('script')
 @yield('script-bottom')
