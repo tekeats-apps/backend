@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\v1\Admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
