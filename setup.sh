@@ -3,7 +3,7 @@
 docker run --rm -v $(pwd):/opt -w /opt laravelsail/php81-composer:latest composer install
 
 #Copy ENV example to .env file
-# cp .env.example .env
+cp .env.example .env
 #Give permissions to directories
 chmod -R 777 ./bootstrap/cache
 chmod -R 777 ./storage
