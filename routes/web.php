@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\DashboardController;
 |
 */
 
+// Coming Soon Page
 Route::get('/', function () {
     return view('coming_soon');
 });
