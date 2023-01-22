@@ -29,14 +29,14 @@
                         <div class="card-body p-4">
                             <div class="text-center mt-2">
                                 <h5 class="text-primary">Welcome Back !</h5>
-                                <p class="text-muted">Sign in to continue to Velzon.</p>
+                                <p class="text-muted">Sign in to continue to {{config('app.name')}}.</p>
                             </div>
                             <div class="p-2 mt-4">
-                                <form action="#" method="POST">
+                                <form action="{{route('admin.auth.login')}}" method="POST">
                                     @csrf
                                     <div class="mb-3">
                                         <label for="username" class="form-label">Username</label>
-                                        <input type="text" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', 'admin@admin.com') }}" id="username" name="email" placeholder="Enter username">
+                                        <input type="text" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', 'super@admin.com') }}" id="username" name="email" placeholder="Enter username">
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -50,7 +50,7 @@
                                         </div>
                                         <label class="form-label" for="password-input">Password</label>
                                         <div class="position-relative auth-pass-inputgroup mb-3">
-                                            <input type="password" class="form-control pe-5 @error('password') is-invalid @enderror" name="password" placeholder="Enter password" id="password-input" value="123456">
+                                            <input type="password" class="form-control pe-5 @error('password') is-invalid @enderror" name="password" placeholder="Enter password" id="password-input" value="admin">
                                             <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
@@ -61,7 +61,7 @@
                                     </div>
 
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="auth-remember-check">
+                                        <input class="form-check-input" name="remember" type="checkbox" value="1" id="auth-remember-check">
                                         <label class="form-check-label" for="auth-remember-check">Remember me</label>
                                     </div>
 
@@ -74,10 +74,6 @@
                         <!-- end card body -->
                     </div>
                     <!-- end card -->
-
-                    <div class="mt-4 text-center">
-                        <p class="mb-0">Don't have an account ? <a href="register" class="fw-semibold text-primary text-decoration-underline"> Signup </a> </p>
-                    </div>
 
                 </div>
             </div>

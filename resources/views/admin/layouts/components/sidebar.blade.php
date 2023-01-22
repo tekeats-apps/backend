@@ -37,7 +37,13 @@
                     <a class="nav-link menu-link" href="{{ route('admin.dashboard.index') }}">
                         <i class="ri-dashboard-2-line"></i> <span>@lang('translation.dashboard')</span>
                     </a>
-                </li> <!-- end Dashboard Menu -->
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{ route('admin.users.index') }}">
+                        <i class="ri-account-circle-fill"></i> <span>@lang('translation.users')</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- Sidebar -->

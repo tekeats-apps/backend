@@ -9,4 +9,4 @@
 <!-- custom Css-->
 <link href="{{ URL::asset('assets/css/custom.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
 
-@yield('css')
+@stack('css')

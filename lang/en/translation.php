@@ -2,6 +2,8 @@
 return [
     "menu"=>"Menu",
     "dashboard"=>"Dashboard",
+    "users" => "Users",
+    "manage-users" => "Manage Users",
     "analytics"=>"Analytics",
     "crm"=>"CRM",
     "ecommerce"=>"Ecommerce",
