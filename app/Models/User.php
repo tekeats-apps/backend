@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -19,8 +20,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
+        'image',
+        'status'
     ];
 
     /**
@@ -40,5 +44,22 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'status' => 'boolean'
     ];
+
+
+    public function scopeList($query){
+        return $query->orderBy('name', 'ASC');
+    }
+
+    protected function role(): Attribute
+    {
+        $role = [
+            'id' => $this->roles->pluck('id')->first(),
+            'name' => $this->roles->pluck('name')->first()
+        ];
+        return new Attribute(
+            get: fn () => (object) $role,
+        );
+    }
 }

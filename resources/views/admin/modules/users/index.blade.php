@@ -42,7 +42,7 @@
                             <tr>
                                 <th scope="col" style="width: 10px;">
                                     <div class="form-check">
-                                        <input class="form-check-input fs-15" type="checkbox" id="checkAll" value="option">
+                                        <input class="form-check-input fs-15" type="checkbox" id="checkAll" value="1">
                                     </div>
                                 </th>
                                 <th>SR No.</th>
@@ -55,19 +55,21 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @isset($users)
+                            @foreach ($users as $key => $user)
                             <tr>
                                 <th scope="row">
                                     <div class="form-check">
-                                        <input class="form-check-input fs-15" type="checkbox" name="checkAll"
-                                            value="option1">
+                                        <input class="form-check-input fs-15" id="user_{{$user->id}}" type="checkbox"
+                                            value="1">
                                     </div>
                                 </th>
-                                <td>01</td>
-                                <td>Alexis Clarke</td>
-                                <td>admin@email.com</td>
-                                <td><span class="badge bg-success"> Admin</span></td>
-                                <td><span class="badge badge-soft-success"> Active</span></td>
-                                <td>03 Oct, 2021</td>
+                                <td>{{++$key}}</td>
+                                <td>{{$user->name}}</td>
+                                <td>{{$user->email}}</td>
+                                <td><span class="badge  badge-soft-info text-capitalize"> {{$user->roles->pluck('name')->first()}}</span></td>
+                                <td><span class="badge badge-soft-{{ ($user->status) ? 'success' : 'danger' }}"> {{ ($user->status) ? 'Active' : 'Inactive' }}</span></td>
+                                <td>{{$user->created_at->format('d M, Y')}}</td>
                                 <td>
                                     <div class="dropdown d-inline-block">
                                         <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
@@ -89,6 +91,8 @@
                                     </div>
                                 </td>
                             </tr>
+                            @endforeach
+                            @endisset
                         </tbody>
                     </table>
                 </div>
