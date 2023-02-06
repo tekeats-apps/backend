@@ -58,6 +58,7 @@ Route::prefix('admin')->group(function () {
         ->as('admin.users.')
         ->group(function () {
             Route::get('/',  'index')->name('index');
+            Route::get('/edit/{user}',  'edit')->name('edit');
         });
     });
 

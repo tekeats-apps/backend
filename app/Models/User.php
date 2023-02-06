@@ -52,6 +52,17 @@ class User extends Authenticatable
         return $query->orderBy('name', 'ASC');
     }
 
+    protected function statusText(): Attribute
+    {
+        $status = 'Inactive';
+        if($this->status){
+            $status = 'Active';
+        }
+        return new Attribute(
+            get: fn () => $status,
+        );
+    }
+
     protected function role(): Attribute
     {
         $role = [
@@ -62,4 +73,6 @@ class User extends Authenticatable
             get: fn () => (object) $role,
         );
     }
+
+
 }

@@ -17,11 +17,12 @@ class SuperAdminSeeder extends Seeder
     public function run()
     {
         // Create a super admin user
-        $superAdmin = User::create([
+        $matchThese = ['name'=>'Super Admin'];
+        $superAdmin = User::updateOrCreate($matchThese,[
             'name' => 'Super Admin',
             'email' => 'super@admin.com',
             'password' => Hash::make('admin')
         ]);
-        $superAdmin->assignRole('super_admin');
+        $superAdmin->assignRole('super admin');
     }
 }
