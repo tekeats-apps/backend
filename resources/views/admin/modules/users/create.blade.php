@@ -18,24 +18,15 @@
         @endslot
     @endcomponent
 
-    <form id="users-form" action="{{ route('admin.users.update', $user->id) }}" method="POST" autocomplete="off"
+    <form id="users-form" action="{{ route('admin.users.store') }}" method="POST" autocomplete="off"
         enctype="multipart/form-data">
-        @method('PUT')
         @csrf
         <div class="row">
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">User Information <span class="float-end">
-                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#changeUserPassword" class="btn btn-warning btn-label bt-sm waves-effect waves-light"> <i
-                                        class="ri-lock-password-line label-icon"></i>Change Password</a>
-                                {{-- <a href="{{ route('admin.users.create') }}"
-                                    class="btn btn-primary btn-label bt-sm waves-effect waves-light"><i
-                                        class="ri-folder-lock-line label-icon"></i> Permissions</a> --}}
-                                <a href="{{ route('admin.users.index') }}"
-                                    class="btn btn-info btn-label bt-sm waves-effect waves-light"> <i
-                                        class="ri-arrow-go-back-line label-icon"></i>Back to Users </a>
-
+                                <a href="{{ route('admin.users.index') }}" class="btn btn-info bt-sm">Back to Users</a>
                             </span></h5>
 
 
@@ -45,9 +36,8 @@
                             <div class="col-lg-6 mb-2">
                                 <div class="mb-3">
                                     <label class="form-label">Full Name</label>
-                                    <input type="text"
-                                        class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" name="name"
-                                        value="{{ old('name') ? old('name') : $user->name }}" placeholder="Enter name"
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                        name="name" value="{{ old('name') ? old('name') : '' }}" placeholder="Enter name"
                                         required>
                                     @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -57,9 +47,8 @@
                             <div class="col-lg-6 mb-2">
                                 <div class="mb-3">
                                     <label class="form-label">Username</label>
-                                    <input type="text"
-                                        class="form-control {{ $errors->has('username') ? ' is-invalid' : '' }}"
-                                        name="username" value="{{ old('username') ? old('username') : $user->username }}"
+                                    <input type="text" class="form-control @error('username') is-invalid @enderror"
+                                        name="username" value="{{ old('username') ? old('username') : '' }}"
                                         placeholder="Enter username" required>
                                     @error('username')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -69,9 +58,8 @@
                             <div class="col-lg-6 mb-2">
                                 <div class="mb-3">
                                     <label class="form-label">Email</label>
-                                    <input type="email"
-                                        class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" name="email"
-                                        value="{{ old('email') ? old('email') : $user->email }}"
+                                    <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                        name="email" value="{{ old('email') ? old('email') : '' }}"
                                         placeholder="Enter unique email" required>
                                     @error('email')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -81,18 +69,39 @@
                             <div class="col-lg-6 mb-2">
                                 <div class="mb-3">
                                     <label class="form-label">Role</label>
-                                    <select class="form-select {{ $errors->has('role') ? ' is-invalid' : '' }}"
-                                        name="role">
+                                    <select class="form-select @error('role') is-invalid @enderror" name="role">
                                         <option value="" selected>Select role for user</option>
                                         @isset($roles)
                                             @foreach ($roles as $id => $name)
                                                 <option value="{{ $id }}"
-                                                    {{ (old('role') ? old('role') : $userRole->id == $id) ? 'selected' : '' }}>
+                                                    {{ old('role') == $id ? 'selected' : '' }}>
                                                     {{ $name }}</option>
                                             @endforeach
                                         @endisset
                                     </select>
                                     @error('role')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-2">
+                                <div class="mb-3">
+                                    <label class="form-label">Password</label>
+                                    <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                        name="password" id="password" value="{{ old('password') ? old('password') : '' }}"
+                                        placeholder="Enter strong password" required autocomplete="current-password">
+                                    @error('password')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-2">
+                                <div class="mb-3">
+                                    <label class="form-label">Confirm Password</label>
+                                    <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                        name="password_confirmation" value="{{ old('password') ? old('password') : '' }}"
+                                        placeholder="Enter your password again" required autocomplete="current-password">
+                                    @error('password')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -128,8 +137,8 @@
                             <label for="choices-publish-status-input" class="form-label">Status</label>
                             <select class="form-select" name="status" id="choices-publish-status-input" data-choices
                                 data-choices-search-false>
-                                <option {{ $user->status == 1 ? 'selected' : '' }} value="1" selected>Active</option>
-                                <option {{ $user->status == 0 ? 'selected' : '' }} value="0">Inactive</option>
+                                <option value="1" selected>Active</option>
+                                <option value="0">Inactive</option>
                             </select>
                         </div>
                     </div>
@@ -141,7 +150,6 @@
         </div>
         <!-- end row -->
     </form>
-    @include('admin.modules.users.change-password')
 @endsection
 @push('script')
     <script src="{{ URL::asset('assets/libs/validation/validate.min.js') }}"></script>
@@ -160,6 +168,15 @@
                         required: true,
                         minlength: 5
                     },
+                    password: {
+                        required: true,
+                        minlength: 6
+                    },
+                    password_confirmation: {
+                        required: true,
+                        minlength: 6,
+                        equalTo: "#password"
+                    },
                     role: {
                         required: true
                     }
@@ -171,6 +188,15 @@
                     username: {
                         required: "Please enter a username",
                         minlength: "Your username must consist of at least 5 characters"
+                    },
+                    password: {
+                        required: "Please provide a password",
+                        minlength: "Your password must be at least 6 characters long"
+                    },
+                    password_confirmation: {
+                        required: "Please provide a password",
+                        minlength: "Your password must be at least 6 characters long",
+                        equalTo: "Please enter the same password"
                     },
                     role: "Please select role for user"
                 }

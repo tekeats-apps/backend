@@ -58,7 +58,11 @@ Route::prefix('admin')->group(function () {
         ->as('admin.users.')
         ->group(function () {
             Route::get('/',  'index')->name('index');
+            Route::get('/create',  'create')->name('create');
+            Route::post('/create',  'store')->name('store');
             Route::get('/edit/{user}',  'edit')->name('edit');
+            Route::put('/update/{user}',  'update')->name('update');
+            Route::put('/password/update/{user}',  'passwordUpdate')->name('password.update');
         });
     });
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -73,6 +74,54 @@ class User extends Authenticatable
             get: fn () => (object) $role,
         );
     }
+
+    public function scopeUpdateUser($query, $userId, $data)
+    {
+        $user = $query->findOrFail($userId);
+        $user->fill([
+            'name' => $data['name'],
+            'username' => $data['username'],
+            'email' => $data['email'],
+            'status' => ($data['status']) ? 1 : 0,
+        ]);
+
+        if (isset($data['role'])) {
+            $role = Role::findOrFail($data['role']);
+            $user->syncRoles($role);
+        }
+        $user->save();
+        return $user;
+    }
+
+    public function scopeStoreUser($query, $data)
+    {
+        $user = new User([
+            'name' => $data['name'],
+            'username' => $data['username'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'status' => ($data['status']) ? 1 : 0,
+        ]);
+
+        if (isset($data['role'])) {
+            $role = Role::findOrFail($data['role']);
+            $user->syncRoles($role);
+        }
+
+        $user->save();
+
+        return $user;
+    }
+
+    public function scopeUpdatePassword($query, $userId, $password)
+    {
+        $user = $query->findOrFail($userId);
+        $user->password = Hash::make($password);
+        $user->save();
+
+        return $user;
+    }
+
 
 
 }

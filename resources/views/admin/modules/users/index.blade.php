@@ -30,8 +30,8 @@
                         </div>
                         <div class="col-sm-auto">
                             <div class="d-flex flex-wrap align-items-start gap-2">
-                                <button type="button" class="btn btn-success btn-label waves-effect waves-light"><i
-                                        class="ri-add-line label-icon align-middle fs-16 me-2"></i> Add User</button>
+                                <a type="button" href="{{route('admin.users.create')}}" class="btn btn-success btn-label waves-effect waves-light"><i
+                                        class="ri-add-line label-icon align-middle fs-16 me-2"></i> Add User</a>
                             </div>
                         </div>
                     </div>
