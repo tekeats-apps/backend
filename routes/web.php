@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\DashboardController;
 
@@ -57,13 +58,26 @@ Route::prefix('admin')->group(function () {
         ->prefix('users')
         ->as('admin.users.')
         ->group(function () {
-            Route::get('/',  'index')->name('index');
+            Route::get('/',  'index')->name('list');
             Route::get('/create',  'create')->name('create');
             Route::post('/create',  'store')->name('store');
             Route::get('/edit/{user}',  'edit')->name('edit');
             Route::put('/update/{user}',  'update')->name('update');
             Route::put('/password/update/{user}',  'passwordUpdate')->name('password.update');
         });
+
+        //Roles Routes Group
+        Route::controller(RoleController::class)
+        ->prefix('roles')
+        ->as('admin.roles.')
+        ->group(function () {
+            Route::get('/',  'index')->name('list');
+            Route::get('/create',  'create')->name('create');
+            Route::post('/create',  'store')->name('store');
+            Route::get('/edit/{role}',  'edit')->name('edit');
+            Route::put('/update/{role}',  'update')->name('update');
+        });
+
     });
 
 

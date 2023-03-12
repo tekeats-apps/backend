@@ -30,7 +30,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::getRolesList();
+        $roles = Role::getRolesList()->pluck('name', 'id');
         return view('admin.modules.users.create', compact('roles'));
     }
 
@@ -74,7 +74,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::getRolesList();
+        $roles = Role::getRolesList()->pluck('name', 'id');
         $userRole = $user->role;
         return view('admin.modules.users.edit', compact('user', 'roles', 'userRole'));
     }

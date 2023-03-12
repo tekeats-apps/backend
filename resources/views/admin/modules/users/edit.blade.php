@@ -32,7 +32,7 @@
                                 {{-- <a href="{{ route('admin.users.create') }}"
                                     class="btn btn-primary btn-label bt-sm waves-effect waves-light"><i
                                         class="ri-folder-lock-line label-icon"></i> Permissions</a> --}}
-                                <a href="{{ route('admin.users.index') }}"
+                                <a href="{{ route('admin.users.list') }}"
                                     class="btn btn-info btn-label bt-sm waves-effect waves-light"> <i
                                         class="ri-arrow-go-back-line label-icon"></i>Back to Users </a>
 

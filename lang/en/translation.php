@@ -4,6 +4,8 @@ return [
     "dashboard"=>"Dashboard",
     "users" => "Users",
     "manage-users" => "Manage Users",
+    "roles" => "Roles",
+    "manage-roles" => "Manage Roles",
     "analytics"=>"Analytics",
     "crm"=>"CRM",
     "ecommerce"=>"Ecommerce",

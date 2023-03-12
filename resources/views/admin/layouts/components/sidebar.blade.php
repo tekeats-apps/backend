@@ -39,12 +39,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{ route('admin.users.index') }}">
+                    <a class="nav-link menu-link" href="{{ route('admin.roles.list') }}">
                         <i class="ri-swap-line"></i> <span>Roles</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{ route('admin.users.index') }}">
+                    <a class="nav-link menu-link" href="{{ route('admin.users.list') }}">
                         <i class="ri-account-circle-fill"></i> <span>@lang('translation.users')</span>
                     </a>
                 </li>
