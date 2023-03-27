@@ -39,6 +39,16 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{ route('admin.order.list') }}">
+                        <i class="bx bx-cart-alt"></i> <span>Orders</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{ route('admin.restaurant.list') }}">
+                        <i class="ri-store-2-line"></i> <span>Restaurants</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="{{ route('admin.roles.list') }}">
                         <i class="ri-swap-line"></i> <span>Roles</span>
                     </a>

@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\RestaurantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +72,30 @@ Route::prefix('admin')->group(function () {
         Route::controller(RoleController::class)
         ->prefix('roles')
         ->as('admin.roles.')
+        ->group(function () {
+            Route::get('/',  'index')->name('list');
+            Route::get('/create',  'create')->name('create');
+            Route::post('/create',  'store')->name('store');
+            Route::get('/edit/{role}',  'edit')->name('edit');
+            Route::put('/update/{role}',  'update')->name('update');
+        });
+
+        //Restaurant Routes Group
+        Route::controller(RestaurantController::class)
+        ->prefix('restaurants')
+        ->as('admin.restaurant.')
+        ->group(function () {
+            Route::get('/',  'index')->name('list');
+            Route::get('/create',  'create')->name('create');
+            Route::post('/create',  'store')->name('store');
+            Route::get('/edit/{role}',  'edit')->name('edit');
+            Route::put('/update/{role}',  'update')->name('update');
+        });
+
+        //Orders Routes Group
+        Route::controller(OrderController::class)
+        ->prefix('orders')
+        ->as('admin.order.')
         ->group(function () {
             Route::get('/',  'index')->name('list');
             Route::get('/create',  'create')->name('create');

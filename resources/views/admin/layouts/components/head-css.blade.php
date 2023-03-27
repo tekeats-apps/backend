@@ -14,6 +14,8 @@
 
 <link href="{{ URL::asset('assets/libs/toastr/toastr.min.css') }}" rel="stylesheet" type="text/css" />
 
+@livewireStyles
+
 @stack('css')
 
 

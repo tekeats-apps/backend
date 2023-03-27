@@ -1,7 +1,4 @@
 @extends('admin.layouts.main')
-@push('css')
-    @include('admin.layouts.components.plugins.filepond.css');
-@endpush
 @section('title')
     @lang('translation.roles')
 @endsection
