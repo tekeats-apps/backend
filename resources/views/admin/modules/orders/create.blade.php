@@ -98,8 +98,8 @@
                             <select class="form-select required" name="payment_status" id="payment_status" data-choices
                                 data-choices-search-false required>
                                 <option value="" selected>Select Payment Status</option>
-                                <option value="completed">Completed</option>
-                                <option value="pending">Pending</option>
+                                <option value="paid">Paid</option>
+                                <option value="unpaid">Unpaid</option>
                                 <option value="failed">Failed</option>
                             </select>
                             @error('payment_status')

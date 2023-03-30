@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('transaction_id')->nullable();
             $table->enum('status', ['active', 'pending', 'failed', 'expired'])->default('pending');
-            $table->enum('payment_status', ['completed', 'pending', 'failed'])->default('pending');
+            $table->enum('payment_status', ['paid', 'unpaid', 'failed'])->default('unpaid');
             $table->timestamps();
         });
     }

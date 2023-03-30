@@ -24,6 +24,30 @@ class Order extends Model
         return $order;
     }
 
+    public function scopeGetOrdersList($query, $search, $status, $sortField, $sortDirection){
+
+        if (!empty($search)) {
+            $query->where(function ($q) use($search) {
+                $q->where('customer_name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%')
+                    ->orWhere('invoice_no', 'like', '%' . $search . '%')
+                    ->orWhere('payment_status', 'like', '%' . $search . '%');
+            });
+        }
+
+        if (!empty($date)) {
+            [$startDate, $endDate] = explode(' - ', $date);
+            dd($startDate, $endDate);
+            $query->whereBetween('created_at', [$startDate, $endDate]);
+        }
+
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+
+        return $query->orderBy($sortField, $sortDirection);
+    }
+
     public function tenant()
     {
         return $this->belongsTo(Tenant::class);

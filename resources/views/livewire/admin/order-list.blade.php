@@ -13,45 +13,44 @@
         </div>
     </div>
     <div class="card-body bg-soft-light border border-dashed border-start-0 border-end-0">
-        <form>
+        {{-- <form wire:submit.prevent="searchOrders"> --}}
             <div class="row g-3">
                 <div class="col-xxl-5 col-sm-12">
                     <div class="search-box">
-                        <input type="text" class="form-control search bg-light border-light"
-                            placeholder="Search for customer, email, country, status or something...">
+                        <input type="text" wire:model="search"
+                            class="form-control search bg-light border-light"
+                            placeholder="Search for customer, email, invoice, status or something...">
                         <i class="ri-search-line search-icon"></i>
                     </div>
                 </div>
                 <!--end col-->
                 <div class="col-xxl-3 col-sm-4">
-                    <input type="text" class="form-control bg-light border-light" id="datepicker-range"
-                        placeholder="Select date">
+                    <input type="text" wire:model="date" class="form-control bg-light border-light"
+                        id="datepicker-range" placeholder="Select date">
                 </div>
                 <!--end col-->
                 <div class="col-xxl-3 col-sm-4">
                     <div class="input-light">
-                        <select class="form-control" data-choices data-choices-search-false
-                            name="choices-single-default" id="idStatus">
-                            <option value="">Status</option>
-                            <option value="all" selected>All</option>
-                            <option value="Unpaid">Unpaid</option>
-                            <option value="Paid">Paid</option>
-                            <option value="Cancel">Cancel</option>
-                            <option value="Refund">Refund</option>
+                        <select class="form-control" wire:model="status" data-choices data-choices-search-false>
+                            <option value="">All</option>
+                            <option value="active">Active</option>
+                            <option value="pending">Pending</option>
+                            <option value="failed">Failed</option>
+                            <option value="expired">Expired</option>
                         </select>
                     </div>
                 </div>
                 <!--end col-->
 
-                <div class="col-xxl-1 col-sm-4">
-                    <button type="button" class="btn btn-primary w-100" onclick="SearchData();">
-                        <i class="ri-equalizer-fill me-1 align-bottom"></i> Filters
+                {{-- <div class="col-xxl-1 col-sm-4">
+                    <button type="button" class="btn btn-primary w-100">
+                        <i class="ri-equalizer-fill me-1 align-bottom"></i> Search
                     </button>
-                </div>
+                </div> --}}
                 <!--end col-->
             </div>
             <!--end row-->
-        </form>
+        {{-- </form> --}}
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -66,10 +65,12 @@
                             </div>
                         </th>
                         <th class="sort text-uppercase" scope="col">#</th>
-                        <th class="sort text-uppercase" scope="col">Customer Name</th>
+                        <th class="sort text-uppercase" scope="col" wire:click="sortBy('customer_name')">Customer
+                            Name</th>
                         <th class="sort text-uppercase" scope="col">Customer Email</th>
                         <th class="sort text-uppercase" scope="col">Payment Status</th>
                         <th class="sort text-uppercase" scope="col">Status</th>
+                        <th class="sort text-uppercase" scope="col" wire:click="sortBy('created_at')">Date</th>
                         <th class="text-uppercase" scope="col">Action</th>
                     </tr>
                 </thead>
@@ -88,7 +89,7 @@
                                 <td>
                                     <div class="d-flex gap-2 align-items-center">
                                         <div class="flex-shrink-0">
-                                            <img src="assets/images/users/avatar-3.jpg" alt=""
+                                            <img src="{{ URL::asset('assets/images/users/avatar-3.jpg') }}" alt=""
                                                 class="avatar-xs rounded-circle" />
                                         </div>
                                         <div class="flex-grow-1">
@@ -97,11 +98,20 @@
                                     </div>
                                 </td>
                                 <td>{{ $order->email }}</td>
-                                <td class="text-success"><i class="ri-checkbox-circle-line fs-17 align-middle"></i>
-                                    {{ $order->payment_status }}</td>
+                                @if ($order->payment_status == 'paid')
+                                    <td class="text-success"><i class="ri-checkbox-circle-line fs-17 align-middle"></i>
+                                        {{ ucfirst($order->payment_status) }}</td>
+                                @elseif ($order->payment_status == 'unpaid')
+                                    <td class="text-warning"><i class="ri-refresh-line fs-17 align-middle"></i>
+                                        {{ ucfirst($order->payment_status) }}</td>
+                                @else
+                                    <td class="text-danger"><i class="ri-close-circle-line fs-17 align-middle"></i>
+                                        {{ ucfirst($order->payment_status) }}</td>
+                                @endif
 
                                 <td class="text-success"><i class="ri-checkbox-circle-line fs-17 align-middle"></i>
-                                    {{ $order->status }}</td>
+                                    {{ ucfirst($order->status) }}</td>
+                                <td>{{ $order->created_at }}</td>
                                 <td>
                                     <div class="dropdown">
                                         <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
@@ -136,17 +146,23 @@
                     @endisset
                 </tbody>
             </table>
-            <div class="noresult" style="display:none">
-                <div class="text-center">
-                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                        colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px">
-                    </lord-icon>
-                    <h5 class="mt-2">Sorry! No Result Found</h5>
-                    <p class="text-muted mb-0">We've searched more than 150+ invoices We
-                        did not find any
-                        invoices for you search.</p>
+            {{-- <div>
+                {{ $orders->links() }}
+            </div> --}}
+            @unless(count($orders))
+                <div class="noresult">
+                    <div class="text-center">
+                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+                            colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px">
+                        </lord-icon>
+                        <h5 class="mt-2">Sorry! No Result Found</h5>
+                        <p class="text-muted mb-0">We've searched more than 150+ invoices We
+                            did not find any
+                            invoices for you search.</p>
+                    </div>
                 </div>
-            </div>
+            @endunless
+
             <!-- end table -->
         </div>
         <!-- end table responsive -->
