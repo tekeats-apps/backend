@@ -1,8 +1,13 @@
-flatpickr("#datepicker-range", {
-    mode: "range",
-    dateFormat: "d M, Y",
+flatpickr("#start-date-field", {
+    dateFormat: "Y-m-d",
+    onChange: function(selectedDates, dateStr, instance) {
+        Livewire.emit('startDateChange', dateStr);
+    }
 });
 
-flatpickr("#date-field", {
-    dateFormat: "d M, Y",
+flatpickr("#end-date-field", {
+    dateFormat: "Y-m-d",
+    onChange: function(selectedDates, dateStr, instance) {
+        Livewire.emit('endDateChange', dateStr);
+    }
 });

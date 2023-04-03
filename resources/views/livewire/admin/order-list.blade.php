@@ -14,42 +14,69 @@
     </div>
     <div class="card-body bg-soft-light border border-dashed border-start-0 border-end-0">
         {{-- <form wire:submit.prevent="searchOrders"> --}}
-            <div class="row g-3">
-                <div class="col-xxl-5 col-sm-12">
-                    <div class="search-box">
-                        <input type="text" wire:model="search"
-                            class="form-control search bg-light border-light"
-                            placeholder="Search for customer, email, invoice, status or something...">
-                        <i class="ri-search-line search-icon"></i>
-                    </div>
+        <div class="row g-3">
+            <div class="col-xxl-4 col-sm-12">
+                <label for="search"> Search</label>
+                <div class="search-box">
+                    <input type="text" wire:model="search" id="search"
+                        class="form-control search bg-light border-light"
+                        placeholder="Search for customer, email, invoice, status or something...">
+                    <i class="ri-search-line search-icon"></i>
                 </div>
-                <!--end col-->
-                <div class="col-xxl-3 col-sm-4">
-                    <input type="text" wire:model="date" class="form-control bg-light border-light"
-                        id="datepicker-range" placeholder="Select date">
+            </div>
+            <!--end col-->
+            <div class="col-xxl-2 col-sm-4">
+                <label for="end-date-field"> Start Date</label>
+                <input type="text" wire:model.defer="startDate"
+                    class="form-control bg-light border-light date-field @error('startDate') is-invalid @enderror"
+                    id="start-date-field" placeholder="Select start date">
+                @error('startDate')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="col-xxl-2 col-sm-4">
+                <label for="end-date-field"> End Date</label>
+                <input type="text" wire:model.defer="endDate"
+                    class="form-control bg-light border-light date-field @error('endDate') is-invalid @enderror"
+                    id="end-date-field" placeholder="Select end date">
+                @error('endDate')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <!--end col-->
+            <div class="col-xxl-2 col-sm-4">
+                <label for="status"> Order Status</label>
+                <div class="input-light">
+                    <select class="form-control" wire:model="status" data-choices data-choices-search-false>
+                        <option value="">All</option>
+                        <option value="active">Active</option>
+                        <option value="pending">Pending</option>
+                        <option value="failed">Failed</option>
+                        <option value="expired">Expired</option>
+                    </select>
                 </div>
-                <!--end col-->
-                <div class="col-xxl-3 col-sm-4">
-                    <div class="input-light">
-                        <select class="form-control" wire:model="status" data-choices data-choices-search-false>
-                            <option value="">All</option>
-                            <option value="active">Active</option>
-                            <option value="pending">Pending</option>
-                            <option value="failed">Failed</option>
-                            <option value="expired">Expired</option>
-                        </select>
-                    </div>
+            </div>
+            <div class="col-xxl-2 col-sm-4">
+                <label for="status"> Payment Status</label>
+                <div class="input-light">
+                    <select class="form-control" wire:model="paymentStatus" data-choices data-choices-search-false>
+                        <option value="">All</option>
+                        <option value="paid">Paid</option>
+                        <option value="unpaid">Unpaid</option>
+                        <option value="failed">Failed</option>
+                    </select>
                 </div>
-                <!--end col-->
+            </div>
+            <!--end col-->
 
-                {{-- <div class="col-xxl-1 col-sm-4">
+            {{-- <div class="col-xxl-1 col-sm-4">
                     <button type="button" class="btn btn-primary w-100">
                         <i class="ri-equalizer-fill me-1 align-bottom"></i> Search
                     </button>
                 </div> --}}
-                <!--end col-->
-            </div>
-            <!--end row-->
+            <!--end col-->
+        </div>
+        <!--end row-->
         {{-- </form> --}}
     </div>
     <div class="card-body">

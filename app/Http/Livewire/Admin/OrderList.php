@@ -11,14 +11,20 @@ class OrderList extends Component
     use WithPagination;
 
     public $search;
-    public $date;
+    public $startDate;
+    public $endDate;
     public $status;
+    public $paymentStatus;
     public $perPage = 10;
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
 
-    protected $listeners = ['refreshOrders' => '$refresh'];
+    protected $rules = [
+        'startDate' => 'nullable|date',
+        'endDate' => 'nullable|date|after_or_equal:startDate',
+    ];
 
+    protected $listeners = ['refreshOrders' => '$refresh', 'startDateChange', 'endDateChange'];
 
     public function render()
     {
@@ -27,7 +33,20 @@ class OrderList extends Component
     }
     public function getOrders()
     {
-         $orders = Order::getOrdersList($this->search, $this->status, $this->sortField, $this->sortDirection)->paginate($this->perPage);
+
+         $orders = Order::getOrdersList($this->search, $this->status, $this->paymentStatus,$this->startDate, $this->endDate, $this->sortField, $this->sortDirection)->paginate($this->perPage);
          return $orders;
+    }
+
+    public function startDateChange($startDate)
+    {
+        $this->startDate = $startDate;
+        $this->validate();
+    }
+
+    public function endDateChange($endDate)
+    {
+        $this->endDate = $endDate;
+        $this->validate();
     }
 }
