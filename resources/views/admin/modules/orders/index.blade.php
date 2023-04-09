@@ -15,7 +15,7 @@
     {{-- Main Content --}}
     <div class="row">
         <div class="col-lg-12">
-            @livewire('admin.order-list')
+            @livewire('admin.orders.order-list')
         </div>
         <!--end col-->
     </div>

@@ -13,7 +13,6 @@
         </div>
     </div>
     <div class="card-body bg-soft-light border border-dashed border-start-0 border-end-0">
-        {{-- <form wire:submit.prevent="searchOrders"> --}}
         <div class="row g-3">
             <div class="col-xxl-4 col-sm-12">
                 <label for="search"> Search</label>
@@ -24,7 +23,6 @@
                     <i class="ri-search-line search-icon"></i>
                 </div>
             </div>
-            <!--end col-->
             <div class="col-xxl-2 col-sm-4">
                 <label for="end-date-field"> Start Date</label>
                 <input type="text" wire:model.defer="startDate"
@@ -43,7 +41,6 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
-            <!--end col-->
             <div class="col-xxl-2 col-sm-4">
                 <label for="status"> Order Status</label>
                 <div class="input-light">
@@ -67,17 +64,7 @@
                     </select>
                 </div>
             </div>
-            <!--end col-->
-
-            {{-- <div class="col-xxl-1 col-sm-4">
-                    <button type="button" class="btn btn-primary w-100">
-                        <i class="ri-equalizer-fill me-1 align-bottom"></i> Search
-                    </button>
-                </div> --}}
-            <!--end col-->
         </div>
-        <!--end row-->
-        {{-- </form> --}}
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -140,33 +127,31 @@
                                     {{ ucfirst($order->status) }}</td>
                                 <td>{{ $order->created_at }}</td>
                                 <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="ri-more-fill align-middle"></i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><button class="dropdown-item" href="javascript:void(0);"
-                                                    onclick="ViewInvoice(this);" data-id="` + raw.invoice_no + `"><i
-                                                        class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                    View</button></li>
-                                            <li><button class="dropdown-item" href="javascript:void(0);"
-                                                    onclick="EditInvoice(this);" data-id="` + raw.invoice_no + `"><i
-                                                        class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                    Edit</button></li>
-                                            <li><a class="dropdown-item" href="javascript:void(0);"><i
-                                                        class="ri-download-2-line align-bottom me-2 text-muted"></i>
-                                                    Download</a></li>
-                                            <li class="dropdown-divider"></li>
-                                            <li>
-                                                <a class="dropdown-item remove-item-btn" data-bs-toggle="modal"
-                                                    href="#deleteOrder">
-                                                    <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                    Delete
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="ri-more-fill align-middle"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><button class="dropdown-item" href="javascript:void(0);"
+                                                onclick="ViewInvoice(this);" data-id="` + raw.invoice_no + `"><i
+                                                    class="ri-eye-fill align-bottom me-2 text-muted"></i>
+                                                View</button></li>
+                                        <li><button class="dropdown-item" href="javascript:void(0);"
+                                                onclick="EditInvoice(this);" data-id="` + raw.invoice_no + `"><i
+                                                    class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                                                Edit</button></li>
+                                        <li><a class="dropdown-item" href="javascript:void(0);"><i
+                                                    class="ri-download-2-line align-bottom me-2 text-muted"></i>
+                                                Download</a></li>
+                                        <li class="dropdown-divider"></li>
+                                        <li>
+                                            <a class="dropdown-item remove-item-btn" data-bs-toggle="modal"
+                                                href="#deleteOrder">
+                                                <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                                                Delete
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </td>
                             </tr>
                         @endforeach
@@ -176,7 +161,7 @@
             {{-- <div>
                 {{ $orders->links() }}
             </div> --}}
-            @unless(count($orders))
+            @unless (count($orders))
                 <div class="noresult">
                     <div class="text-center">
                         <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Admin;
+namespace App\Http\Livewire\Admin\Orders;
 
 use App\Models\Order;
 use Livewire\WithPagination;
@@ -29,7 +29,7 @@ class OrderList extends Component
     public function render()
     {
         $orders = $this->getOrders();
-        return view('livewire.admin.order-list', ['orders' => $orders]);
+        return view('livewire.admin.orders.order-list', ['orders' => $orders]);
     }
     public function getOrders()
     {
