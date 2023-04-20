@@ -1,7 +1,7 @@
 <div class="card" id="invoiceList">
     <div class="card-header border-0">
         <div class="d-flex align-items-center">
-            <h5 class="card-title mb-0 flex-grow-1">Orders</h5>
+            <h5 class="card-title mb-0 flex-grow-1">@lang('translation.orders')</h5>
             <div class="flex-shrink-0">
                 <div class="d-flex gap-2 flex-wrap">
                     <button class="btn btn-primary" id="remove-actions" onClick="deleteMultiple()"><i
@@ -17,7 +17,7 @@
             <div class="col-xxl-4 col-sm-12">
                 <label for="search"> Search</label>
                 <div class="search-box">
-                    <input type="text" wire:model="search" id="search"
+                    <input type="text" wire:model.debounce.500ms="search" id="search"
                         class="form-control search bg-light border-light"
                         placeholder="Search for customer, email, invoice, status or something...">
                     <i class="ri-search-line search-icon"></i>
@@ -44,7 +44,8 @@
             <div class="col-xxl-2 col-sm-4">
                 <label for="status"> Order Status</label>
                 <div class="input-light">
-                    <select class="form-control" wire:model="status" data-choices data-choices-search-false>
+                    <select class="form-control" wire:model.debounce.500ms="status" data-choices
+                        data-choices-search-false>
                         <option value="">All</option>
                         <option value="active">Active</option>
                         <option value="pending">Pending</option>
@@ -56,7 +57,8 @@
             <div class="col-xxl-2 col-sm-4">
                 <label for="status"> Payment Status</label>
                 <div class="input-light">
-                    <select class="form-control" wire:model="paymentStatus" data-choices data-choices-search-false>
+                    <select class="form-control" wire:model.debounce.500ms="paymentStatus" data-choices
+                        data-choices-search-false>
                         <option value="">All</option>
                         <option value="paid">Paid</option>
                         <option value="unpaid">Unpaid</option>
@@ -136,21 +138,6 @@
                                                 onclick="ViewInvoice(this);" data-id="` + raw.invoice_no + `"><i
                                                     class="ri-eye-fill align-bottom me-2 text-muted"></i>
                                                 View</button></li>
-                                        <li><button class="dropdown-item" href="javascript:void(0);"
-                                                onclick="EditInvoice(this);" data-id="` + raw.invoice_no + `"><i
-                                                    class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                Edit</button></li>
-                                        <li><a class="dropdown-item" href="javascript:void(0);"><i
-                                                    class="ri-download-2-line align-bottom me-2 text-muted"></i>
-                                                Download</a></li>
-                                        <li class="dropdown-divider"></li>
-                                        <li>
-                                            <a class="dropdown-item remove-item-btn" data-bs-toggle="modal"
-                                                href="#deleteOrder">
-                                                <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                Delete
-                                            </a>
-                                        </li>
                                     </ul>
                                 </td>
                             </tr>

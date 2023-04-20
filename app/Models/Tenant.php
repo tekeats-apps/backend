@@ -20,19 +20,37 @@ class Tenant extends BaseTenant implements TenantWithDatabase
         ];
     }
 
-    public function scopeRegisterRestaurant($query, $data){
+    public function scopeRegisterRestaurant($query, $data)
+    {
 
         $tenantID = Str::slug($data['store_name']);
+        $domain = $data['domain'] . '.' . request()->getHost();
         $tenant = Tenant::create([
             'id' => $tenantID,
             'order_id' => $data['order_id'],
             'store_name' => $data['store_name'],
-            'customer_email' => $data['customer_email']
+            'customer_email' => $data['customer_email'],
+            'domain' => $domain,
+
         ]);
         // Create Domain model and associate it with the Tenant model
-        $domain = $data['domain'].'.'.request()->getHost();
         $tenant->domains()->create(['domain' => $domain]);
         return $tenant;
+    }
+
+    public function scopeGetRestaurantsList($query, $search, $status, $sortField, $sortDirection)
+    {
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('data->customer_email', 'like', '%' . $search . '%')
+                    ->orWhere('data->status', 'like', '%' . $search . '%')
+                    ->orWhere('data->store_name', 'like', '%' . $search . '%');
+            });
+        }
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+        return $query->orderBy($sortField, $sortDirection);
     }
     public function order()
     {
