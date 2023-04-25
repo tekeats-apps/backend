@@ -23,12 +23,11 @@ Route::get('/', function () {
     return view('coming_soon');
 });
 
-
 // Admin Routes
 Route::prefix('admin')->group(function () {
 
      // Auth Routes Group (Guest)
-     Route::middleware(['guest'])->group(function () {
+     Route::middleware(['guest:admin'])->group(function () {
         Route::controller(AuthController::class)
         ->as('admin.auth.')
         ->group(function () {

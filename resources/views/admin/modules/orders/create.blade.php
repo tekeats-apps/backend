@@ -12,7 +12,7 @@
             @lang('translation.manage-orders')
         @endslot
     @endcomponent
-{{-- @php
+    {{-- @php
     dd($errors);
 @endphp --}}
     <form id="order-form" action="{{ route('admin.order.store') }}" method="POST" autocomplete="off"
@@ -33,8 +33,7 @@
                             <div class="col-lg-6 mb-2">
                                 <div class="mb-3">
                                     <label class="form-label">Customer Name</label>
-                                    <input type="text"
-                                        class="form-control @error('customer_name') is-invalid @enderror"
+                                    <input type="text" class="form-control @error('customer_name') is-invalid @enderror"
                                         name="customer_name" value="{{ old('customer_name') ? old('customer_name') : '' }}"
                                         id="customer_name" placeholder="Enter customer name" required>
                                     @error('customer_name')
@@ -45,10 +44,10 @@
                             <div class="col-lg-6 mb-2">
                                 <div class="mb-3">
                                     <label class="form-label">Email</label>
-                                    <input type="text"
-                                        class="form-control @error('customer_email') is-invalid @enderror" name="customer_email"
-                                        value="{{ old('customer_email') ? old('customer_email') : '' }}" placeholder="Enter customer email"
-                                        required>
+                                    <input type="text" class="form-control @error('customer_email') is-invalid @enderror"
+                                        name="customer_email"
+                                        value="{{ old('customer_email') ? old('customer_email') : '' }}"
+                                        placeholder="Enter customer email" required>
                                     @error('customer_email')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -57,8 +56,7 @@
                             <div class="col-lg-6 mb-2">
                                 <div class="mb-3">
                                     <label class="form-label">Store/Restaurant Name</label>
-                                    <input type="text"
-                                        class="form-control @error('store_name') is-invalid @enderror"
+                                    <input type="text" class="form-control @error('store_name') is-invalid @enderror"
                                         name="store_name" value="{{ old('store_name') ? old('store_name') : '' }}"
                                         id="store_name" placeholder="Enter store or restaurant name" required>
                                     @error('store_name')
@@ -70,8 +68,7 @@
                                 <div class="mb-3">
                                     <label class="form-label">Subdomain</label>
                                     <div class="input-group">
-                                        <input type="text"
-                                            class="form-control @error('domain') is-invalid @enderror"
+                                        <input type="text" class="form-control @error('domain') is-invalid @enderror"
                                             name="domain" id="domain" placeholder="Enter subdomain name"
                                             value="{{ old('domain') ? old('domain') : '' }}"
                                             aria-label="Recipient's username" aria-describedby="basic-addon2">
@@ -85,9 +82,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="text-end mb-3">
-                    <button type="submit" class="btn btn-success w-sm">Submit</button>
-                </div>
             </div>
             <div class="col-lg-4">
                 <div class="card">
@@ -97,7 +91,8 @@
                     <div class="card-body">
                         <div class="col-lg-12 mb-3">
                             <label for="payment_status" class="form-label">Payment Status</label>
-                            <select class="form-select @error('payment_status') is-invalid @enderror" name="payment_status" id="payment_status" required>
+                            <select class="form-select @error('payment_status') is-invalid @enderror" name="payment_status"
+                                id="payment_status" required>
                                 <option value="">Select Payment Status</option>
                                 <option value="paid">Paid</option>
                                 <option value="unpaid">Unpaid</option>
@@ -109,7 +104,8 @@
                         </div>
                         <div class="col-lg-12 mb-3">
                             <label for="status" class="form-label">Status</label>
-                            <select class="form-control form-select @error('status') is-invalid @enderror" name="status" id="status" required>
+                            <select class="form-control form-select @error('status') is-invalid @enderror" name="status"
+                                id="status" required>
                                 <option value="">Select Order Status</option>
                                 <option value="active">Active</option>
                                 <option value="pending">Pending</option>
@@ -124,6 +120,44 @@
                     <!-- end card body -->
                 </div>
                 <!-- end card -->
+            </div>
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Store Authentication <span class="float-end"></h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6 mb-2">
+                                <div class="mb-3">
+                                    <label class="form-label">Login Email</label>
+                                    <input type="text" class="form-control @error('login_email') is-invalid @enderror"
+                                        name="login_email"
+                                        value="{{ old('login_email') ? old('login_email') : '' }}"
+                                        placeholder="Enter email to access store portal" required autocomplete="off">
+                                    @error('login_email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-2">
+                                <div class="mb-3">
+                                    <label class="form-label">Login Password</label>
+                                    <input type="password" class="form-control @error('login_password') is-invalid @enderror"
+                                        name="login_password"
+                                        value="{{ old('login_password') ? old('login_password') : '' }}"
+                                        placeholder="Enter strong password to access store portal" required autocomplete="off">
+                                    @error('login_password')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-end mb-3">
+                    <button type="submit" class="btn btn-success w-sm">Submit</button>
+                </div>
             </div>
         </div>
         <!-- end row -->

@@ -3,6 +3,9 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Store\AuthController as StoreAuthController;
+use App\Http\Controllers\Store\HomeController;
+use App\Http\Controllers\Store\DashboardController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
@@ -23,7 +26,40 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
-    Route::get('/', function () {
-        return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
+
+    Route::prefix('store')->group(function () {
+
+        // Auth Routes Group (Guest)
+        Route::middleware(['guest:store'])->group(function () {
+            Route::controller(StoreAuthController::class)
+                ->as('store.auth.')
+                ->group(function () {
+                    Route::get('/login', 'index')->name('login');
+                    Route::post('/login', 'login')->name('action.login');
+                });
+        });
+
+        // Authenticated Routes
+        Route::middleware(['auth:store'])->group(function () {
+
+            // Store Dashboard Routes Group
+            Route::controller(DashboardController::class)
+                ->prefix('dashboard')
+                ->as('store.dashboard.')
+                ->group(function () {
+                    Route::get('/', 'index')->name('index');
+                });
+
+
+        });
+
+
+
     });
+
+    // Front-end Website Routes Group
+    Route::controller(HomeController::class)
+        ->group(function () {
+            Route::get('/', 'commingSoon')->name('comming.soon');
+        });
 });
