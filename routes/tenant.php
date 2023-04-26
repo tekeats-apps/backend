@@ -42,6 +42,13 @@ Route::middleware([
         // Authenticated Routes
         Route::middleware(['auth:store'])->group(function () {
 
+            //Admin Auth Routes (Authenticated)
+            Route::controller(StoreAuthController::class)
+                ->as('store.auth.')
+                ->group(function () {
+                    Route::post('/logout', 'logout')->name('logout');
+                });
+
             // Store Dashboard Routes Group
             Route::controller(DashboardController::class)
                 ->prefix('dashboard')

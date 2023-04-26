@@ -103,8 +103,8 @@
                     <div class="dropdown-menu dropdown-menu-end">
 
                         <!-- item-->
-                        <a href="{{ url('index/en') }}" class="dropdown-item notify-item language py-2"
-                            data-lang="en" title="English">
+                        <a href="{{ url('index/en') }}" class="dropdown-item notify-item language py-2" data-lang="en"
+                            title="English">
                             <img src="{{ URL::asset('assets/images/flags/us.svg') }}" alt="user-image"
                                 class="me-2 rounded" height="20">
                             <span class="align-middle">English</span>
@@ -496,7 +496,7 @@
                                 src="{{ URL::asset('assets/images/users/avatar-1.jpg') }}" alt="Header Avatar">
                             <span class="text-start ms-xl-2">
                                 <span
-                                    class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Khawar</span>
+                                    class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ Auth::guard('store')->user()->name }}</span>
                             </span>
                         </span>
                     </button>
@@ -510,7 +510,7 @@
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
                                 class="bx bx-power-off font-size-16 align-middle me-1"></i> <span
                                 key="t-logout">@lang('translation.logout')</span></a>
-                        <form id="logout-form" action="{{ route('admin.auth.logout') }}" method="POST"
+                        <form id="logout-form" action="{{ route('store.auth.logout') }}" method="POST"
                             style="display: none;">
                             @csrf
                         </form>

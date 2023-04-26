@@ -26,7 +26,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">User Information <span class="float-end">
-                                <a href="{{ route('admin.users.index') }}" class="btn btn-info bt-sm">Back to Users</a>
+                                <a href="{{ route('admin.users.list') }}" class="btn btn-info bt-sm">Back to Users</a>
                             </span></h5>
 
 

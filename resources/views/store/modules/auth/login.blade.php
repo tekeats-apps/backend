@@ -32,7 +32,7 @@
                                     <p class="text-muted">Sign in to continue to {{ ucfirst(tenant()->store_name) }} Panel.</p>
                                 </div>
                                 <div class="p-2 mt-4">
-                                    <form action="{{ route('store.auth.login') }}" method="POST">
+                                    <form action="{{ route('store.auth.action.login') }}" method="POST">
                                         @csrf
                                         <div class="mb-3">
                                             <label for="email" class="form-label">Email/Username</label>
