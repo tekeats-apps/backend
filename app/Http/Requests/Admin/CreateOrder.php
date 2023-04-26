@@ -32,7 +32,8 @@ class CreateOrder extends FormRequest
                     }
                 },
             ],
-            'customer_email' => 'required|email',
+            'email' => 'required|email',
+            'login_password' => 'required|min:6',
             'domain' => 'required',
             'payment_status' => 'required|in:paid,unpaid,failed',
             'status' => 'required|in:active,pending,expired,rejected'

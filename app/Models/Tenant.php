@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Store\User as StoreUser;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
@@ -29,7 +31,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
             'id' => $tenantID,
             'order_id' => $data['order_id'],
             'store_name' => $data['store_name'],
-            'customer_email' => $data['customer_email'],
+            'email' => $data['email'],
             'domain' => $domain,
 
         ]);
@@ -42,7 +44,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     {
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
-                $q->where('data->customer_email', 'like', '%' . $search . '%')
+                $q->where('data->email', 'like', '%' . $search . '%')
                     ->orWhere('data->status', 'like', '%' . $search . '%')
                     ->orWhere('data->store_name', 'like', '%' . $search . '%');
             });
@@ -51,6 +53,18 @@ class Tenant extends BaseTenant implements TenantWithDatabase
             $query->where('status', $status);
         }
         return $query->orderBy($sortField, $sortDirection);
+    }
+
+    public static function registerTenantUser($tenant, $data)
+    {
+        $tenant->run(function () use ($data) {
+            $user = new StoreUser();
+            $user->name = $data['customer_name'];
+            $user->email = $data['email'];
+            $user->password = Hash::make($data['login_password']);
+            $user->save();
+        });
+        return $tenant;
     }
     public function order()
     {

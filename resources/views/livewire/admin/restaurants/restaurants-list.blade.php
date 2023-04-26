@@ -72,7 +72,7 @@
                                     </div>
                                 </th>
                                 <td><a href="#" class="fw-semibold">#{{ $restaurant->id }}</a></td>
-                                <td>{{ $restaurant->customer_email }}</td>
+                                <td>{{ $restaurant->email }}</td>
                                 <td>
                                     <div class="d-flex gap-2 align-items-center">
                                         <div class="flex-grow-1">

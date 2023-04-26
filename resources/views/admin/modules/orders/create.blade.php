@@ -12,9 +12,6 @@
             @lang('translation.manage-orders')
         @endslot
     @endcomponent
-    {{-- @php
-    dd($errors);
-@endphp --}}
     <form id="order-form" action="{{ route('admin.order.store') }}" method="POST" autocomplete="off"
         enctype="multipart/form-data">
         @csrf
@@ -37,18 +34,6 @@
                                         name="customer_name" value="{{ old('customer_name') ? old('customer_name') : '' }}"
                                         id="customer_name" placeholder="Enter customer name" required>
                                     @error('customer_name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <div class="mb-3">
-                                    <label class="form-label">Email</label>
-                                    <input type="text" class="form-control @error('customer_email') is-invalid @enderror"
-                                        name="customer_email"
-                                        value="{{ old('customer_email') ? old('customer_email') : '' }}"
-                                        placeholder="Enter customer email" required>
-                                    @error('customer_email')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -89,33 +74,36 @@
                         <h5 class="card-title mb-0">Order Basic Settings</h5>
                     </div>
                     <div class="card-body">
-                        <div class="col-lg-12 mb-3">
-                            <label for="payment_status" class="form-label">Payment Status</label>
-                            <select class="form-select @error('payment_status') is-invalid @enderror" name="payment_status"
-                                id="payment_status" required>
-                                <option value="">Select Payment Status</option>
-                                <option value="paid">Paid</option>
-                                <option value="unpaid">Unpaid</option>
-                                <option value="failed">Failed</option>
-                            </select>
-                            @error('payment_status')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                        <div class="row">
+                            <div class="col-lg-12 mb-3">
+                                <label for="payment_status" class="form-label">Payment Status</label>
+                                <select class="form-select @error('payment_status') is-invalid @enderror"
+                                    name="payment_status" id="payment_status" required>
+                                    <option value="">Select Payment Status</option>
+                                    <option value="paid">Paid</option>
+                                    <option value="unpaid">Unpaid</option>
+                                    <option value="failed">Failed</option>
+                                </select>
+                                @error('payment_status')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-12 mb-3">
+                                <label for="status" class="form-label">Status</label>
+                                <select class="form-select @error('status') is-invalid @enderror" name="status"
+                                    id="order_status" required>
+                                    <option value="">Select Order Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="expired">Expired</option>
+                                    <option value="rejected">Rejected</option>
+                                </select>
+                                @error('status')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
-                        <div class="col-lg-12 mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <select class="form-control form-select @error('status') is-invalid @enderror" name="status"
-                                id="status" required>
-                                <option value="">Select Order Status</option>
-                                <option value="active">Active</option>
-                                <option value="pending">Pending</option>
-                                <option value="expired">Expired</option>
-                                <option value="rejected">Rejected</option>
-                            </select>
-                            @error('status')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
+
                     </div>
                     <!-- end card body -->
                 </div>
@@ -130,12 +118,15 @@
                         <div class="row">
                             <div class="col-lg-6 mb-2">
                                 <div class="mb-3">
-                                    <label class="form-label">Login Email</label>
-                                    <input type="text" class="form-control @error('login_email') is-invalid @enderror"
-                                        name="login_email"
-                                        value="{{ old('login_email') ? old('login_email') : '' }}"
-                                        placeholder="Enter email to access store portal" required autocomplete="off">
-                                    @error('login_email')
+                                    <label class="form-label">Email</label>
+                                    <div class="form-icon right">
+                                        <input type="email" id="email" autocomplete="off"
+                                            class="form-control form-control-icon @error('email') is-invalid @enderror"
+                                            name="email" value="{{ old('email') ? old('email') : '' }}"
+                                            placeholder="Enter email address" required>
+                                        <i class="ri-mail-unread-line"></i>
+                                    </div>
+                                    @error('email')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -143,10 +134,12 @@
                             <div class="col-lg-6 mb-2">
                                 <div class="mb-3">
                                     <label class="form-label">Login Password</label>
-                                    <input type="password" class="form-control @error('login_password') is-invalid @enderror"
+                                    <input type="password"
+                                        class="form-control @error('login_password') is-invalid @enderror"
                                         name="login_password"
                                         value="{{ old('login_password') ? old('login_password') : '' }}"
-                                        placeholder="Enter strong password to access store portal" required autocomplete="off">
+                                        placeholder="Enter strong password to access store portal" required
+                                        autocomplete="off">
                                     @error('login_password')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -177,6 +170,9 @@
                         required: true,
                         email: true
                     },
+                    login_password: {
+                        required: true
+                    },
                     domain: {
                         required: true
                     }
@@ -184,7 +180,7 @@
                 messages: {
                     customer_name: "Please enter customer name",
                     store_name: "Please enter store or restaurant name",
-                    email: "Please enter customer email address",
+                    email: "Please enter a valid email address",
                     domain: "Please enter domain for store or restaurant",
                     status: "Please select status of store",
                     payment_status: "Please select payment status of order",

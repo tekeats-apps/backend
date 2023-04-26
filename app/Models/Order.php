@@ -16,7 +16,7 @@ class Order extends Model
         $order = new Order();
         $order->invoice_no = Str::random(8);
         $order->customer_name = $data['customer_name'];
-        $order->email = $data['customer_email'];
+        $order->email = $data['email'];
         $order->transaction_id = strtolower(Str::random(15));
         $order->payment_status = $data['payment_status'];
         $order->status = $data['status'];
