@@ -3,11 +3,12 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Store\AuthController as StoreAuthController;
 use App\Http\Controllers\Store\HomeController;
+use App\Http\Controllers\Store\UserController as StoreUserController;
 use App\Http\Controllers\Store\DashboardController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use App\Http\Controllers\Store\AuthController as StoreAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,19 @@ Route::middleware([
                 ->as('store.dashboard.')
                 ->group(function () {
                     Route::get('/', 'index')->name('index');
+                });
+
+            // User Routes Group
+            Route::controller(StoreUserController::class)
+                ->prefix('users')
+                ->as('store.users.')
+                ->group(function () {
+                    Route::get('/', 'index')->name('list');
+                    Route::get('/create', 'create')->name('create');
+                    Route::post('/create', 'store')->name('store');
+                    Route::get('/edit/{user}', 'edit')->name('edit');
+                    Route::put('/update/{user}', 'update')->name('update');
+                    Route::put('/password/update/{user}', 'passwordUpdate')->name('password.update');
                 });
 
 
