@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('admin.users.password.update', $user->id) }}" method="POST" id="password-update-form">
+                <form action="{{ route('store.users.password.update', $user->id) }}" method="POST" id="password-update-form">
                     @method('PUT')
                     @csrf
                     <div class="row g-3">

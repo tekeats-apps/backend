@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Store\User as StoreUser;
+use App\Models\Store\Role;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Store\User as StoreUser;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
@@ -55,13 +56,19 @@ class Tenant extends BaseTenant implements TenantWithDatabase
         return $query->orderBy($sortField, $sortDirection);
     }
 
-    public static function registerTenantUser($tenant, $data)
+    public static function registerTenantUser($tenant, $data, $role)
     {
-        $tenant->run(function () use ($data) {
+        $tenant->run(function () use ($data, $role) {
             $user = new StoreUser();
             $user->name = $data['customer_name'];
             $user->email = $data['email'];
             $user->password = Hash::make($data['login_password']);
+
+            if ($role) {
+                $role = Role::where('name', $role)->first();
+                $user->syncRoles($role);
+            }
+
             $user->save();
         });
         return $tenant;

@@ -25,7 +25,7 @@ class OrderController extends Controller
         $data['order_id'] = $order->id;
         try {
             $tenant = Tenant::registerRestaurant($data);
-            Tenant::registerTenantUser($tenant, $data);
+            Tenant::registerTenantUser($tenant, $data, 'admin');
         } catch (\Exception $e) {
             $order->delete(); // rollback order creation
             dd($e->getMessage());

@@ -1,6 +1,6 @@
-@extends('admin.layouts.main')
+@extends('store.layouts.main')
 @push('css')
-    @include('admin.layouts.components.plugins.filepond.css');
+    @include('store.layouts.components.plugins.filepond.css');
 @endpush
 @section('title')
     @lang('translation.users')
@@ -9,7 +9,7 @@
 @endsection
 @section('content')
     {{-- Breadcrumbs Component --}}
-    @component('admin.layouts.components.breadcrumb')
+    @component('store.layouts.components.breadcrumb')
         @slot('li_1')
             @lang('translation.users')
         @endslot
@@ -18,7 +18,7 @@
         @endslot
     @endcomponent
 
-    <form id="users-form" action="{{ route('admin.users.store') }}" method="POST" autocomplete="off"
+    <form id="users-form" action="{{ route('store.users.store') }}" method="POST" autocomplete="off"
         enctype="multipart/form-data">
         @csrf
         <div class="row">
@@ -26,7 +26,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">User Information <span class="float-end">
-                                <a href="{{ route('admin.users.list') }}" class="btn btn-info bt-sm">Back to Users</a>
+                                <a href="{{ route('store.users.list') }}" class="btn btn-info bt-sm">Back to Users</a>
                             </span></h5>
 
 
@@ -153,7 +153,7 @@
 @endsection
 @push('script')
     <script src="{{ URL::asset('assets/libs/validation/validate.min.js') }}"></script>
-    @include('admin.layouts.components.plugins.filepond.js')
+    @include('store.layouts.components.plugins.filepond.js')
     <script>
         $().ready(function() {
             // validate signup form on keyup and submit

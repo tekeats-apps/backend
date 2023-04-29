@@ -1,6 +1,6 @@
-@extends('admin.layouts.main')
+@extends('store.layouts.main')
 @push('css')
-    @include('admin.layouts.components.plugins.filepond.css');
+    @include('store.layouts.components.plugins.filepond.css');
 @endpush
 @section('title')
     @lang('translation.users')
@@ -9,7 +9,7 @@
 @endsection
 @section('content')
     {{-- Breadcrumbs Component --}}
-    @component('admin.layouts.components.breadcrumb')
+    @component('store.layouts.components.breadcrumb')
         @slot('li_1')
             @lang('translation.users')
         @endslot
@@ -18,7 +18,7 @@
         @endslot
     @endcomponent
 
-    <form id="users-form" action="{{ route('admin.users.update', $user->id) }}" method="POST" autocomplete="off"
+    <form id="users-form" action="{{ route('store.users.update', $user->id) }}" method="POST" autocomplete="off"
         enctype="multipart/form-data">
         @method('PUT')
         @csrf
@@ -29,10 +29,10 @@
                         <h5 class="card-title mb-0">User Information <span class="float-end">
                                 <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#changeUserPassword" class="btn btn-warning btn-label bt-sm waves-effect waves-light"> <i
                                         class="ri-lock-password-line label-icon"></i>Change Password</a>
-                                {{-- <a href="{{ route('admin.users.create') }}"
+                                {{-- <a href="{{ route('store.users.create') }}"
                                     class="btn btn-primary btn-label bt-sm waves-effect waves-light"><i
                                         class="ri-folder-lock-line label-icon"></i> Permissions</a> --}}
-                                <a href="{{ route('admin.users.list') }}"
+                                <a href="{{ route('store.users.list') }}"
                                     class="btn btn-info btn-label bt-sm waves-effect waves-light"> <i
                                         class="ri-arrow-go-back-line label-icon"></i>Back to Users </a>
 
@@ -141,11 +141,11 @@
         </div>
         <!-- end row -->
     </form>
-    @include('admin.modules.users.change-password')
+    @include('store.modules.users.change-password')
 @endsection
 @push('script')
     <script src="{{ URL::asset('assets/libs/validation/validate.min.js') }}"></script>
-    @include('admin.layouts.components.plugins.filepond.js')
+    @include('store.layouts.components.plugins.filepond.js')
     <script>
         $().ready(function() {
             // validate signup form on keyup and submit
