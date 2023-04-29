@@ -34,23 +34,90 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span>@lang('translation.menu')</span></li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{ route('admin.dashboard.index') }}">
+                    <a class="nav-link menu-link" href="{{ route('store.dashboard.index') }}">
                         <i class="ri-dashboard-2-line"></i> <span>@lang('translation.dashboard')</span>
+                    </a>
+                </li>
+                <li class="menu-title"><span>Orders Management</span></li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="">
+                        <i class="ri-shopping-basket-2-line"></i> <span>Orders</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="">
-                        <i class="bx bx-cart-alt"></i> <span>Orders</span>
+                        <i class="ri-shopping-cart-2-line"></i> <span>POS</span>
+                    </a>
+                </li>
+                <li class="menu-title"><span>Products Management</span></li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="">
+                        <i class=" ri-copper-coin-line"></i> <span>Categories</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{route('store.roles.list')}}">
+                    <a class="nav-link menu-link" href="">
+                        <i class="ri-shopping-bag-line"></i> <span>Products</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="">
+                        <i class="ri-price-tag-3-fill"></i> <span>Tags</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="">
+                        <i class="ri-coupon-line"></i> <span>Copouns</span>
+                    </a>
+                </li>
+                <li class="menu-title"><span>User Management</span></li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="">
+                        <i class="ri-takeaway-fill"></i> <span>Riders</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{ route('store.roles.list') }}">
                         <i class="ri-swap-line"></i> <span>Roles</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{route('store.users.list')}}">
+                    <a class="nav-link menu-link" href="{{ route('store.users.list') }}">
                         <i class="ri-account-circle-fill"></i> <span>@lang('translation.users')</span>
+                    </a>
+                </li>
+                <li class="menu-title"><span> System</span></li>
+                <li class="nav-item">
+                    <a href="#sidebarSettings" class="nav-link" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarSettings">Settings
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarSettings">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="auth-404-cover" class="nav-link">General Settings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="auth-404-cover" class="nav-link">Location / Delivery Settings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="auth-500" class="nav-link"> Notifications Settings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="auth-offline" class="nav-link">Storage Settings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="auth-offline" class="nav-link">Payment Settings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="auth-offline" class="nav-link">Theme Settings</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="menu-title"><span> Store</span></li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="">
+                        <i class="ri-tools-line"></i> <span>Plugins</span>
                     </a>
                 </li>
             </ul>
