@@ -44,7 +44,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="">
+                    <a class="nav-link menu-link" href="{{route('store.roles.list')}}">
                         <i class="ri-swap-line"></i> <span>Roles</span>
                     </a>
                 </li>

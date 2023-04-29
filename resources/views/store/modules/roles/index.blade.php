@@ -1,6 +1,6 @@
-@extends('admin.layouts.main')
+@extends('store.layouts.main')
 @push('css')
-    @include('admin.layouts.components.plugins.datatable.datatables-css')
+    @include('store.layouts.components.plugins.datatable.datatables-css')
 @endpush
 @section('title')
     @lang('translation.roles')
@@ -8,7 +8,7 @@
 @section('content')
 
     {{-- Breadcrumbs Component --}}
-    @component('admin.layouts.components.breadcrumb')
+    @component('store.layouts.components.breadcrumb')
         @slot('li_1')
             @lang('translation.roles')
         @endslot
@@ -30,7 +30,7 @@
                         </div>
                         <div class="col-sm-auto">
                             <div class="d-flex flex-wrap align-items-start gap-2">
-                                <a type="button" href="{{ route('admin.roles.create') }}"
+                                <a type="button" href="{{ route('store.roles.create') }}"
                                     class="btn btn-success btn-label waves-effect waves-light"><i
                                         class="ri-add-line label-icon align-middle fs-16 me-2"></i> Add New Role</a>
                             </div>
@@ -48,6 +48,7 @@
                                 </th>
                                 <th>SR No.</th>
                                 <th>Name</th>
+                                <th>Status</th>
                                 <th>Create Date</th>
                                 <th>Action</th>
                             </tr>
@@ -64,6 +65,13 @@
                                         </th>
                                         <td>{{ ++$key }}</td>
                                         <td>{{ ucfirst($role->name) }}</td>
+                                        @if ($role->status)
+                                            <td class="text-success"><i class="ri-checkbox-circle-line fs-17 align-middle"></i>
+                                                Active </td>
+                                        @else
+                                            <td class="text-danger"><i class="ri-close-circle-line fs-17 align-middle"></i>
+                                                Inactive </td>
+                                        @endif
                                         <td>{{ $role->created_at->format('d M, Y') }}</td>
                                         <td>
                                             <div class="dropdown d-inline-block">
@@ -72,17 +80,17 @@
                                                     <i class="ri-more-fill align-middle"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li><a href="{{ route('admin.roles.edit', $role->id) }}"
+                                                    <li><a href="{{ route('store.roles.edit', $role->id) }}"
                                                             class="dropdown-item edit-item-btn"><i
                                                                 class="ri-pencil-fill align-bottom me-2 text-muted"></i>
                                                             Edit</a>
                                                     </li>
-                                                    <li>
+                                                    {{-- <li>
                                                         <a class="dropdown-item remove-item-btn">
                                                             <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
                                                             Delete
                                                         </a>
-                                                    </li>
+                                                    </li> --}}
                                                 </ul>
                                             </div>
                                         </td>
@@ -98,5 +106,5 @@
     </div>
 @endsection
 @push('script')
-    @include('admin.layouts.components.plugins.datatable.datatables-js')
+    @include('store.layouts.components.plugins.datatable.datatables-js')
 @endpush

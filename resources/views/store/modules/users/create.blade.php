@@ -75,7 +75,7 @@
                                             @foreach ($roles as $id => $name)
                                                 <option value="{{ $id }}"
                                                     {{ old('role') == $id ? 'selected' : '' }}>
-                                                    {{ $name }}</option>
+                                                    {{ ucfirst($name) }}</option>
                                             @endforeach
                                         @endisset
                                     </select>

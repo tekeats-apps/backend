@@ -59,20 +59,19 @@
                                         <i class="ri-more-fill align-middle"></i>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a href="#!" class="dropdown-item"><i
-                                                    class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a>
-                                        </li>
                                         <li><a href="{{ route('store.users.edit', $user->id) }}"
                                                 class="dropdown-item edit-item-btn"><i
                                                     class="ri-pencil-fill align-bottom me-2 text-muted"></i>
                                                 Edit</a>
                                         </li>
-                                        <li>
-                                            <a class="dropdown-item remove-item-btn">
-                                                <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                Delete
-                                            </a>
-                                        </li>
+                                        @if (Auth::guard('store')->user()->id != $user->id)
+                                            <li>
+                                                <a class="dropdown-item remove-item-btn">
+                                                    <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                                                    Delete
+                                                </a>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </td>
