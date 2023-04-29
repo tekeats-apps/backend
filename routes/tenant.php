@@ -82,6 +82,10 @@ Route::middleware([
                     Route::post('/create', 'store')->name('store');
                     Route::get('/edit/{role}', 'edit')->name('edit');
                     Route::put('/update/{role}', 'update')->name('update');
+
+                    Route::get('sync-permissions', 'syncPermissions')->name('sync.permissions');
+                    Route::get('role-permissions/{role}', 'rolePermissions')->name('view.permissions');
+                    Route::post('sync-role-permissions/{role}', 'syncRolePermissions')->name('update.permissions');
                 });
 
         });

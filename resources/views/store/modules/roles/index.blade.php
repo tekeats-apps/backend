@@ -30,6 +30,10 @@
                         </div>
                         <div class="col-sm-auto">
                             <div class="d-flex flex-wrap align-items-start gap-2">
+                                <a type="button" href="{{ route('store.roles.sync.permissions') }}"
+                                    class="btn btn-info btn-label waves-effect waves-light"><i
+                                        class="ri-secure-payment-line label-icon align-middle fs-16 me-2"></i> Sync
+                                    Permissions List</a>
                                 <a type="button" href="{{ route('store.roles.create') }}"
                                     class="btn btn-success btn-label waves-effect waves-light"><i
                                         class="ri-add-line label-icon align-middle fs-16 me-2"></i> Add New Role</a>
@@ -50,6 +54,7 @@
                                 <th>Name</th>
                                 <th>Status</th>
                                 <th>Create Date</th>
+                                <th>Role Permissions</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -74,6 +79,11 @@
                                         @endif
                                         <td>{{ $role->created_at->format('d M, Y') }}</td>
                                         <td>
+                                            <a href="{{ route('store.roles.view.permissions', $role->id) }}"
+                                                class="btn btn-primary btn-label bt-sm waves-effect waves-light"><i
+                                                    class="ri-folder-lock-line label-icon"></i> Permissions</a>
+                                        </td>
+                                        <td>
                                             <div class="dropdown d-inline-block">
                                                 <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
                                                     data-bs-toggle="dropdown" aria-expanded="false">
@@ -85,12 +95,6 @@
                                                                 class="ri-pencil-fill align-bottom me-2 text-muted"></i>
                                                             Edit</a>
                                                     </li>
-                                                    {{-- <li>
-                                                        <a class="dropdown-item remove-item-btn">
-                                                            <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                            Delete
-                                                        </a>
-                                                    </li> --}}
                                                 </ul>
                                             </div>
                                         </td>

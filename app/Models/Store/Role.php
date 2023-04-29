@@ -2,6 +2,7 @@
 
 namespace App\Models\Store;
 
+use App\Models\Store\Permission;
 use Spatie\Permission\Models\Role as SpatieRole;
 
 class Role extends SpatieRole
@@ -32,5 +33,10 @@ class Role extends SpatieRole
         $role->status = $data['status'];
         $role->save();
         return $role;
+    }
+
+    public function scopeWithPermissions($query)
+    {
+        return $query->with('permissions');
     }
 }
