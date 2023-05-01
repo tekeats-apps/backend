@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Store\HomeController;
 use App\Http\Controllers\Store\RoleController;
+use App\Http\Controllers\Store\SettingController;
 use App\Http\Controllers\Store\DashboardController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -87,6 +88,14 @@ Route::middleware([
                     Route::get('role-permissions/{role}', 'rolePermissions')->name('view.permissions');
                     Route::post('sync-role-permissions/{role}', 'syncRolePermissions')->name('update.permissions');
                 });
+
+            // Settings Routes Group
+            Route::controller(SettingController::class)
+            ->prefix('settings')
+            ->as('store.setting.')
+            ->group(function () {
+                Route::get('/general-settings', 'generalSettings')->name('general.settings');
+            });
 
         });
 

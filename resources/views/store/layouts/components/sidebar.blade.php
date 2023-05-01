@@ -94,7 +94,8 @@
                     <div class="collapse menu-dropdown" id="sidebarSettings">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="auth-404-cover" class="nav-link">General Settings</a>
+                                <a href="{{ route('store.setting.general.settings') }}" class="nav-link">General
+                                    Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a href="auth-404-cover" class="nav-link">Location / Delivery Settings</a>
