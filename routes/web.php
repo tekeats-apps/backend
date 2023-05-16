@@ -2,8 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\RestaurantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,12 +23,11 @@ Route::get('/', function () {
     return view('coming_soon');
 });
 
-
 // Admin Routes
 Route::prefix('admin')->group(function () {
 
      // Auth Routes Group (Guest)
-     Route::middleware(['guest'])->group(function () {
+     Route::middleware(['guest:admin'])->group(function () {
         Route::controller(AuthController::class)
         ->as('admin.auth.')
         ->group(function () {
@@ -57,8 +59,50 @@ Route::prefix('admin')->group(function () {
         ->prefix('users')
         ->as('admin.users.')
         ->group(function () {
-            Route::get('/',  'index')->name('index');
+            Route::get('/',  'index')->name('list');
+            Route::get('/create',  'create')->name('create');
+            Route::post('/create',  'store')->name('store');
+            Route::get('/edit/{user}',  'edit')->name('edit');
+            Route::put('/update/{user}',  'update')->name('update');
+            Route::put('/password/update/{user}',  'passwordUpdate')->name('password.update');
         });
+
+        //Roles Routes Group
+        Route::controller(RoleController::class)
+        ->prefix('roles')
+        ->as('admin.roles.')
+        ->group(function () {
+            Route::get('/',  'index')->name('list');
+            Route::get('/create',  'create')->name('create');
+            Route::post('/create',  'store')->name('store');
+            Route::get('/edit/{role}',  'edit')->name('edit');
+            Route::put('/update/{role}',  'update')->name('update');
+        });
+
+        //Restaurant Routes Group
+        Route::controller(RestaurantController::class)
+        ->prefix('restaurants')
+        ->as('admin.restaurant.')
+        ->group(function () {
+            Route::get('/',  'index')->name('list');
+            Route::get('/create',  'create')->name('create');
+            Route::post('/create',  'store')->name('store');
+            Route::get('/edit/{role}',  'edit')->name('edit');
+            Route::put('/update/{role}',  'update')->name('update');
+        });
+
+        //Orders Routes Group
+        Route::controller(OrderController::class)
+        ->prefix('orders')
+        ->as('admin.order.')
+        ->group(function () {
+            Route::get('/',  'index')->name('list');
+            Route::get('/create',  'create')->name('create');
+            Route::post('/create',  'store')->name('store');
+            Route::get('/edit/{role}',  'edit')->name('edit');
+            Route::put('/update/{role}',  'update')->name('update');
+        });
+
     });
 
 

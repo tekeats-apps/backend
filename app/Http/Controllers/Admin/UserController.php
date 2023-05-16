@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreUser;
+use App\Http\Requests\Admin\UpdateUser;
+use App\Http\Requests\Admin\UpdateUserPassword;
 
 class UserController extends Controller
 {
@@ -26,7 +30,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::getRolesList()->pluck('name', 'id');
+        return view('admin.modules.users.create', compact('roles'));
     }
 
     /**
@@ -35,9 +40,14 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUser $request)
     {
-        //
+        $validatedData = $request->validated();
+        $user = User::storeUser($validatedData);
+        if(!$user){
+            return redirect()->route('admin.users.index')->with('danger', 'Something went wrong!');
+        }
+        return redirect()->route('admin.users.index')->with('success', 'User registered successfully!');
     }
 
     /**
@@ -46,9 +56,14 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function passwordUpdate(UpdateUserPassword $request, User $user)
     {
-        //
+        $validatedData = $request->validated();
+        $user = User::updatePassword($user->id, $validatedData['password']);
+        if(!$user){
+            return redirect()->route('admin.users.edit', $user->id)->with('danger', 'Something went wrong!');
+        }
+        return redirect()->route('admin.users.edit', $user->id)->with('success', 'User password changed successfully!');
     }
 
     /**
@@ -57,9 +72,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        $roles = Role::getRolesList()->pluck('name', 'id');
+        $userRole = $user->role;
+        return view('admin.modules.users.edit', compact('user', 'roles', 'userRole'));
     }
 
     /**
@@ -69,9 +86,14 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUser $request, User $user)
     {
-        //
+        $validatedData = $request->validated();
+        $user = User::updateUser($user->id, $validatedData);
+        if(!$user){
+            return redirect()->route('admin.users.index')->with('danger', 'Something went wrong!');
+        }
+        return redirect()->route('admin.users.index')->with('success', 'User information updated successfully!');
     }
 
     /**
