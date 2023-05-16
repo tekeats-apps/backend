@@ -1,6 +1,6 @@
 #!/bin/bash
 #Download all dependencies from remote composer container
-docker run --rm -v $(pwd):/opt -w /opt laravelsail/php81-composer:latest composer install
+docker run --rm -v $(pwd):/opt -w /opt laravelsail/php82-composer:latest composer install
 
 #Copy ENV example to .env file
 cp .env.example .env
