@@ -19,125 +19,289 @@
     @endcomponent
 
     <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <p class="text-muted">Use <code>custom-verti-nav-pills</code> class to create custom vertical tabs.</p>
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="nav nav-pills flex-column nav-pills-tab custom-verti-nav-pills text-center"
-                                role="tablist" aria-orientation="vertical">
-                                <a class="nav-link active show" id="custom-v-pills-home-tab" data-bs-toggle="pill"
-                                    href="#custom-v-pills-home" role="tab" aria-controls="custom-v-pills-home"
-                                    aria-selected="true">
-                                    <i class="ri-home-4-line d-block fs-20 mb-1"></i>
-                                    Basic Information</a>
-                                <a class="nav-link" id="custom-v-pills-profile-tab" data-bs-toggle="pill"
-                                    href="#custom-v-pills-profile" role="tab" aria-controls="custom-v-pills-profile"
-                                    aria-selected="false">
-                                    <i class="ri-user-2-line d-block fs-20 mb-1"></i>
-                                    Media</a>
-                                <a class="nav-link" id="custom-v-pills-messages-tab" data-bs-toggle="pill"
-                                    href="#custom-v-pills-messages" role="tab" aria-controls="custom-v-pills-messages"
-                                    aria-selected="false">
-                                    <i class="ri-mail-line d-block fs-20 mb-1"></i>
-                                    Adress and Location</a>
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header card-info">
+                            <h5 class="card-title mb-0">Business Information </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6 mb-2">
+                                    <div class="mb-3">
+                                        <label class="form-label">Restaurant Name</label>
+                                        <input type="text" class="form-control @error('store_name') is-invalid @enderror"
+                                            name="store_name" value="{{ old('store_name') ? old('store_name') : '' }}"
+                                            id="store_name" placeholder="Enter your restaurant name">
+                                        @error('store_name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 mb-2">
+                                    <div class="mb-3">
+                                        <label class="form-label">Restaurant Email</label>
+                                        <input type="text"
+                                            class="form-control @error('store_email') is-invalid @enderror"
+                                            name="store_email" value="{{ old('store_email') ? old('store_email') : '' }}"
+                                            id="store_email" placeholder="Enter your restaurant email address">
+                                        @error('store_email')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 mb-2">
+                                    <div class="mb-3">
+                                        <label class="form-label">Restaurant Phone</label>
+                                        <input type="text"
+                                            class="form-control @error('store_phone') is-invalid @enderror"
+                                            name="store_phone" value="{{ old('store_phone') ? old('store_phone') : '' }}"
+                                            id="store_phone" placeholder="Enter your restaurant phone number">
+                                        @error('store_phone')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
-                        </div> <!-- end col-->
-                        <div class="col-lg-9">
-                            <div class="tab-content text-muted mt-3 mt-lg-0">
-                                <div class="tab-pane fade active show" id="custom-v-pills-home" role="tabpanel"
-                                    aria-labelledby="custom-v-pills-home-tab">
-                                    <div class="d-flex mb-4">
-                                        <div class="flex-shrink-0">
-                                            <img src="{{ URL::asset('assets/images/small/img-4.jpg') }}" alt=""
-                                                width="150" class="rounded">
-                                        </div>
-                                        <div class="flex-grow-1 ms-3">
-                                            <p class="mb-0">Experiment and play around with the fonts that you already
-                                                have in the software you’re working with reputable font websites. commodo
-                                                enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo
-                                                nostrud organic, assumenda labore aesthetic magna delectus.</p>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex">
-                                        <div class="flex-grow-1 me-3">
-                                            <p class="mb-0">Always want to make sure that your fonts work well together
-                                                and try to limit the number of fonts you use to three or less. Experiment
-                                                and play around with the fonts that you already have in the software you’re
-                                                working with reputable font websites.</p>
-                                        </div>
-                                        <div class="flex-shrink-0">
-                                            <img src="{{ URL::asset('assets/images/small/img-5.jpg') }}" alt=""
-                                                width="150" class="rounded">
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--end tab-pane-->
-                                <div class="tab-pane fade" id="custom-v-pills-profile" role="tabpanel"
-                                    aria-labelledby="custom-v-pills-profile-tab">
-                                    <div class="d-flex mb-4">
-                                        <div class="flex-shrink-0">
-                                            <img src="{{ URL::asset('assets/images/small/img-3.jpg') }}" alt=""
-                                                width="150" class="rounded">
-                                        </div>
-                                        <div class="flex-grow-1 ms-3">
-                                            <p class="mb-0">In some designs, you might adjust your tracking to create a
-                                                certain artistic effect. It can also help you fix fonts that are poorly
-                                                spaced to begin with. A wonderful serenity has taken possession of my entire
-                                                soul, like these sweet mornings of spring which I enjoy with my whole heart.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex">
-                                        <div class="flex-grow-1 me-3">
-                                            <p class="mb-0">Each design is a new, unique piece of art birthed into this
-                                                world, and while you have the opportunity to be creative and make your own
-                                                style choices. For that very reason, I went on a quest and spoke to many
-                                                different professional graphic designers.</p>
-                                        </div>
-                                        <div class="flex-shrink-0">
-                                            <img src="{{ URL::asset('assets/images/small/img-6.jpg') }}" alt=""
-                                                width="150" class="rounded">
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--end tab-pane-->
-                                <div class="tab-pane fade" id="custom-v-pills-messages" role="tabpanel"
-                                    aria-labelledby="custom-v-pills-messages-tab">
-                                    <div class="d-flex mb-4">
-                                        <div class="flex-shrink-0">
-                                            <img src="{{ URL::asset('assets/images/small/img-7.jpg') }}" alt=""
-                                                width="150" class="rounded">
-                                        </div>
-                                        <div class="flex-grow-1 ms-3">
-                                            <p class="mb-0">Trust fund seitan letterpress, keytar raw denim keffiyeh etsy
-                                                art party before they sold out master cleanse gluten-free squid scenester
-                                                freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore
-                                                wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex">
-                                        <div class="flex-grow-1 me-3">
-                                            <p class="mb-0">They all have something to say beyond the words on the page.
-                                                They can come across as casual or neutral, exotic or graphic. That's why
-                                                it's important to think about your message, then choose a font that fits.
-                                                Cosby sweater eu banh mi, qui irure terry richardson ex squid.</p>
-                                        </div>
-                                        <div class="flex-shrink-0">
-                                            <img src="{{ URL::asset('assets/images/small/img-8.jpg') }}" alt=""
-                                                width="150" class="rounded">
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--end tab-pane-->
-                            </div>
-                        </div> <!-- end col-->
-                    </div> <!-- end row-->
-                </div><!-- end card-body -->
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!--end card-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header card-info">
+                            <h5 class="card-title mb-0">Restaurant Address </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-4 mb-2">
+                                    <!-- Base Example -->
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="formCheck1">
+                                        <label class="form-check-label" for="formCheck1">
+                                            Enable Google Maps Location Search
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 mb-2">
+                                    <div class="mb-3">
+                                        <label class="form-label">Address</label>
+                                        <input type="text" class="form-control @error('address') is-invalid @enderror"
+                                            name="address" value="{{ old('address') ? old('address') : '' }}" id="address"
+                                            placeholder="Enter your restaurant address">
+                                        @error('address')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 mb-2">
+                                    <div class="mb-3">
+                                        <label class="form-label">Adress II</label>
+                                        <input type="text"
+                                            class="form-control @error('store_email') is-invalid @enderror"
+                                            name="store_email" value="{{ old('store_email') ? old('store_email') : '' }}"
+                                            id="store_email" placeholder="Floor, Appartment or suite etc.">
+                                        @error('store_email')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 mb-2">
+                                    <div class="mb-3">
+                                        <label class="form-label">Country</label>
+                                        <input type="text"
+                                            class="form-control @error('store_phone') is-invalid @enderror"
+                                            name="store_phone" value="{{ old('store_phone') ? old('store_phone') : '' }}"
+                                            id="store_phone" placeholder="Enter your restaurant phone number">
+                                        @error('store_phone')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 mb-2">
+                                    <div class="mb-3">
+                                        <label class="form-label">City</label>
+                                        <input type="text"
+                                            class="form-control @error('store_phone') is-invalid @enderror"
+                                            name="store_phone" value="{{ old('store_phone') ? old('store_phone') : '' }}"
+                                            id="store_phone" placeholder="Enter your restaurant phone number">
+                                        @error('store_phone')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 mb-2">
+                                    <div class="mb-3">
+                                        <label class="form-label">Zip Code</label>
+                                        <input type="text"
+                                            class="form-control @error('store_phone') is-invalid @enderror"
+                                            name="store_phone" value="{{ old('store_phone') ? old('store_phone') : '' }}"
+                                            id="store_phone" placeholder="Enter your restaurant phone number">
+                                        @error('store_phone')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 mb-2">
+                                    <div class="mb-3">
+                                        <label class="form-label">Longitude</label>
+                                        <input type="text" class="form-control @error('address') is-invalid @enderror"
+                                            name="address" value="{{ old('address') ? old('address') : '' }}" id="address"
+                                            placeholder="Enter your restaurant address">
+                                        @error('address')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 mb-2">
+                                    <div class="mb-3">
+                                        <label class="form-label">Latitude</label>
+                                        <input type="text"
+                                            class="form-control @error('store_email') is-invalid @enderror"
+                                            name="store_email" value="{{ old('store_email') ? old('store_email') : '' }}"
+                                            id="store_email" placeholder="Floor, Appartment or suite etc.">
+                                        @error('store_email')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header card-success">
+                            <h5 class="card-title mb-0">Localization</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-12 mb-3">
+                                    <label for="system_languages" class="form-label">System Languages</label>
+                                    <select class="form-select @error('system_languages') is-invalid @enderror"
+                                        name="system_languages" id="system_languages" multiple>
+                                        <option value="">Select Languages</option>
+                                        <option value="en">English</option>
+                                        <option value="ar">Arabic</option>
+                                        <option value="de">German</option>
+                                    </select>
+                                    @error('timezone')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-lg-12 mb-3">
+                                    <label for="default_language" class="form-label">Default Language</label>
+                                    <select class="form-select @error('default_language') is-invalid @enderror"
+                                        name="default_language" id="default_language" required>
+                                        <option value="">Select Default Language</option>
+                                    </select>
+                                    @error('timezone')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-lg-12 mb-3">
+                                    <label for="timezone" class="form-label">Timezone</label>
+                                    <select class="form-select @error('timezone') is-invalid @enderror" name="timezone"
+                                        id="timezone" required>
+                                        <option value="">Select Timezone</option>
+                                    </select>
+                                    @error('timezone')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-lg-12 mb-3">
+                                    <label for="time_format" class="form-label">Time Format</label>
+                                    <select class="form-select @error('time_format') is-invalid @enderror"
+                                        name="time_format" id="time_format" required>
+                                        <option value="">Select Time Format</option>
+                                    </select>
+                                    @error('time_format')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-lg-12 mb-3">
+                                    <label for="date_format" class="form-label">Date Format</label>
+                                    <select class="form-select @error('date_format') is-invalid @enderror"
+                                        name="date_format" id="date_format" required>
+                                        <option value="">Select Date Format</option>
+                                    </select>
+                                    @error('time_format')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-lg-12 mb-3">
+                                    <label for="date_time_format" class="form-label">Date & Time Format</label>
+                                    <select class="form-select @error('date_time_format') is-invalid @enderror"
+                                        name="date_time_format" id="date_time_format" required>
+                                        <option value="">Select Date & Time Format</option>
+                                    </select>
+                                    @error('time_format')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- end card body -->
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header card-primary">
+                            <h5 class="card-title mb-0">Currency Settings</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-12 mb-3">
+                                    <label class="form-label">Currency</label>
+                                    <input type="text" class="form-control @error('currency') is-invalid @enderror"
+                                        name="currency" value="{{ old('currency') ? old('currency') : '' }}"
+                                        id="currency" placeholder="Enter you restaurant currency eg. USD" required>
+                                    @error('currency')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-lg-12 mb-3">
+                                    <label class="form-label">Currency Symbol</label>
+                                    <input type="text"
+                                        class="form-control @error('currency_symbol') is-invalid @enderror"
+                                        name="currency_symbol"
+                                        value="{{ old('currency_symbol') ? old('currency_symbol') : '' }}"
+                                        id="currency_symbol" placeholder="Enter you restaurant currency symbol eg. $"
+                                        required>
+                                    @error('currency_symbol')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-lg-12 mb-3">
+                                    <label for="currency_position" class="form-label">Currency Position</label>
+                                    <select class="form-select @error('currency_position') is-invalid @enderror"
+                                        name="currency_position" id="currency_position" required>
+                                        <option value="">Select currency position</option>
+                                        <option value="right">Right</option>
+                                        <option value="left">Left</option>
+                                    </select>
+                                    @error('currency_position')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- end card body -->
+                    </div>
+                </div>
+            </div>
+            <!-- end card -->
         </div>
     </div>
 @endsection

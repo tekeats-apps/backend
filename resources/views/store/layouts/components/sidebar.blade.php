@@ -98,7 +98,7 @@
                                     Settings</a>
                             </li>
                             <li class="nav-item">
-                                <a href="auth-404-cover" class="nav-link">Location / Delivery Settings</a>
+                                <a href="auth-404-cover" class="nav-link">Delivery Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a href="auth-500" class="nav-link"> Notifications Settings</a>
