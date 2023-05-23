@@ -34,7 +34,7 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span>@lang('translation.menu')</span></li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{ route('store.dashboard.index') }}">
+                    <a class="nav-link menu-link {{ Route::is('store.dashboard.index') ? 'active' : '' }}" href="{{ route('store.dashboard.index') }}">
                         <i class="ri-dashboard-2-line"></i> <span>@lang('translation.dashboard')</span>
                     </a>
                 </li>
@@ -77,37 +77,37 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{ route('store.roles.list') }}">
+                    <a class="nav-link menu-link {{ Route::is('store.roles.list') ? 'active' : '' }}" href="{{ route('store.roles.list') }}">
                         <i class="ri-swap-line"></i> <span>Roles</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{ route('store.users.list') }}">
+                    <a class="nav-link menu-link {{ Route::is('store.users.list') ? 'active' : '' }}" href="{{ route('store.users.list') }}">
                         <i class="ri-account-circle-fill"></i> <span>@lang('translation.users')</span>
                     </a>
                 </li>
                 <li class="menu-title"><span> System</span></li>
                 <li class="nav-item">
-                    <a href="#sidebarSettings" class="nav-link" data-bs-toggle="collapse" role="button"
+                    <a href="#sidebarSettings" class="nav-link {{ Route::is('store.settings.*') ? 'active' : 'collapsed' }}" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarSettings">Settings
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarSettings">
+                    <div class="collapse menu-dropdown {{ Route::is('store.settings.*') ? 'show' : '' }}" id="sidebarSettings">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('store.settings.general') }}" class="nav-link">General
+                                <a href="{{ route('store.settings.general') }}" class="nav-link {{ Route::is('store.settings.general') ? 'active' : '' }}">General
                                     Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a href="auth-404-cover" class="nav-link">Delivery Settings</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('store.settings.notification') }}" class="nav-link"> Notifications Settings</a>
+                                <a href="{{ route('store.settings.notification') }}" class="nav-link {{ Route::is('store.settings.notification') ? 'active' : '' }}"> Notifications Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a href="auth-offline" class="nav-link">Storage Settings</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('store.settings.payment') }}" class="nav-link">Payment Settings</a>
+                                <a href="{{ route('store.settings.payment') }}" class="nav-link {{ Route::is('store.settings.payment') ? 'active' : '' }}">Payment Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a href="auth-offline" class="nav-link">Theme Settings</a>
