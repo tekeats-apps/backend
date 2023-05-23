@@ -92,9 +92,11 @@ Route::middleware([
             // Settings Routes Group
             Route::controller(SettingController::class)
             ->prefix('settings')
-            ->as('store.setting.')
+            ->as('store.settings.')
             ->group(function () {
-                Route::get('/general-settings', 'generalSettings')->name('general.settings');
+                Route::get('/general-settings', 'generalSettings')->name('general');
+                Route::get('/payment-settings', 'paymentSettings')->name('payment');
+                Route::get('/notification-settings', 'notificationSettings')->name('notification');
             });
 
         });

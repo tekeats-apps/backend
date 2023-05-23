@@ -11,4 +11,12 @@ class SettingController extends Controller
     {
         return view('store.modules.settings.general-settings');
     }
+
+    public function paymentSettings(){
+        return view('store.modules.settings.payment-settings');
+    }
+
+    public function notificationSettings(){
+        return view('store.modules.settings.notification-settings'); 
+    }
 }

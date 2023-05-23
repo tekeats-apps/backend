@@ -94,20 +94,20 @@
                     <div class="collapse menu-dropdown" id="sidebarSettings">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('store.setting.general.settings') }}" class="nav-link">General
+                                <a href="{{ route('store.settings.general') }}" class="nav-link">General
                                     Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a href="auth-404-cover" class="nav-link">Delivery Settings</a>
                             </li>
                             <li class="nav-item">
-                                <a href="auth-500" class="nav-link"> Notifications Settings</a>
+                                <a href="{{ route('store.settings.notification') }}" class="nav-link"> Notifications Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a href="auth-offline" class="nav-link">Storage Settings</a>
                             </li>
                             <li class="nav-item">
-                                <a href="auth-offline" class="nav-link">Payment Settings</a>
+                                <a href="{{ route('store.settings.payment') }}" class="nav-link">Payment Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a href="auth-offline" class="nav-link">Theme Settings</a>

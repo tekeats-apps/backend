@@ -1,7 +1,4 @@
 @extends('store.layouts.main')
-@push('css')
-    @include('store.layouts.components.plugins.filepond.css');
-@endpush
 @section('title')
     @lang('translation.users')
 @endsection
@@ -23,7 +20,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-header card-info">
+                        <div class="card-header card-success">
                             <h5 class="card-title mb-0">Business Information </h5>
                         </div>
                         <div class="card-body">
@@ -71,7 +68,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-header card-info">
+                        <div class="card-header card-success">
                             <h5 class="card-title mb-0">Restaurant Address </h5>
                         </div>
                         <div class="card-body">
@@ -256,7 +253,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-header card-primary">
+                        <div class="card-header card-success">
                             <h5 class="card-title mb-0">Currency Settings</h5>
                         </div>
                         <div class="card-body">
