@@ -94,12 +94,10 @@ Route::middleware([
             ->prefix('settings')
             ->as('store.settings.')
             ->group(function () {
-                Route::get('/general-settings', 'generalSettings')->name('general');
+                Route::get('/system-settings', 'systemSettings')->name('system');
                 Route::get('/payment-settings', 'paymentSettings')->name('payment');
                 Route::get('/notification-settings', 'notificationSettings')->name('notification');
-                Route::get('/delivery-settings', 'deliverySettings')->name('delivery');
                 Route::get('/storage-settings', 'storageSettings')->name('storage');
-                Route::get('/theme-settings', 'themeSettings')->name('theme');
             });
 
         });

@@ -44,11 +44,11 @@
                         <i class="ri-shopping-basket-2-line"></i> <span>Orders</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link menu-link" href="">
                         <i class="ri-shopping-cart-2-line"></i> <span>POS</span>
                     </a>
-                </li>
+                </li> --}}
                 <li class="menu-title"><span>Products Management</span></li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="">
@@ -94,11 +94,8 @@
                     <div class="collapse menu-dropdown {{ Route::is('store.settings.*') ? 'show' : '' }}" id="sidebarSettings">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('store.settings.general') }}" class="nav-link {{ Route::is('store.settings.general') ? 'active' : '' }}">General
+                                <a href="{{ route('store.settings.system') }}" class="nav-link {{ Route::is('store.settings.system') ? 'active' : '' }}">System
                                     Settings</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('store.settings.delivery') }}" class="nav-link {{ Route::is('store.settings.delivery') ? 'active' : '' }}">Delivery Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('store.settings.notification') }}" class="nav-link {{ Route::is('store.settings.notification') ? 'active' : '' }}"> Notifications Settings</a>
@@ -109,18 +106,15 @@
                             <li class="nav-item">
                                 <a href="{{ route('store.settings.payment') }}" class="nav-link {{ Route::is('store.settings.payment') ? 'active' : '' }}">Payment Settings</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('store.settings.theme') }}" class="nav-link {{ Route::is('store.settings.theme') ? 'active' : '' }}">Theme Settings</a>
-                            </li>
                         </ul>
                     </div>
                 </li>
-                <li class="menu-title"><span> Store</span></li>
+                {{-- <li class="menu-title"><span> Store</span></li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="">
                         <i class="ri-tools-line"></i> <span>Plugins</span>
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </div>
         <!-- Sidebar -->

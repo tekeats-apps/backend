@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-    public function generalSettings()
+    public function systemSettings()
     {
-        return view('store.modules.settings.general-settings');
+        return view('store.modules.settings.system-settings');
     }
 
     public function paymentSettings(){
@@ -17,18 +17,10 @@ class SettingController extends Controller
     }
 
     public function notificationSettings(){
-        return view('store.modules.settings.notification-settings'); 
-    }
-
-    public function deliverySettings(){
-        return view('store.modules.settings.delivery-settings');
+        return view('store.modules.settings.notification-settings');
     }
 
     public function storageSettings(){
-        return view('store.modules.settings.storage-settings'); 
-    }
-
-    public function themeSettings(){
-        return view('store.modules.settings.theme-settings'); 
+        return view('store.modules.settings.storage-settings');
     }
 }

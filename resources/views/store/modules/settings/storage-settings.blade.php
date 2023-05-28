@@ -35,7 +35,7 @@
                         </div> <!-- end col-->
                         <div class="col-lg-9">
                             <div class="tab-content text-muted mt-3 mt-lg-0">
-                                {{-- @include('store.modules.settings.partials.payments.s3') --}}
+                                @include('store.modules.settings.partials.storage.s3-bucket')
                             </div>
                         </div> <!-- end col-->
                     </div> <!-- end row-->
