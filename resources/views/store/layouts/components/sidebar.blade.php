@@ -98,19 +98,19 @@
                                     Settings</a>
                             </li>
                             <li class="nav-item">
-                                <a href="auth-404-cover" class="nav-link">Delivery Settings</a>
+                                <a href="{{ route('store.settings.delivery') }}" class="nav-link {{ Route::is('store.settings.delivery') ? 'active' : '' }}">Delivery Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('store.settings.notification') }}" class="nav-link {{ Route::is('store.settings.notification') ? 'active' : '' }}"> Notifications Settings</a>
                             </li>
                             <li class="nav-item">
-                                <a href="auth-offline" class="nav-link">Storage Settings</a>
+                                <a href="{{ route('store.settings.storage') }}" class="nav-link {{ Route::is('store.settings.storage') ? 'active' : '' }}">Storage Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('store.settings.payment') }}" class="nav-link {{ Route::is('store.settings.payment') ? 'active' : '' }}">Payment Settings</a>
                             </li>
                             <li class="nav-item">
-                                <a href="auth-offline" class="nav-link">Theme Settings</a>
+                                <a href="{{ route('store.settings.theme') }}" class="nav-link {{ Route::is('store.settings.theme') ? 'active' : '' }}">Theme Settings</a>
                             </li>
                         </ul>
                     </div>
