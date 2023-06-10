@@ -98,3 +98,6 @@
     <!-- end Footer -->
 </div>
 @endsection
+@push('script')
+    <script src="{{ asset('assets/js/pages/auth/password-toggle.js') }}"></script>
+@endpush
