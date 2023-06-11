@@ -14,6 +14,8 @@ class User extends Authenticatable
 {
     use HasFactory, HasRoles;
 
+    public const IMAGE_PATH = 'users';
+
     protected $fillable = [
         'name',
         'username',
@@ -45,8 +47,20 @@ class User extends Authenticatable
             $status = 'Active';
         }
         return new Attribute(
-            get: fn() => $status,
+            get: fn () => $status,
         );
+    }
+
+    protected function getImageAttribute($value)
+    {
+
+        $image = '';
+        if ($value) {
+            $path = User::IMAGE_PATH. '/' . $value;
+            $image = tenant_asset($path);
+        }
+
+        return $image;
     }
 
     protected function role(): Attribute
@@ -56,7 +70,7 @@ class User extends Authenticatable
             'name' => $this->roles->pluck('name')->first()
         ];
         return new Attribute(
-            get: fn() => (object) $role,
+            get: fn () => (object) $role,
         );
     }
 
@@ -106,5 +120,4 @@ class User extends Authenticatable
 
         return $user;
     }
-
 }

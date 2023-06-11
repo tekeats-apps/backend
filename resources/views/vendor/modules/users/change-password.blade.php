@@ -62,7 +62,7 @@
                         minlength: "Your password must be at least 6 characters long"
                     },
                     password_confirmation: {
-                        required: "Please provide a password",
+                        required: "Please provide a password confirmation",
                         minlength: "Your password must be at least 6 characters long",
                         equalTo: "Please enter the same password"
                     }

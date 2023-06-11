@@ -45,36 +45,47 @@
                                 </div>
                             </th>
                             <td>{{ ++$key }}</td>
-                            <td>{{ $user->name }}</td>
+                            <td>
+                                <div class="d-flex gap-2 align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <img src="{{ $user->image }}" alt="" class="avatar-xs rounded-circle">
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        {{ $user->name }}
+                                    </div>
+                                </div>
+                            </td>
                             <td>{{ $user->email }}</td>
                             <td><span class="badge  badge-soft-info text-capitalize">
                                     {{ $user->roles->pluck('name')->first() }}</span></td>
                             <td><span class="badge badge-soft-{{ $user->status ? 'success' : 'danger' }}">
                                     {{ $user->statusText }}</span></td>
                             <td>{{ $user->created_at->format('d M, Y') }}</td>
-                            <td>
-                                <div class="dropdown d-inline-block">
-                                    <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="ri-more-fill align-middle"></i>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a href="{{ route('vendor.users.edit', $user->id) }}"
-                                                class="dropdown-item edit-item-btn"><i
-                                                    class="ri-pencil-fill align-bottom me-2 text-muted"></i>
-                                                Edit</a>
-                                        </li>
-                                        @if (Auth::guard('vendor')->user()->id != $user->id)
+                            @if (Auth::guard('vendor')->user()->id != $user->id)
+                                <td>
+                                    <div class="dropdown d-inline-block">
+                                        <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="ri-more-fill align-middle"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a href="{{ route('vendor.users.edit', $user->id) }}"
+                                                    class="dropdown-item edit-item-btn"><i
+                                                        class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                                                    Edit</a>
+                                            </li>
+
                                             <li>
                                                 <a class="dropdown-item remove-item-btn">
                                                     <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
                                                     Delete
                                                 </a>
                                             </li>
-                                        @endif
-                                    </ul>
-                                </div>
-                            </td>
+
+                                        </ul>
+                                    </div>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
                 @endisset
