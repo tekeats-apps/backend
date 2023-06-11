@@ -40,6 +40,9 @@ Route::middleware([
                     Route::get('/login', 'index')->name('login');
                     Route::post('/login', 'login')->name('action.login');
                     Route::get('/forget-password', 'forgetPassword')->name('forget.password');
+                    Route::post('/forget-password', 'sendForgotPasswordEmail')->name('action.forget.password');
+                    Route::get('/reset-password/{token}', 'showResetPasswordForm')->name('reset.password');
+                    Route::post('/reset-password', 'resetPassword')->name('reset.password.post');
                 });
         });
 
