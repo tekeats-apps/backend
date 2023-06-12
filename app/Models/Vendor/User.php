@@ -56,7 +56,7 @@ class User extends Authenticatable
 
         $image = '';
         if ($value) {
-            $path = User::IMAGE_PATH. '/' . $value;
+            $path = User::IMAGE_PATH . '/' . $value;
             $image = tenant_asset($path);
         }
 

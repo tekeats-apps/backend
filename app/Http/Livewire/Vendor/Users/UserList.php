@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Vendor\Users;
 
-use App\Models\Vendor\User as StoreUser;
+use App\Models\Vendor\User;
 use Livewire\Component;
 
 class UserList extends Component
@@ -15,7 +15,17 @@ class UserList extends Component
 
     public function getUsers()
     {
-         $users = StoreUser::list()->paginate(10);
-         return $users;
+        $users = User::list()->paginate(10);
+        return $users;
+    }
+
+    public function toggleStatus($userId)
+    {
+        $user = User::find($userId);
+        $user->status = !$user->status;
+        $user->save();
+
+        $this->refresh(); // Manually trigger a component refresh
+
     }
 }

@@ -71,17 +71,23 @@
                                         <ul class="dropdown-menu dropdown-menu-end">
                                             <li><a href="{{ route('vendor.users.edit', $user->id) }}"
                                                     class="dropdown-item edit-item-btn"><i
-                                                        class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                                                        class="ri-pencil-fill align-bottom me-2 text-info"></i>
                                                     Edit</a>
                                             </li>
 
                                             <li>
                                                 <a class="dropdown-item remove-item-btn">
-                                                    <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                                                    <i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i>
                                                     Delete
                                                 </a>
                                             </li>
-
+                                            <li>
+                                                <a class="dropdown-item status-change-btn"
+                                                    data-status="{{ $user->status }}" wire:click="toggleStatus({{ $user->id }})">
+                                                    <i class="{{ $user->status ? 'ri-arrow-down-fill text-danger' : 'ri-arrow-up-fill text-success' }} align-bottom me-2"></i>
+                                                    {{ $user->status ? 'Deactivate' : 'Activate' }}
+                                                </a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </td>
