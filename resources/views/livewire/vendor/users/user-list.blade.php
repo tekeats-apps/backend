@@ -16,8 +16,32 @@
             </div>
         </div>
     </div>
+    <div class="card-body bg-soft-light border border-dashed border-start-0 border-end-0">
+        <div class="row g-3">
+            <div class="col-xxl-4 col-sm-12">
+                <label for="search"> Search</label>
+                <div class="search-box">
+                    <input type="text" wire:model.debounce.500ms="search" id="search"
+                        class="form-control search bg-light border-light"
+                        placeholder="Search for user name, email, role, status or something...">
+                    <i class="ri-search-line search-icon"></i>
+                </div>
+            </div>
+            <div class="col-xxl-2 col-sm-4">
+                <label for="status"> Status</label>
+                <div class="input-light" wire:ignore>
+                    <select class="form-control" wire:model.debounce.500ms="status" data-choices
+                        data-choices-search-false>
+                        <option value="">All</option>
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="card-body">
-        <table class="table nowrap align-middle datatable" style="width:100%">
+        <table class="table nowrap align-middle" style="width:100%">
             <thead>
                 <tr>
                     <th scope="col" style="width: 10px;">
@@ -70,21 +94,22 @@
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
                                             <li><a href="{{ route('vendor.users.edit', $user->id) }}"
-                                                    class="dropdown-item edit-item-btn"><i
+                                                    class="dropdown-item edit-item-btn" role="button"><i
                                                         class="ri-pencil-fill align-bottom me-2 text-info"></i>
                                                     Edit</a>
                                             </li>
 
                                             <li>
-                                                <a class="dropdown-item remove-item-btn">
+                                                <a class="dropdown-item remove-item-btn" role="button">
                                                     <i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i>
                                                     Delete
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item status-change-btn"
-                                                    data-status="{{ $user->status }}" wire:click="toggleStatus({{ $user->id }})">
-                                                    <i class="{{ $user->status ? 'ri-arrow-down-fill text-danger' : 'ri-arrow-up-fill text-success' }} align-bottom me-2"></i>
+                                                <a class="dropdown-item status-change-btn" role="button" wire:click="toggleStatus({{ $user->id }})"
+                                                    data-status="{{ $user->status }}">
+                                                    <i
+                                                        class="{{ $user->status ? 'ri-arrow-down-fill text-danger' : 'ri-arrow-up-fill text-success' }} align-bottom me-2"></i>
                                                     {{ $user->status ? 'Deactivate' : 'Activate' }}
                                                 </a>
                                             </li>
@@ -97,5 +122,8 @@
                 @endisset
             </tbody>
         </table>
+        <div class="d-flex justify-content-end">
+            {{ $users->links() }}
+        </div>
     </div>
 </div>

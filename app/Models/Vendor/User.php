@@ -35,9 +35,19 @@ class User extends Authenticatable
         'status' => 'boolean'
     ];
 
-    public function scopeList($query)
+    public function scopeList($query,$search, $status, $sortField, $sortDirection)
     {
-        return $query->orderBy('name', 'ASC');
+        if (!empty($search)) {
+            $query->where(function ($q) use($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            });
+        }
+
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+        return $query->orderBy($sortField, $sortDirection);
     }
 
     protected function statusText(): Attribute
