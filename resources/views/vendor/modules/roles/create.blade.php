@@ -14,7 +14,7 @@
             @lang('translation.manage-roles')
         @endslot
     @endcomponent
-    <form id="roles-form" action="{{ route('vendor.roles.vendor') }}" method="POST">
+    <form id="roles-form" action="{{ route('vendor.roles.store') }}" method="POST">
         @csrf
         <div class="row">
             <div class="col-lg-8 offset-lg-2">

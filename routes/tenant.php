@@ -10,6 +10,7 @@ use App\Http\Controllers\Vendor\DashboardController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\Vendor\AuthController as StoreAuthController;
+use App\Http\Controllers\Vendor\CategoryController;
 use App\Http\Controllers\Vendor\UserController as StoreUserController;
 
 /*
@@ -92,6 +93,15 @@ Route::middleware([
                     Route::get('role-permissions/{role}', 'rolePermissions')->name('view.permissions');
                     Route::post('sync-role-permissions/{role}', 'syncRolePermissions')->name('update.permissions');
                 });
+
+
+                  // Categories Routes Group
+            Route::controller(CategoryController::class)
+            ->prefix('categories')
+            ->as('vendor.categories.')
+            ->group(function () {
+                Route::get('/', 'index')->name('list');
+            });
 
             // Settings Routes Group
             Route::controller(SettingController::class)

@@ -51,7 +51,7 @@
                 </li> --}}
                 <li class="menu-title"><span>Products Management</span></li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="">
+                    <a class="nav-link menu-link {{ Route::is('vendor.categories.list') ? 'active' : '' }}" href="{{ route('vendor.categories.list') }}">
                         <i class=" ri-copper-coin-line"></i> <span>Categories</span>
                     </a>
                 </li>
