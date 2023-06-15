@@ -21,6 +21,9 @@ class Category extends Component
     public $status;
     public $updateMode = false;
 
+    public $positions;
+    public $usedPositions;
+
     public $search;
     public $perPage = 10;
     public $sortField = 'created_at';
@@ -40,6 +43,8 @@ class Category extends Component
     public function render()
     {
         $categories = $this->getCategories();
+        $this->usedPositions = CategoryModel::pluck('position')->toArray();
+        $this->positions = array_diff(range(1, CategoryModel::MAX_POSITION), $this->usedPositions);
         return view('livewire.vendor.categories.category', compact('categories'));
     }
 
@@ -52,11 +57,13 @@ class Category extends Component
     public function saveCategory()
     {
         $data = $this->validate();
-        dd($this->image);
-        // Show success message or perform any other actions
-
+        $category = CategoryModel::storeCategory($data);
         // Refresh the categories list or redirect if needed
-        // $this->emit('categorySaved');
+        session()->flash('message', 'Category created Successfully!');
+
+        $this->resetInputFields();
+
+        $this->emit('categorySaved');
     }
 
     private function resetInputFields()

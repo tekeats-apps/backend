@@ -73,7 +73,7 @@
                                 <td>{{ $category->slug }}</td>
 
                                 <td><span class="badge badge-soft-{{ $category->featured ? 'info' : 'black' }}">
-                                        {{ $category->featured ? 'Yes' : 'No' }}</span></td>
+                                        {{ $category->featured ? 'Yes 🔥' : 'No' }}</span></td>
                                 <td><span class="badge badge-soft-primary">
                                         {{ $category->position ? $category->position : '-' }}</span></td>
                                 <td><span class="badge badge-soft-{{ $category->status ? 'success' : 'danger' }}">
@@ -120,3 +120,10 @@
     </div>
     @include('livewire.vendor.categories.add-modal')
 </div>
+@push('script')
+    <script type="text/javascript">
+        window.livewire.on('categorySaved', () => {
+            $('#categoryModal').modal('hide');
+        });
+    </script>
+@endpush
