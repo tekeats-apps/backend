@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Store\Role;
+use App\Models\Vendor\Role;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Store\User as StoreUser;
+use App\Models\Vendor\User as StoreUser;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;

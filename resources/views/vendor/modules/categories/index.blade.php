@@ -1,6 +1,7 @@
 @extends('vendor.layouts.main')
 @push('css')
     @include('vendor.layouts.components.plugins.datatable.datatables-css')
+    {{-- @include('plugins.dropify.css') --}}
 @endpush
 @section('title')
     Categories
@@ -24,4 +25,5 @@
 @endsection
 @push('script')
     @include('vendor.layouts.components.plugins.datatable.datatables-js')
+    {{-- @include('plugins.dropify.js') --}}
 @endpush
