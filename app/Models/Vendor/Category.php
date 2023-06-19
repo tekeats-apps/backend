@@ -10,7 +10,8 @@ class Category extends Model
 {
     use SoftDeletes;
 
-    const MAX_POSITION = 30;
+    const MAX_POSITION = 50;
+    const IMAGE_PATH = 'categories';
 
     protected $fillable = [
         'parent_id',
@@ -33,14 +34,14 @@ class Category extends Model
 
         $image = 'https://cdn-icons-png.flaticon.com/512/3787/3787263.png';
         if ($value) {
-            $path = User::IMAGE_PATH . '/' . $value;
+            $path = Category::IMAGE_PATH . '/' . $value;
             $image = tenant_asset($path);
         }
 
         return $image;
     }
 
-    public function scopeList($query, $search, $sortField, $sortDirection)
+    public function scopeList($query, $search = '', $sortField = 'id', $sortDirection = 'desc')
     {
         $query->whereNull('parent_id');
         if (!empty($search)) {
@@ -56,15 +57,35 @@ class Category extends Model
         }
         return $query->orderBy($sortField, $sortDirection);
     }
+    public function scopeGetSubCategorieslist($query, $parentId, $search, $sortField, $sortDirection)
+    {
+        $query->where('parent_id', $parentId);
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%')
+                    ->orWhere('slug', 'like', '%' . $search . '%');
+            });
+        }
+
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+        return $query->orderBy($sortField, $sortDirection);
+    }
+    public function scopeGetSubcategoriesUsedPositions($query)
+    {
+        return $query->whereNotNull('parent_id')->pluck('position')->toArray();
+    }
     public function scopeStoreCategory($query, $data)
     {
         return $query->create([
             'name' => $data['name'],
             'slug' => Str::slug($data['name']),
-            'position' => ($data['position'] ? $data['position'] : 0),
-            'description' => ($data['description'] ? $data['description'] : null),
-            'featured' => ($data['featured'] ? $data['featured'] : 0),
-            'status' => ($data['status'] ? $data['status'] : 0)
+            'position' => isset($data['position']) ? $data['position'] : 0,
+            'description' => isset($data['description']) ? $data['description'] : null,
+            'featured' => isset($data['featured']) ? $data['featured'] : 0,
+            'status' => isset($data['status']) ? $data['status'] : 0
         ]);
     }
 }

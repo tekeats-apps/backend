@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Http\Livewire\Vendor\Categories;
+namespace App\Http\Livewire\Vendor\subcategories;
 
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Vendor\Category as CategoryModel;
 
-class Category extends Component
+class Subcategory extends Component
 {
     use WithPagination;
 
 
     public $positions;
     public $usedPositions;
+    public $categoryId;
 
     public $search;
     public $perPage = 10;
@@ -22,17 +23,22 @@ class Category extends Component
 
     protected $listeners = ['delete-category' => 'deleteCategory'];
 
-    public function render()
+    public function mount($categoryId)
     {
-        $categories = $this->getCategories();
-        $this->usedPositions = CategoryModel::pluck('position')->toArray();
-        $this->positions = range(1, CategoryModel::MAX_POSITION);
-        return view('livewire.vendor.categories.category', compact('categories'));
+        $this->categoryId = $categoryId;
     }
 
-    public function getCategories()
+    public function render()
     {
-        $categories = CategoryModel::list($this->search, $this->sortField, $this->sortDirection)->paginate($this->perPage);
+        $categories = $this->getSubCategories($this->categoryId);
+        $this->usedPositions = CategoryModel::pluck('position')->toArray();
+        $this->positions = range(1, CategoryModel::MAX_POSITION);
+        return view('livewire.vendor.subcategories.subcategory', compact('categories'));
+    }
+
+    public function getSubCategories($parentId)
+    {
+        $categories = CategoryModel::getSubCategorieslist($parentId, $this->search, $this->sortField, $this->sortDirection)->paginate($this->perPage);
         return $categories;
     }
 

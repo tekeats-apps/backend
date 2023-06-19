@@ -6,14 +6,14 @@
             <div class="row g-4 align-items-center">
                 <div class="col-sm">
                     <div>
-                        <h5 class="card-title mb-0">Categories List</h5>
+                        <h5 class="card-title mb-0">Subcategories List</h5>
                     </div>
                 </div>
                 <div class="col-sm-auto">
                     <div class="d-flex flex-wrap align-items-start gap-2">
-                        <a type="button" href="{{ route('vendor.categories.create') }}"
+                        <a type="button" href="{{ route('vendor.categories.subcategory.create') }}"
                             class="btn btn-success btn-label waves-effect waves-light"><i
-                                class="ri-add-line label-icon align-middle fs-16 me-2"></i> Add New Category</a>
+                                class="ri-add-line label-icon align-middle fs-16 me-2"></i> Add New Subcategory</a>
                     </div>
                 </div>
             </div>
@@ -42,7 +42,6 @@
                         </th>
                         <th>SR No.</th>
                         <th>Name</th>
-                        <th>Subcategories</th>
                         <th>Featured</th>
                         <th>Position</th>
                         <th>Status</th>
@@ -71,9 +70,6 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td> <a href="{{ route('vendor.categories.subcategories.list', $category->id) }}" role="button"> <span
-                                            class="badge badge-soft-primary" style="    font-size: 17px;">
-                                            <i class="ri-external-link-line"></i></span></a></td>
 
                                 <td><span class="badge badge-soft-{{ $category->featured ? 'info' : 'danger' }}">
                                         {{ $category->featured ? 'Yes 🔥' : 'No ❌' }}</span></td>
@@ -88,7 +84,7 @@
                                             <i class="ri-more-fill align-middle"></i>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a href="{{ route('vendor.categories.edit', $category->id) }}"
+                                            <li><a href="{{ route('vendor.categories.subcategory.edit', [$categoryId, $category->id]) }}"
                                                     class="dropdown-item edit-item-btn" role="button"><i
                                                         class="ri-pencil-fill align-bottom me-2 text-info"></i>
                                                     Edit</a>

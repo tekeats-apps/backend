@@ -101,6 +101,16 @@ Route::middleware([
             ->as('vendor.categories.')
             ->group(function () {
                 Route::get('/', 'index')->name('list');
+                Route::get('/create', 'create')->name('create');
+                Route::post('/store', 'store')->name('store');
+                Route::get('/edit/{category}', 'edit')->name('edit');
+                Route::put('/update/{category}', 'update')->name('update');
+
+                Route::get('/subcategories/{category}', 'getSubcaegories')->name('subcategories.list');
+                Route::get('/subcategory/create', 'subcategoryCreate')->name('subcategory.create');
+                Route::post('/subcategory/store', 'store')->name('subcategory.store');
+                Route::get('/subcategory/edit/{category}/{subcategory}', 'subcategoryEdit')->name('subcategory.edit');
+                Route::put('/subcategory/update/{category}/{subcategory}', 'update')->name('subcategory.update');
             });
 
             // Settings Routes Group
