@@ -25,12 +25,11 @@ class CategoryController extends Controller
         return view('vendor.modules.categories.create-edit', compact('positions', 'usedPositions'));
     }
 
-    public function subcategoryCreate()
+    public function subcategoryCreate($categoryId)
     {
         $usedPositions = Category::getSubcategoriesUsedPositions();
-        $mainCategories = Category::list()->pluck('name', 'id');
         $positions = range(1, Category::MAX_POSITION);
-        return view('vendor.modules.categories.subcategories.create-edit', compact('positions', 'usedPositions', 'mainCategories'));
+        return view('vendor.modules.categories.subcategories.create-edit', compact('positions', 'usedPositions', 'categoryId'));
     }
 
     public function getSubcaegories(Category $category)
@@ -43,25 +42,37 @@ class CategoryController extends Controller
         $data = $request->validated();
         try {
             $category = Category::storeCategory($data);
+
             if ($category) {
                 if (isset($data['image']) && !empty($data['image'])) {
                     $image = $data['image'];
                     $module = Category::IMAGE_PATH; // Assuming 'users' is the module name
                     $recordId = $category->id; // Assuming the user's ID is the record ID
-                    $table_field = 'image';
-                    $table_name = 'categories';
+                    $tableField = 'image';
+                    $tableName = 'categories';
 
                     // Upload the image and get the image URL
-                    $this->uploadImage($image, $module, $recordId, $table_field, $table_name);
+                    $this->uploadImage($image, $module, $recordId, $tableField, $tableName);
                 }
             }
+
+            // Determine the redirect route based on whether it's a category or subcategory
+            $redirectRoute = $category->parent_id ? 'vendor.categories.subcategories.list' : 'vendor.categories.list';
+
+            // Set the success message based on whether it's a category or subcategory
+            $successMessage = $category->parent_id ? 'Subcategory created successfully!' : 'Category created successfully!';
+
+            // Get the parent ID for subcategories
+            $parentId = $category->parent_id ?? null;
+
             // Refresh the categories list or redirect if needed
-            return redirect()->route('vendor.categories.list')->with('success', 'Category created successfully!');
+            return redirect()->route($redirectRoute, [$parentId])->with('success', $successMessage);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'An error occurred while saving the category!');
             Log::error($e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while saving the category!');
         }
     }
+
 
     public function edit(Category $category)
     {
@@ -79,18 +90,19 @@ class CategoryController extends Controller
         $mainCategories = Category::list()->pluck('name', 'id');
         $usedPositions = Category::pluck('position')->toArray();
         $positions = range(1, Category::MAX_POSITION);
-        return view('vendor.modules.categories.subcategories.create-edit', compact('subcategory', 'mainCategories','positions', 'usedPositions'));
+        $categoryId = $category;
+        return view('vendor.modules.categories.subcategories.create-edit', compact('subcategory', 'mainCategories', 'positions', 'usedPositions', 'categoryId'));
     }
 
     public function update(UpdateCategory $request, Category $category)
     {
         $data = $request->validated();
         try {
-            // Retrieve the existing category
-            $category = Category::find($category->id);
-            $data['position'] = isset($data['position']) ? $data['position'] : 0;
-            $data['featured'] = isset($data['featured']) ? $data['featured'] : 0;
-            $data['status'] = isset($data['status']) ? $data['status'] : 0;
+            $data = array_merge($data, [
+                'position' => $data['position'] ?? 0,
+                'featured' => $data['featured'] ?? 0,
+                'status' => $data['status'] ?? 0,
+            ]);
             // Update the category data
             $category->update($data);
 
@@ -108,11 +120,21 @@ class CategoryController extends Controller
 
                 $this->uploadImage($image, $module, $recordId, $tableField, $tableName);
             }
-            return redirect()->route('vendor.categories.list')->with('message', 'Category updated successfully!');
+
+            // Set the success message
+            $successMessage = $category->parent_id ? 'Subcategory updated successfully!' : 'Category updated successfully!';
+
+            // Determine the redirect route based on whether it's a category or subcategory
+            $redirectRoute = $category->parent_id ? 'vendor.categories.subcategories.list' : 'vendor.categories.list';
+
+            // Get the parent ID for subcategories
+            $parentId = $category->parent_id ?? null;
+
+            // Refresh the categories list or redirect if needed
+            return redirect()->route($redirectRoute, [$parentId])->with('success', $successMessage);
         } catch (Exception $e) {
-            return redirect()->back()->with('error', 'An error occurred while saving the category!' . $e->getMessage());
-            // You can also log the exception for debugging purposes
             Log::error($e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while saving the category: ' . $e->getMessage());
         }
     }
 }

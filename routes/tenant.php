@@ -107,10 +107,10 @@ Route::middleware([
                 Route::put('/update/{category}', 'update')->name('update');
 
                 Route::get('/subcategories/{category}', 'getSubcaegories')->name('subcategories.list');
-                Route::get('/subcategory/create', 'subcategoryCreate')->name('subcategory.create');
+                Route::get('/subcategory/create/{category}', 'subcategoryCreate')->name('subcategory.create');
                 Route::post('/subcategory/store', 'store')->name('subcategory.store');
                 Route::get('/subcategory/edit/{category}/{subcategory}', 'subcategoryEdit')->name('subcategory.edit');
-                Route::put('/subcategory/update/{category}/{subcategory}', 'update')->name('subcategory.update');
+                Route::put('/subcategory/update/{category}', 'update')->name('subcategory.update');
             });
 
             // Settings Routes Group

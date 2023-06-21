@@ -63,10 +63,15 @@ class Category extends Component
 
     public function deleteCategory($categoryId)
     {
-        $category = CategoryModel::withTrashed()->findOrFail($categoryId);
+        $category = CategoryModel::findOrFail($categoryId);
+
+        // Delete the subcategories using the relationship
+        $category->subcategories()->delete();
+
+        // Delete the category
         $category->delete();
 
-        session()->flash('message', 'Category deleted successfully.');
+        session()->flash('message', 'Category and its subcategories deleted successfully.');
 
         // Refresh the component to update the UI
         $this->render();

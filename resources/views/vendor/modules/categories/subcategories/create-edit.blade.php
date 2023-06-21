@@ -18,13 +18,13 @@
     @endcomponent
 
     <form id="subcategory-form"
-        action="{{ isset($subcategory) ? route('vendor.categories.subcategory.update', [$subcategory->parent_id, $subcategory->id]) : route('vendor.categories.subcategory.store') }}"
+        action="{{ isset($subcategory) ? route('vendor.categories.subcategory.update', [$subcategory->id]) : route('vendor.categories.subcategory.store') }}"
         method="POST" autocomplete="off" enctype="multipart/form-data">
         @csrf
         @isset($subcategory)
             @method('PUT')
         @endisset
-
+        <input type="hidden" name="parent_id" value="{{$categoryId ?? ''}}">
         <div class="row">
             <div class="col-lg-8">
                 <div class="card">
@@ -36,26 +36,6 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-6 mb-2">
-                                <div class="mb-3">
-                                    <label for="parent-id-field" class="form-label">Main Category</label>
-                                    <select class="form-control @error('parent_id') is-invalid @enderror" name="parent_id"
-                                        id="parent-id-field">
-                                        <option value="">Select Main Category</option>
-                                        @isset($mainCategories)
-                                            @foreach ($mainCategories as $id => $value)
-                                                <option value="{{ $id }}"
-                                                    {{ old('parent_id', isset($subcategory) ? $subcategory->parent_id : '') == $id ? 'selected' : '' }}>
-                                                    {{ $value }}
-                                                </option>
-                                            @endforeach
-                                        @endisset
-                                    </select>
-                                    @error('parent_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
                             <div class="col-lg-6 mb-2">
                                 <div class="mb-3">
                                     <label class="form-label">Subcategory Name</label>

@@ -11,7 +11,7 @@
                 </div>
                 <div class="col-sm-auto">
                     <div class="d-flex flex-wrap align-items-start gap-2">
-                        <a type="button" href="{{ route('vendor.categories.subcategory.create') }}"
+                        <a type="button" href="{{ route('vendor.categories.subcategory.create', $categoryId) }}"
                             class="btn btn-success btn-label waves-effect waves-light"><i
                                 class="ri-add-line label-icon align-middle fs-16 me-2"></i> Add New Subcategory</a>
                     </div>

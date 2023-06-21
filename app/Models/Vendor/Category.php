@@ -81,6 +81,7 @@ class Category extends Model
     {
         return $query->create([
             'name' => $data['name'],
+            'parent_id' => isset($data['parent_id']) ? $data['parent_id'] : null,
             'slug' => Str::slug($data['name']),
             'position' => isset($data['position']) ? $data['position'] : 0,
             'description' => isset($data['description']) ? $data['description'] : null,

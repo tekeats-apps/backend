@@ -21,8 +21,15 @@ class CreateCategory extends FormRequest
      */
     public function rules(): array
     {
+        $categoryId = $this->category ? $this->category->id : null;
+
+        $nameRule = $this->input('parent_id')
+            ? 'required|unique:categories,name,NULL,id,parent_id,' . $this->input('parent_id')
+            : 'required|unique:categories,name,' . $categoryId;
+
         return [
-            'name' => 'required',
+            'name' => $nameRule,
+            'parent_id' => 'nullable|exists:categories,id',
             'position' => 'nullable|numeric',
             'description' => 'nullable',
             'featured' => 'nullable|numeric',
