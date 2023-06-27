@@ -98,11 +98,6 @@ class CategoryController extends Controller
     {
         $data = $request->validated();
         try {
-            $data = array_merge($data, [
-                'position' => $data['position'] ?? 0,
-                'featured' => $data['featured'] ?? 0,
-                'status' => $data['status'] ?? 0,
-            ]);
             // Update the category data
             $category->update($data);
 
