@@ -10,6 +10,8 @@ use App\Http\Controllers\Vendor\DashboardController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\Vendor\AuthController as StoreAuthController;
+use App\Http\Controllers\Vendor\CategoryController;
+use App\Http\Controllers\Vendor\ProductController;
 use App\Http\Controllers\Vendor\UserController as StoreUserController;
 
 /*
@@ -93,21 +95,48 @@ Route::middleware([
                     Route::post('sync-role-permissions/{role}', 'syncRolePermissions')->name('update.permissions');
                 });
 
+
+            // Categories Routes Group
+            Route::controller(CategoryController::class)
+                ->prefix('categories')
+                ->as('vendor.categories.')
+                ->group(function () {
+                    Route::get('/', 'index')->name('list');
+                    Route::get('/create', 'create')->name('create');
+                    Route::post('/store', 'store')->name('store');
+                    Route::get('/edit/{category}', 'edit')->name('edit');
+                    Route::put('/update/{category}', 'update')->name('update');
+
+                    Route::get('/subcategories/{category}', 'getSubcaegories')->name('subcategories.list');
+                    Route::get('/subcategory/create/{category}', 'subcategoryCreate')->name('subcategory.create');
+                    Route::post('/subcategory/store', 'store')->name('subcategory.store');
+                    Route::get('/subcategory/edit/{category}/{subcategory}', 'subcategoryEdit')->name('subcategory.edit');
+                    Route::put('/subcategory/update/{category}', 'update')->name('subcategory.update');
+                });
+
+            // Products Routes Group
+            Route::controller(ProductController::class)
+                ->prefix('products')
+                ->as('vendor.products.')
+                ->group(function () {
+                    Route::get('/', 'index')->name('list');
+                    Route::get('/create', 'create')->name('create');
+                    Route::post('/store', 'store')->name('store');
+                    Route::get('/edit/{product}', 'edit')->name('edit');
+                    Route::put('/update/{product}', 'update')->name('update');
+                });
+
             // Settings Routes Group
             Route::controller(SettingController::class)
-            ->prefix('settings')
-            ->as('vendor.settings.')
-            ->group(function () {
-                Route::get('/system-settings', 'systemSettings')->name('system');
-                Route::get('/payment-settings', 'paymentSettings')->name('payment');
-                Route::get('/notification-settings', 'notificationSettings')->name('notification');
-                Route::get('/storage-settings', 'storageSettings')->name('storage');
-            });
-
+                ->prefix('settings')
+                ->as('vendor.settings.')
+                ->group(function () {
+                    Route::get('/system-settings', 'systemSettings')->name('system');
+                    Route::get('/payment-settings', 'paymentSettings')->name('payment');
+                    Route::get('/notification-settings', 'notificationSettings')->name('notification');
+                    Route::get('/storage-settings', 'storageSettings')->name('storage');
+                });
         });
-
-
-
     });
 
     // Front-end Website Routes Group

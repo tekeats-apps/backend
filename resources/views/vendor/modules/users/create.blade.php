@@ -3,7 +3,7 @@
     @include('plugins.dropify.css')
 @endpush
 @section('title')
-    @lang('translation.users')
+    Create Category
 @endsection
 @section('css')
 @endsection
@@ -11,10 +11,10 @@
     {{-- Breadcrumbs Component --}}
     @component('vendor.layouts.components.breadcrumb')
         @slot('li_1')
-            @lang('translation.users')
+            Categories
         @endslot
         @slot('title')
-            @lang('translation.manage-users')
+            Create Category
         @endslot
     @endcomponent
 
