@@ -61,7 +61,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="">
+                    <a class="nav-link menu-link {{ Route::is('vendor.tags.list') ? 'active' : '' }}" href="{{ route('vendor.tags.list') }}">
                         <i class="ri-price-tag-3-fill"></i> <span>Tags</span>
                     </a>
                 </li>
