@@ -3,15 +3,16 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Vendor\TagController;
 use App\Http\Controllers\Vendor\HomeController;
 use App\Http\Controllers\Vendor\RoleController;
+use App\Http\Controllers\Vendor\ProductController;
 use App\Http\Controllers\Vendor\SettingController;
+use App\Http\Controllers\Vendor\CategoryController;
 use App\Http\Controllers\Vendor\DashboardController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\Vendor\AuthController as StoreAuthController;
-use App\Http\Controllers\Vendor\CategoryController;
-use App\Http\Controllers\Vendor\ProductController;
 use App\Http\Controllers\Vendor\UserController as StoreUserController;
 
 /*
@@ -124,6 +125,18 @@ Route::middleware([
                     Route::post('/store', 'store')->name('store');
                     Route::get('/edit/{product}', 'edit')->name('edit');
                     Route::put('/update/{product}', 'update')->name('update');
+                });
+
+            //Tags Routes Group
+            Route::controller(TagController::class)
+                ->prefix('tags')
+                ->as('vendor.tags.')
+                ->group(function () {
+                    Route::get('/', 'index')->name('list');
+                    Route::get('/create', 'create')->name('create');
+                    Route::post('/store', 'store')->name('store');
+                    Route::get('/edit/{tag}', 'edit')->name('edit');
+                    Route::put('/update/{tag}', 'update')->name('update');
                 });
 
             // Settings Routes Group

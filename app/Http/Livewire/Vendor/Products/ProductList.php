@@ -16,7 +16,7 @@ class ProductList extends Component
     public $sortDirection = 'desc';
     public $paginationTheme = 'bootstrap';
 
-    protected $listeners = ['delete-product' => 'deleteCategory'];
+    protected $listeners = ['delete-product' => 'deleteProduct'];
 
     public function render()
     {
@@ -55,7 +55,7 @@ class ProductList extends Component
         ]);
     }
 
-    public function deleteCategory($productId)
+    public function deleteProduct($productId)
     {
         $product = Product::findOrFail($productId);
         // Delete the product
