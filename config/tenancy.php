@@ -19,7 +19,8 @@ return [
     'central_domains' => [
         '127.0.0.1',
         'localhost',
-        'fos.lvh.me'
+        'fos.lvh.me',
+        'tekinity.live'
     ],
 
     /**
