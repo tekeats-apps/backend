@@ -77,34 +77,17 @@
                     </a>
                 </li>
                 <li class="nav-item">
-<<<<<<< HEAD:resources/views/store/layouts/components/sidebar.blade.php
-                    <a class="nav-link menu-link {{ Route::is('store.roles.list') ? 'active' : '' }}" href="{{ route('store.roles.list') }}">
-=======
                     <a class="nav-link menu-link {{ Route::is('vendor.roles.list') ? 'active' : '' }}" href="{{ route('vendor.roles.list') }}">
->>>>>>> a5edcf5c44a38374f4c70256d6535bd9091216a2:resources/views/vendor/layouts/components/sidebar.blade.php
                         <i class="ri-swap-line"></i> <span>Roles</span>
                     </a>
                 </li>
                 <li class="nav-item">
-<<<<<<< HEAD:resources/views/store/layouts/components/sidebar.blade.php
-                    <a class="nav-link menu-link {{ Route::is('store.users.list') ? 'active' : '' }}" href="{{ route('store.users.list') }}">
-=======
                     <a class="nav-link menu-link {{ Route::is('vendor.users.list') ? 'active' : '' }}" href="{{ route('vendor.users.list') }}">
->>>>>>> a5edcf5c44a38374f4c70256d6535bd9091216a2:resources/views/vendor/layouts/components/sidebar.blade.php
                         <i class="ri-account-circle-fill"></i> <span>@lang('translation.users')</span>
                     </a>
                 </li>
                 <li class="menu-title"><span> System</span></li>
                 <li class="nav-item">
-<<<<<<< HEAD:resources/views/store/layouts/components/sidebar.blade.php
-                    <a href="#sidebarSettings" class="nav-link {{ Route::is('store.settings.*') ? 'active' : 'collapsed' }}" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarSettings">Settings
-                    </a>
-                    <div class="collapse menu-dropdown {{ Route::is('store.settings.*') ? 'show' : '' }}" id="sidebarSettings">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('store.settings.general') }}" class="nav-link {{ Route::is('store.settings.general') ? 'active' : '' }}">General
-=======
                     <a href="#sidebarSettings" class="nav-link {{ Route::is('vendor.settings.*') ? 'active' : 'collapsed' }}" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarSettings">Settings
                     </a>
@@ -112,30 +95,16 @@
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('vendor.settings.system') }}" class="nav-link {{ Route::is('vendor.settings.system') ? 'active' : '' }}">System
->>>>>>> a5edcf5c44a38374f4c70256d6535bd9091216a2:resources/views/vendor/layouts/components/sidebar.blade.php
                                     Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('vendor.settings.notification') }}" class="nav-link {{ Route::is('vendor.settings.notification') ? 'active' : '' }}"> Notifications Settings</a>
                             </li>
                             <li class="nav-item">
-<<<<<<< HEAD:resources/views/store/layouts/components/sidebar.blade.php
-                                <a href="{{ route('store.settings.notification') }}" class="nav-link {{ Route::is('store.settings.notification') ? 'active' : '' }}"> Notifications Settings</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="auth-offline" class="nav-link">Storage Settings</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('store.settings.payment') }}" class="nav-link {{ Route::is('store.settings.payment') ? 'active' : '' }}">Payment Settings</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="auth-offline" class="nav-link">Theme Settings</a>
-=======
                                 <a href="{{ route('vendor.settings.storage') }}" class="nav-link {{ Route::is('vendor.settings.storage') ? 'active' : '' }}">Storage Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('vendor.settings.payment') }}" class="nav-link {{ Route::is('vendor.settings.payment') ? 'active' : '' }}">Payment Settings</a>
->>>>>>> a5edcf5c44a38374f4c70256d6535bd9091216a2:resources/views/vendor/layouts/components/sidebar.blade.php
                             </li>
                         </ul>
                     </div>
