@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\UserController;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use App\Http\Controllers\API\V1\Vendor\CustomerController;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,16 +17,15 @@ use App\Http\Controllers\Admin\UserController;
 */
 
 //Apply Middleware group on routes
-Route::middleware(['locale'])->group(function (){
-    //    Admin Routes
-    Route::prefix('admin')->group(function () {
-        Route::controller(UserController::class)
-            ->prefix('user')
-            ->group(function () {
-                Route::get('/', 'index')->name('index');
-            });
-    });
+Route::middleware([
+    'locale', InitializeTenancyByDomain::class,
+    PreventAccessFromCentralDomains::class,
+])->group(function () {
+
+    // Customer Authentication Routes
+    Route::controller(CustomerController::class)
+        ->prefix('customers')
+        ->group(function () {
+            Route::post('/register', 'registerCustomer')->name('customer.register');
+        });
 });
-
-
-
