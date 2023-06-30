@@ -56,7 +56,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="">
+                    <a class="nav-link menu-link {{ Route::is('vendor.products.list') ? 'active' : '' }}" href="{{ route('vendor.products.list') }}">
                         <i class="ri-shopping-bag-line"></i> <span>Products</span>
                     </a>
                 </li>

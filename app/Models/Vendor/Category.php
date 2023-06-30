@@ -57,7 +57,7 @@ class Category extends Model
         }
         return $query->orderBy($sortField, $sortDirection);
     }
-    public function scopeGetSubCategorieslist($query, $parentId, $search, $sortField, $sortDirection)
+    public function scopeGetSubCategorieslist($query, $parentId, $search, $sortField, $sortDirection, $status)
     {
         $query->where('parent_id', $parentId);
         if (!empty($search)) {
@@ -71,6 +71,16 @@ class Category extends Model
         if (!empty($status)) {
             $query->where('status', $status);
         }
+        return $query->orderBy($sortField, $sortDirection);
+    }
+    public function scopeGetAllActiveSubCategories($query, $sortField = 'id', $sortDirection = 'desc', $status = 1)
+    {
+        $query->whereNotNull('parent_id');
+
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+
         return $query->orderBy($sortField, $sortDirection);
     }
     public function scopeGetSubcategoriesUsedPositions($query)
