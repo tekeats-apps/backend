@@ -14,6 +14,8 @@ class User extends Authenticatable
 {
     use HasFactory, HasRoles;
 
+    public const IMAGE_PATH = 'users';
+
     protected $fillable = [
         'name',
         'username',
@@ -33,9 +35,19 @@ class User extends Authenticatable
         'status' => 'boolean'
     ];
 
-    public function scopeList($query)
+    public function scopeList($query,$search, $status, $sortField, $sortDirection)
     {
-        return $query->orderBy('name', 'ASC');
+        if (!empty($search)) {
+            $query->where(function ($q) use($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            });
+        }
+
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+        return $query->orderBy($sortField, $sortDirection);
     }
 
     protected function statusText(): Attribute
@@ -45,8 +57,20 @@ class User extends Authenticatable
             $status = 'Active';
         }
         return new Attribute(
-            get: fn() => $status,
+            get: fn () => $status,
         );
+    }
+
+    protected function getImageAttribute($value)
+    {
+
+        $image = '';
+        if ($value) {
+            $path = User::IMAGE_PATH . '/' . $value;
+            $image = tenant_asset($path);
+        }
+
+        return $image;
     }
 
     protected function role(): Attribute
@@ -56,7 +80,7 @@ class User extends Authenticatable
             'name' => $this->roles->pluck('name')->first()
         ];
         return new Attribute(
-            get: fn() => (object) $role,
+            get: fn () => (object) $role,
         );
     }
 
@@ -106,5 +130,4 @@ class User extends Authenticatable
 
         return $user;
     }
-
 }

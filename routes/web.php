@@ -74,9 +74,7 @@ Route::prefix('admin')->group(function () {
         ->group(function () {
             Route::get('/',  'index')->name('list');
             Route::get('/create',  'create')->name('create');
-            Route::post('/create',  'store')->name('store');
             Route::get('/edit/{role}',  'edit')->name('edit');
-            Route::put('/update/{role}',  'update')->name('update');
         });
 
         //Restaurant Routes Group
@@ -85,10 +83,6 @@ Route::prefix('admin')->group(function () {
         ->as('admin.restaurant.')
         ->group(function () {
             Route::get('/',  'index')->name('list');
-            Route::get('/create',  'create')->name('create');
-            Route::post('/create',  'store')->name('store');
-            Route::get('/edit/{role}',  'edit')->name('edit');
-            Route::put('/update/{role}',  'update')->name('update');
         });
 
         //Orders Routes Group
@@ -99,8 +93,6 @@ Route::prefix('admin')->group(function () {
             Route::get('/',  'index')->name('list');
             Route::get('/create',  'create')->name('create');
             Route::post('/create',  'store')->name('store');
-            Route::get('/edit/{role}',  'edit')->name('edit');
-            Route::put('/update/{role}',  'update')->name('update');
         });
 
     });

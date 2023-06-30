@@ -30,7 +30,7 @@ class StoreUser extends FormRequest
             'role' => 'required|integer',
             'password' => 'required|confirmed|min:6',
             'status' => 'nullable|integer',
-            'image' => 'nullable|image|size:1024|mimes:jpeg,png,jpg|dimensions:min_width=100,min_height=100,max_width=500,max_height=500'
+            'image' => 'nullable|image|max:1024|mimes:jpeg,png,jpg'
         ];
     }
 }

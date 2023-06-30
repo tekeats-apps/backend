@@ -23,40 +23,43 @@
 
                 <div class="row justify-content-center">
                     <div class="col-md-8 col-lg-6 col-xl-5">
-                        <div class="card mt-4">
+                        <form action="{{ route('vendor.auth.forget.password') }}" method="POST">
+                            @csrf
+                            <div class="card mt-4">
+                                <div class="card-body p-4">
+                                    <div class="text-center mt-2">
+                                        <h5 class="text-primary">Forgot Password?</h5>
+                                        <lord-icon src="https://cdn.lordicon.com/rhvddzym.json" trigger="loop"
+                                            colors="primary:#0ab39c" class="avatar-xl">
+                                        </lord-icon>
 
-                            <div class="card-body p-4">
-                                <div class="text-center mt-2">
-                                    <h5 class="text-primary">Forgot Password?</h5>
-                                    <p class="text-muted">Reset password with velzon</p>
+                                    </div>
 
-                                    <lord-icon src="https://cdn.lordicon.com/rhvddzym.json" trigger="loop"
-                                        colors="primary:#0ab39c" class="avatar-xl">
-                                    </lord-icon>
-
+                                    <div class="alert alert-borderless alert-warning text-center mb-2 mx-2" role="alert">
+                                        Enter your email and instructions will be sent to you!
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                            value="{{ old('email', '') }}" id="email" name="email"
+                                            placeholder="Enter your email address eg. vendor@example.com">
+                                        @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
                                 </div>
-
-                                <div class="alert alert-borderless alert-warning text-center mb-2 mx-2" role="alert">
-                                    Enter your email and instructions will be sent to you!
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                        value="{{ old('email', '') }}" id="email" name="email"
-                                        placeholder="Enter email address eg. admin@example.com">
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
+                                <!-- end card body -->
                             </div>
-                            <!-- end card body -->
-                        </div>
+                            <div class="mt-4">
+                                <button class="btn btn-success w-100" type="submit">Send Reset Link</button>
+                            </div>
+                        </form>
                         <!-- end card -->
 
                         <div class="mt-4 text-center">
-                            <p class="mb-0">Wait, I remember my password... <a href="auth-signin-basic"
+                            <p class="mb-0">Wait, I remember my password... <a href="{{ route('vendor.auth.login') }}"
                                     class="fw-semibold text-primary text-decoration-underline"> Click here </a> </p>
                         </div>
 

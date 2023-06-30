@@ -1,12 +1,10 @@
 @extends('vendor.layouts.main')
-@push('css')
-    @include('vendor.layouts.components.plugins.filepond.css');
-@endpush
 @section('title')
     @lang('translation.users')
 @endsection
-@section('css')
-@endsection
+@push('css')
+    @include('plugins.dropify.css')
+@endpush
 @section('content')
     {{-- Breadcrumbs Component --}}
     @component('vendor.layouts.components.breadcrumb')
@@ -27,7 +25,8 @@
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">User Information <span class="float-end">
-                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#changeUserPassword" class="btn btn-warning btn-label bt-sm waves-effect waves-light"> <i
+                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#changeUserPassword"
+                                    class="btn btn-warning btn-label bt-sm waves-effect waves-light"> <i
                                         class="ri-lock-password-line label-icon"></i>Change Password</a>
                                 {{-- <a href="{{ route('vendor.users.create') }}"
                                     class="btn btn-primary btn-label bt-sm waves-effect waves-light"><i
@@ -114,10 +113,9 @@
                     <div class="card-body">
                         <div class="mb-4">
                             <h5 class="fs-14 mb-2">User Profile Image</h5>
-                            <div class="avatar-xl mx-auto">
-                                <input type="file"
-                                    class="filepond filepond-input-circle {{ $errors->has('image') ? ' is-invalid' : '' }}"
-                                    name="image" accept="image/png, image/jpeg, image/gif" />
+                            <div class="col-md-12">
+                                <input type="file" class="dropify {{ $errors->has('image') ? ' is-invalid' : '' }}"
+                                    data-default-file="{{ $user->image }}" data-max-file-size="1M" data-show-remove="false" data-max-width="300" data-max-height="300" name="image" />
                                 @error('image')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -144,8 +142,8 @@
     @include('vendor.modules.users.change-password')
 @endsection
 @push('script')
+    @include('plugins.dropify.js')
     <script src="{{ URL::asset('assets/libs/validation/validate.min.js') }}"></script>
-    @include('vendor.layouts.components.plugins.filepond.js')
     <script>
         $().ready(function() {
             // validate signup form on keyup and submit
@@ -175,20 +173,6 @@
                     role: "Please select role for user"
                 }
             });
-            FilePond.create(
-                document.querySelector('.filepond-input-circle'), {
-                    labelIdle: 'Drag & Drop your picture or <span class="filepond--label-action">Browse</span>',
-                    imagePreviewHeight: 170,
-                    imageCropAspectRatio: '1:1',
-                    imageResizeTargetWidth: 200,
-                    imageResizeTargetHeight: 200,
-                    stylePanelLayout: 'compact circle',
-                    styleLoadIndicatorPosition: 'center bottom',
-                    styleProgressIndicatorPosition: 'right bottom',
-                    styleButtonRemoveItemPosition: 'left bottom',
-                    styleButtonProcessItemPosition: 'right bottom',
-                }
-            );
         });
     </script>
 @endpush

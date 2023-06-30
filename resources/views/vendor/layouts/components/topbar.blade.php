@@ -493,7 +493,7 @@
                         aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
                             <img class="rounded-circle header-profile-user"
-                                src="{{ URL::asset('assets/images/users/avatar-1.jpg') }}" alt="Header Avatar">
+                                src="{{ Auth::guard('vendor')->user()->image }}" alt="{{ Auth::guard('vendor')->user()->name }}-avatar">
                             <span class="text-start ms-xl-2">
                                 <span
                                     class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ Auth::guard('vendor')->user()->name }}</span>

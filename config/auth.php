@@ -38,11 +38,20 @@ return [
     'guards' => [
         'admin' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'users'
         ],
         'vendor' => [
             'driver' => 'session',
-            'provider' => 'vendor',
+            'provider' => 'vendor'
+        ],
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'customer'
+        ],
+        'customers' => [
+            'driver' => 'sanctum',
+            'provider' => 'customer',
+            'hash' => false
         ],
     ],
 
@@ -72,6 +81,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Vendor\User::class,
         ],
+        'customer' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Vendor\Customer::class,
+        ],
     ],
 
     /*
@@ -92,6 +105,12 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'customers' => [
+            'provider' => 'customers',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
