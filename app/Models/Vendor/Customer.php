@@ -11,6 +11,19 @@ class Customer extends Authenticatable
 {
     use Notifiable, HasApiTokens;
 
+
+    public const IMAGE_PATH = 'customers';
+    public const DEFAULT_IMAGE_PATH = 'https://cdn-icons-png.flaticon.com/512/3787/3787263.png';
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        if (request()->capture()->is('api/*')) {
+            $this->hidden = array_merge($this->hidden, ['id']);
+        }
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -46,6 +59,25 @@ class Customer extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime'
     ];
+
+    protected $appends = ['is_email_verified'];
+
+    protected function getAvatarAttribute($value)
+    {
+
+        $image = Customer::DEFAULT_IMAGE_PATH;
+        if ($value) {
+            $path = Customer::IMAGE_PATH . '/' . $value;
+            $image = tenant_asset($path);
+        }
+
+        return $image;
+    }
+
+    public function getIsEmailVerifiedAttribute()
+    {
+        return !is_null($this->email_verified_at);
+    }
 
     public function scopeCreateNew($query, $first_name, $last_name, $email, $password)
     {

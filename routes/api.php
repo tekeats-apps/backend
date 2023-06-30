@@ -34,6 +34,9 @@ Route::middleware([
         Route::controller(CustomerController::class)
         ->prefix('customers')
         ->group(function () {
+            Route::get('/get-profile', 'getProfile')->name('customer.get.profile.info');
+            Route::put('/update-profile', 'updateProfile')->name('customer.update.profile');
+            Route::post('/update-password', 'updatePassword')->name('customer.update.password');
             Route::post('/logout', 'logout')->name('customer.logout');
         });
     });
