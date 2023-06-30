@@ -22,10 +22,10 @@ class Roles extends Seeder
         Schema::enableForeignKeyConstraints();
 
         $roles = [
-            ['name' => 'admin', 'guard_name' => 'store'],
-            ['name' => 'staff', 'guard_name' => 'store'],
-            ['name' => 'accountant', 'guard_name' => 'store'],
-            ['name' => 'support manager', 'guard_name' => 'store']
+            ['name' => 'admin', 'guard_name' => 'vendor'],
+            ['name' => 'staff', 'guard_name' => 'vendor'],
+            ['name' => 'accountant', 'guard_name' => 'vendor'],
+            ['name' => 'support manager', 'guard_name' => 'vendor']
         ];
 
         // Create roles

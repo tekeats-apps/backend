@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use Database\Seeders\Roles;
+use Illuminate\Database\Seeder;
+use Database\Seeders\CategorySeeder;
 
 class TenantDatabaseSeeder extends Seeder
 {
@@ -13,7 +14,8 @@ class TenantDatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            Roles::class
+            Roles::class,
+            CategorySeeder::class
         ]);
     }
 }

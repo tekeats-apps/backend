@@ -14,6 +14,7 @@ class RestaurantsList extends Component
     public $perPage = 10;
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
+
     public function render()
     {
         $restaurants = $this->getRestaurants();

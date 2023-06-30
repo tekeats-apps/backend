@@ -3,14 +3,16 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Store\HomeController;
-use App\Http\Controllers\Store\RoleController;
-use App\Http\Controllers\Store\SettingController;
-use App\Http\Controllers\Store\DashboardController;
+use App\Http\Controllers\Vendor\HomeController;
+use App\Http\Controllers\Vendor\RoleController;
+use App\Http\Controllers\Vendor\SettingController;
+use App\Http\Controllers\Vendor\DashboardController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
-use App\Http\Controllers\Store\AuthController as StoreAuthController;
-use App\Http\Controllers\Store\UserController as StoreUserController;
+use App\Http\Controllers\Vendor\AuthController as StoreAuthController;
+use App\Http\Controllers\Vendor\CategoryController;
+use App\Http\Controllers\Vendor\ProductController;
+use App\Http\Controllers\Vendor\UserController as StoreUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,24 +32,28 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
 
-    Route::prefix('store')->group(function () {
+    Route::prefix('vendor')->group(function () {
 
         // Auth Routes Group (Guest)
-        Route::middleware(['guest:store'])->group(function () {
+        Route::middleware(['guest:vendor'])->group(function () {
             Route::controller(StoreAuthController::class)
-                ->as('store.auth.')
+                ->as('vendor.auth.')
                 ->group(function () {
                     Route::get('/login', 'index')->name('login');
                     Route::post('/login', 'login')->name('action.login');
+                    Route::get('/forget-password', 'forgetPassword')->name('forget.password');
+                    Route::post('/forget-password', 'sendForgotPasswordEmail')->name('action.forget.password');
+                    Route::get('/reset-password/{token}', 'showResetPasswordForm')->name('reset.password');
+                    Route::post('/reset-password', 'resetPassword')->name('reset.password.post');
                 });
         });
 
         // Authenticated Routes
-        Route::middleware(['auth:store'])->group(function () {
+        Route::middleware(['auth:vendor'])->group(function () {
 
             //Admin Auth Routes (Authenticated)
             Route::controller(StoreAuthController::class)
-                ->as('store.auth.')
+                ->as('vendor.auth.')
                 ->group(function () {
                     Route::post('/logout', 'logout')->name('logout');
                 });
@@ -55,7 +61,7 @@ Route::middleware([
             // Store Dashboard Routes Group
             Route::controller(DashboardController::class)
                 ->prefix('dashboard')
-                ->as('store.dashboard.')
+                ->as('vendor.dashboard.')
                 ->group(function () {
                     Route::get('/', 'index')->name('index');
                 });
@@ -63,7 +69,7 @@ Route::middleware([
             // User Routes Group
             Route::controller(StoreUserController::class)
                 ->prefix('users')
-                ->as('store.users.')
+                ->as('vendor.users.')
                 ->group(function () {
                     Route::get('/', 'index')->name('list');
                     Route::get('/create', 'create')->name('create');
@@ -76,7 +82,7 @@ Route::middleware([
             //Roles Routes Group
             Route::controller(RoleController::class)
                 ->prefix('roles')
-                ->as('store.roles.')
+                ->as('vendor.roles.')
                 ->group(function () {
                     Route::get('/', 'index')->name('list');
                     Route::get('/create', 'create')->name('create');
@@ -89,20 +95,48 @@ Route::middleware([
                     Route::post('sync-role-permissions/{role}', 'syncRolePermissions')->name('update.permissions');
                 });
 
+
+            // Categories Routes Group
+            Route::controller(CategoryController::class)
+                ->prefix('categories')
+                ->as('vendor.categories.')
+                ->group(function () {
+                    Route::get('/', 'index')->name('list');
+                    Route::get('/create', 'create')->name('create');
+                    Route::post('/store', 'store')->name('store');
+                    Route::get('/edit/{category}', 'edit')->name('edit');
+                    Route::put('/update/{category}', 'update')->name('update');
+
+                    Route::get('/subcategories/{category}', 'getSubcaegories')->name('subcategories.list');
+                    Route::get('/subcategory/create/{category}', 'subcategoryCreate')->name('subcategory.create');
+                    Route::post('/subcategory/store', 'store')->name('subcategory.store');
+                    Route::get('/subcategory/edit/{category}/{subcategory}', 'subcategoryEdit')->name('subcategory.edit');
+                    Route::put('/subcategory/update/{category}', 'update')->name('subcategory.update');
+                });
+
+            // Products Routes Group
+            Route::controller(ProductController::class)
+                ->prefix('products')
+                ->as('vendor.products.')
+                ->group(function () {
+                    Route::get('/', 'index')->name('list');
+                    Route::get('/create', 'create')->name('create');
+                    Route::post('/store', 'store')->name('store');
+                    Route::get('/edit/{product}', 'edit')->name('edit');
+                    Route::put('/update/{product}', 'update')->name('update');
+                });
+
             // Settings Routes Group
             Route::controller(SettingController::class)
-            ->prefix('settings')
-            ->as('store.settings.')
-            ->group(function () {
-                Route::get('/general-settings', 'generalSettings')->name('general');
-                Route::get('/payment-settings', 'paymentSettings')->name('payment');
-                Route::get('/notification-settings', 'notificationSettings')->name('notification');
-            });
-
+                ->prefix('settings')
+                ->as('vendor.settings.')
+                ->group(function () {
+                    Route::get('/system-settings', 'systemSettings')->name('system');
+                    Route::get('/payment-settings', 'paymentSettings')->name('payment');
+                    Route::get('/notification-settings', 'notificationSettings')->name('notification');
+                    Route::get('/storage-settings', 'storageSettings')->name('storage');
+                });
         });
-
-
-
     });
 
     // Front-end Website Routes Group
