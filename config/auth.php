@@ -38,15 +38,20 @@ return [
     'guards' => [
         'admin' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'users'
         ],
         'vendor' => [
             'driver' => 'session',
-            'provider' => 'vendor',
+            'provider' => 'vendor'
         ],
-        'customer' => [
-            'driver' => 'token',
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'customer'
+        ],
+        'customers' => [
+            'driver' => 'sanctum',
             'provider' => 'customer',
+            'hash' => false
         ],
     ],
 

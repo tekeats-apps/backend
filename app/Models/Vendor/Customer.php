@@ -35,6 +35,7 @@ class Customer extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'updated_at',
     ];
 
     /**
@@ -43,7 +44,7 @@ class Customer extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime'
     ];
 
     public function scopeCreateNew($query, $first_name, $last_name, $email, $password)

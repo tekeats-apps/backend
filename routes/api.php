@@ -26,6 +26,15 @@ Route::middleware([
     Route::controller(CustomerController::class)
         ->prefix('customers')
         ->group(function () {
-            Route::post('/register', 'registerCustomer')->name('customer.register');
+            Route::post('/register', 'register')->name('customer.register');
+            Route::post('/login', 'login')->name('customer.login');
         });
+
+    Route::middleware(['auth:customers'])->group(function () {
+        Route::controller(CustomerController::class)
+        ->prefix('customers')
+        ->group(function () {
+            Route::post('/logout', 'logout')->name('customer.logout');
+        });
+    });
 });
