@@ -58,6 +58,10 @@ class ProductList extends Component
     public function deleteProduct($productId)
     {
         $product = Product::findOrFail($productId);
+
+        // Detach the tags associated with the product
+        $product->tags()->detach();
+
         // Delete the product
         $product->delete();
 
