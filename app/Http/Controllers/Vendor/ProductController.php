@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Vendor;
 
 use Log;
 use Exception;
+use App\Models\Vendor\Tag;
 use App\Models\Vendor\Product;
 use App\Models\Vendor\Category;
 use App\Http\Controllers\Controller;
@@ -23,7 +24,8 @@ class ProductController extends Controller
     public function create()
     {
         $subCategories = Category::getAllActiveSubCategories()->pluck('name', 'id');
-        return view('vendor.modules.products.create-edit', compact('subCategories'));
+        $tags = Tag::getActiveTags()->pluck('name', 'id');
+        return view('vendor.modules.products.create-edit', compact('subCategories', 'tags'));
     }
 
     public function store(CreateProductRequest $request)
@@ -58,8 +60,9 @@ class ProductController extends Controller
     public function edit($id)
     {
         $subCategories = Category::getAllActiveSubCategories()->pluck('name', 'id');
+        $tags = Tag::getActiveTags()->pluck('name', 'id');
         $product = Product::findOrFail($id);
-        return view('vendor.modules.products.create-edit', compact('product', 'subCategories'));
+        return view('vendor.modules.products.create-edit', compact('product', 'subCategories', 'tags'));
     }
 
     public function update(UpdateProductRequest $request, Product $product)
