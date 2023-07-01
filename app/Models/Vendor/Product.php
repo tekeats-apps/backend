@@ -24,6 +24,11 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
     public function getPriceAttribute($value)
     {
         return (float)$value;
@@ -43,7 +48,14 @@ class Product extends Model
 
     public function scopeCreateProduct($query, array $validatedData)
     {
-        return $query->create($validatedData);
+        $tagIds = $validatedData['product_tags'];
+        unset($validatedData['product_tags']);
+        $product = $query->create($validatedData);
+        if (count($tagIds) > 0) {
+            // Attach the tags
+            $product->tags()->attach($tagIds);
+        }
+        return $product;
     }
 
     public function scopeList($query, $search = '', $sortField = 'id', $sortDirection = 'desc')
@@ -64,6 +76,13 @@ class Product extends Model
 
     public function scopeUpdateProduct($query, $id, array $validatedData)
     {
-        return $query->where('id', $id)->update($validatedData);
+        $tagIds = $validatedData['product_tags'];
+        unset($validatedData['product_tags']);
+        $product = $query->findOrFail($id);
+        $product->update($validatedData);
+        // Sync the tags
+        $product->tags()->sync($tagIds);
+
+        return $product;
     }
 }

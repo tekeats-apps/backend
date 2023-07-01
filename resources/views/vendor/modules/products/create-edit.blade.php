@@ -102,7 +102,9 @@
                                         <option value="">Select Product Tags</option>
                                         @isset($tags)
                                             @foreach ($tags as $key => $tag)
-                                                <option value="{{ $key }}" {{-- {{ old('position', isset($product) ? $product->position : '') == $position ? 'selected' : '' }} --}}>
+                                                <option value="{{ $key }}"
+                                                    @if (old('product_tags', isset($product) ? $product->tags->pluck('id')->toArray() : []) &&
+                                                            in_array($key, old('product_tags', isset($product) ? $product->tags->pluck('id')->toArray() : []))) selected @endif>
                                                     {{ $tag }}
                                                 </option>
                                             @endforeach
@@ -140,7 +142,8 @@
                             <div class="col-md-12">
                                 @if (isset($product) && !empty($product->image))
                                     <input type="file" class="dropify @error('image') is-invalid @enderror"
-                                        data-max-file-size="1M" data-show-remove="false" name="image" data-default-file={{ $product->image }} />
+                                        data-max-file-size="1M" data-show-remove="false" name="image"
+                                        data-default-file={{ $product->image }} />
                                 @else
                                     <input type="file" class="dropify @error('image') is-invalid @enderror"
                                         data-max-file-size="1M" data-show-remove="false" name="image" />
@@ -154,8 +157,8 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-check form-switch form-switch-lg form-switch-success">
-                                    <input class="form-check-input @error('featured') is-invalid @enderror"
-                                        type="checkbox" name="featured" id="SwitchCheck11" value="1"
+                                    <input class="form-check-input @error('featured') is-invalid @enderror" type="checkbox"
+                                        name="featured" id="SwitchCheck11" value="1"
                                         {{ old('featured', isset($product) && $product->featured ? 'checked' : '') }}>
                                     <label class="form-check-label" for="SwitchCheck11">Featured</label>
                                 </div>
