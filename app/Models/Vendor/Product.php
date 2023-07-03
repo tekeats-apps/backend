@@ -34,6 +34,22 @@ class Product extends Model
         return (float)$value;
     }
 
+    public function extras()
+    {
+        return $this->belongsToMany(Extra::class);
+    }
+
+    public function findExtraByName($name)
+    {
+        return $this->extras()->where('name', $name)->first();
+    }
+
+    public function scopeGetProductExtras($query, $productId, $sortField = 'id', $sortDirection = 'desc')
+    {
+        $product = $query->findOrFail($productId);
+        return $product->extras()->orderBy($sortField, $sortDirection);;
+    }
+
     protected function getImageAttribute($value)
     {
 
