@@ -1,6 +1,9 @@
 #!/bin/bash
 # Copy ENV example to .env file
 cp .env.example .env
+# Give permissions to directories
+chmod -R 777 ./bootstrap/cache
+chmod -R 777 ./storage
 
 # Remove existing containers
 docker-compose down
