@@ -25,19 +25,20 @@ class Tenant extends BaseTenant implements TenantWithDatabase
 
     public function scopeRegisterRestaurant($query, $data)
     {
-
-        $tenantID = Str::slug($data['store_name']);
+        $tenantID = Str::slug($data['store_name'], '_'); // Generate tenant ID with spaces removed and concatenated with underscores
         $domain = $data['domain'] . '.' . request()->getHost();
+        $databaseName = 'tenant_' . $tenantID; // Generate the tenant's database name
         $tenant = Tenant::create([
-            'id' => $tenantID,
             'order_id' => $data['order_id'],
-            'store_name' => $data['store_name'],
+            'business_name' => $data['store_name'],
             'email' => $data['email'],
             'domain' => $domain,
-
+            'tenancy_db_name' => $databaseName
         ]);
+
         // Create Domain model and associate it with the Tenant model
         $tenant->domains()->create(['domain' => $domain]);
+
         return $tenant;
     }
 
@@ -47,7 +48,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
             $query->where(function ($q) use ($search) {
                 $q->where('data->email', 'like', '%' . $search . '%')
                     ->orWhere('data->status', 'like', '%' . $search . '%')
-                    ->orWhere('data->store_name', 'like', '%' . $search . '%');
+                    ->orWhere('data->business_name', 'like', '%' . $search . '%');
             });
         }
         if (!empty($status)) {

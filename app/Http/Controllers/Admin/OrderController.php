@@ -25,21 +25,23 @@ class OrderController extends Controller
         $data = $request->validated();
 
         try {
-            DB::beginTransaction();
-
             $order = Order::createNewOrder($data);
             $data['order_id'] = $order->id;
 
             $tenant = Tenant::registerRestaurant($data);
             Tenant::registerTenantUser($tenant, $data, 'admin');
 
-            DB::commit();
-
             return redirect()->route('admin.order.list')->with('success', 'Order created successfully!');
         } catch (\Exception $e) {
+            if (isset($order)) {
+                $order->delete(); // Remove the created order
+            }
+
+            if (isset($tenant)) {
+                $tenant->delete(); // Remove the created tenant
+            }
             DB::rollback();
             return redirect()->route('admin.order.list')->with('error', 'Failed to create order and tenant: ' . $e->getMessage());
         }
     }
-
 }

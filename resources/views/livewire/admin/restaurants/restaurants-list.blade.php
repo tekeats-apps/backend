@@ -68,7 +68,7 @@
                                 <td>
                                     <div class="d-flex gap-2 align-items-center">
                                         <div class="flex-grow-1">
-                                            {{ $restaurant->store_name }}
+                                            {{ $restaurant->business_name }}
                                         </div>
                                     </div>
                                 </td>
