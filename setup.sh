@@ -16,3 +16,12 @@ chmod -R 777 ./storage
 
 #Start containers
 ./vendor/bin/sail up -d
+
+# Run Key
+./vendor/bin/sail artisan key:generate
+
+# Run migrations
+./vendor/bin/sail artisan migrate
+
+# Run seeders
+./vendor/bin/sail artisan db:seed

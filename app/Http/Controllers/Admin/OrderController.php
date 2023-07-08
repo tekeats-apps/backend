@@ -23,30 +23,25 @@ class OrderController extends Controller
     public function store(CreateOrder $request)
     {
         $data = $request->validated();
-        $order = Order::createNewOrder($data);
-        $data['order_id'] = $order->id;
+
         try {
+            $order = Order::createNewOrder($data);
+            $data['order_id'] = $order->id;
+
             $tenant = Tenant::registerRestaurant($data);
             Tenant::registerTenantUser($tenant, $data, 'admin');
+
+            return redirect()->route('admin.order.list')->with('success', 'Order created successfully!');
         } catch (\Exception $e) {
-            $order->delete(); // rollback order creation
-
-            // Delete the tenant's database
-            try {
-                DB::statement("DROP DATABASE IF EXISTS {$tenant->database}");
-            } catch (\Exception $ex) {
-                // Handle the exception if the database deletion fails
-                dd($ex->getMessage());
+            if (isset($order)) {
+                $order->delete(); // Remove the created order
             }
-            dd($e->getMessage());
-            return redirect()->route('admin.order.list')->with('danger', 'Failed to create tenant: ' . $e->getMessage());
-        }
 
-        if (!$order) {
-            $tenant->delete(); // rollback tenant creation
-            return redirect()->route('admin.order.list')->with('danger', 'Something went wrong!');
+            if (isset($tenant)) {
+                $tenant->delete(); // Remove the created tenant
+            }
+            DB::rollback();
+            return redirect()->route('admin.order.list')->with('error', 'Failed to create order and tenant: ' . $e->getMessage());
         }
-
-        return redirect()->route('admin.order.list')->with('success', 'Order created successfully!');
     }
 }
