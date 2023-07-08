@@ -1,27 +1,19 @@
 #!/bin/bash
-#Download all dependencies from remote composer container
-docker run --rm -v $(pwd):/opt -w /opt laravelsail/php82-composer:latest composer install
-
-#Copy ENV example to .env file
+# Copy ENV example to .env file
 cp .env.example .env
-#Give permissions to directories
+# Give permissions to directories
 chmod -R 777 ./bootstrap/cache
 chmod -R 777 ./storage
 
-#Remove existing containers
-./vendor/bin/sail down
+# Remove existing containers
+docker-compose down
 
-#Build containers
-./vendor/bin/sail build
+# Build and start containers
+docker-compose up -d --build
 
-#Start containers
-./vendor/bin/sail up -d
+# Run Composer install inside the PHP container
+docker-compose exec -T app composer install
 
-# Run Key
-./vendor/bin/sail artisan key:generate
-
-# Run migrations
-./vendor/bin/sail artisan migrate
-
-# Run seeders
-./vendor/bin/sail artisan db:seed
+# Run artisan commands inside the PHP container
+docker-compose exec -T app php artisan key:generate
+docker-compose exec -T app php artisan migrate --seed

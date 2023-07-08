@@ -35,13 +35,7 @@ RUN composer dump-autoload --optimize
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 # Set the correct permissions for the application files
-RUN chmod -R 775 storage bootstrap/cache
-
-# Copy the production environment file
-COPY .env.example .env
-
-# Generate the application key
-RUN php artisan key:generate
+RUN chmod -R 777 storage bootstrap/cache
 
 # Expose the container port
 EXPOSE 9000
