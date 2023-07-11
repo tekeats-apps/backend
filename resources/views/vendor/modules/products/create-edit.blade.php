@@ -155,15 +155,16 @@
                                     <div class="col-lg-6 mb-2">
                                         <div class="mb-3">
                                             <label class="form-label">SEO Keywords</label>
-                                            <input type="text"
-                                                class="form-control @error('seo_keywords') is-invalid @enderror"
-                                                name="seo_keywords"
-                                                value="{{ old('seo_keywords', isset($product) ? $product->seo_keywords : '') }}"
-                                                placeholder="Enter keywords for SEO">
+                                            <select class="form-control @error('seo_keywords') is-invalid @enderror"
+                                                name="seo_keywords[]" data-choices data-choices-text-unique-true data-choices-removeItem multiple
+                                                id="seo-keywords-field">
+                                                <option value="">Select/Create Keywords</option>
+                                            </select>
                                             @error('seo_keywords')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
+
                                     </div>
                                     <div class="col-lg-12 mb-2">
                                         <label for="seo-description-field" class="form-label">SEO Description</label>
@@ -279,7 +280,10 @@
                     </div>
                     @if (isset($product))
                         @livewire('vendor.products.extras.extras-list', ['productId' => $product->id])
-                        @livewire('vendor.products.extras.product-extra' , ['productId' => $product->id])
+                        @livewire('vendor.products.variants.variant-list', ['productId' => $product->id])
+
+                        @livewire('vendor.products.extras.product-extra', ['productId' => $product->id])
+                        @livewire('vendor.products.variants.product-variant', ['productId' => $product->id])
                     @endisset
             </div>
         </div>

@@ -2,7 +2,6 @@
     @include('plugins.alerts.alerts')
     <div class="card">
         <div class="card-header border-bottom-dashed">
-
             <div class="row g-4 align-items-center">
                 <div class="col-sm">
                     <div>
