@@ -1,10 +1,10 @@
-@extends('store.layouts.main')
+@extends('vendor.layouts.main')
 @section('title')
     {{ __('System Settings') }}
 @endsection
 @section('content')
     {{-- Breadcrumbs Component --}}
-    @component('store.layouts.components.breadcrumb')
+    @component('vendor.layouts.components.breadcrumb')
         @slot('li_1')
             {{ __('System Settings') }}
         @endslot
@@ -54,11 +54,11 @@
                         </div> <!-- end col-->
                         <div class="col-lg-9">
                             <div class="tab-content text-muted mt-3 mt-lg-0">
-                                @include('store.modules.settings.partials.system.restaurant-info')
-                                @include('store.modules.settings.partials.system.delivery')
-                                @include('store.modules.settings.partials.system.localization')
-                                @include('store.modules.settings.partials.system.ordering')
-                                @include('store.modules.settings.partials.system.menu')
+                                @include('vendor.modules.settings.partials.system.restaurant-info')
+                                @include('vendor.modules.settings.partials.system.delivery')
+                                @include('vendor.modules.settings.partials.system.localization')
+                                @include('vendor.modules.settings.partials.system.ordering')
+                                @include('vendor.modules.settings.partials.system.menu')
                             </div>
                         </div> <!-- end col-->
                     </div> <!-- end row-->
