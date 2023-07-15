@@ -33,10 +33,10 @@
                             </div>
                             <div class="col-lg-6 mb-2">
                                 <label class="form-label">Phone Number</label>
-                                {{-- <input type="text" class="form-control @error('phone') is-invalid @enderror"
+                                <input type="text" class="form-control @error('phone') is-invalid @enderror"
                                     wire:model.defer="phone" id="phone"
-                                    placeholder="Enter your valid phone number"> --}}
-                                <div class="input-group" data-input-flag>
+                                    placeholder="Enter your valid phone number">
+                                {{-- <div class="input-group" data-input-flag>
                                     <button class="btn btn-light border" type="button" data-bs-toggle="dropdown"
                                         aria-expanded="false"><img src="{{ URL::asset('assets/images/flags/us.svg') }}"
                                             alt="flag img" height="20" class="country-flagimg rounded"><span
@@ -53,7 +53,7 @@
                                         </div>
                                         <ul class="list-unstyled dropdown-menu-list mb-0"></ul>
                                     </div>
-                                </div>
+                                </div> --}}
                                 @error('phone')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -142,6 +142,6 @@
         </div>
     </div>
 </div>
-@push('script')
+{{-- @push('script')
     <script src="{{ URL::asset('assets/js/pages/flag-input.init.js') }}"></script>
-@endpush
+@endpush --}}
