@@ -44,11 +44,11 @@
                         <i class="ri-shopping-basket-2-line"></i> <span>Orders</span>
                     </a>
                 </li>
-                {{-- <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="">
-                        <i class="ri-shopping-cart-2-line"></i> <span>POS</span>
+                        <i class="ri-account-circle-fill text-green"></i> <span>Customers</span>
                     </a>
-                </li> --}}
+                </li>
                 <li class="menu-title"><span>Products Management</span></li>
                 <li class="nav-item">
                     <a class="nav-link menu-link {{ Route::is('vendor.categories.list') ? 'active' : '' }}" href="{{ route('vendor.categories.list') }}">
@@ -97,7 +97,7 @@
                                 <a href="{{ route('vendor.settings.system') }}" class="nav-link {{ Route::is('vendor.settings.system') ? 'active' : '' }}">System
                                     Settings</a>
                             </li>
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="{{ route('vendor.settings.notification') }}" class="nav-link {{ Route::is('vendor.settings.notification') ? 'active' : '' }}"> Notifications Settings</a>
                             </li>
                             <li class="nav-item">
@@ -105,7 +105,7 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('vendor.settings.payment') }}" class="nav-link {{ Route::is('vendor.settings.payment') ? 'active' : '' }}">Payment Settings</a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </div>
                 </li>
