@@ -134,12 +134,12 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-lg-12">
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </div>
                         </fieldset>
+                        <div class="card-footer">
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-success w-sm">Submit</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

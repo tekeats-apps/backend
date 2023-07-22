@@ -16,7 +16,6 @@
                                         id="free_delivery" value="1">
                                     <label class="form-check-label" for="free_delivery">Enable Free Delivery</label>
                                 </div>
-                                {{-- <p class="text-muted">Check this box to Free delivery charges for eligible orders.</p> --}}
                                 @error('free_delivery')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -70,9 +69,9 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <button type="submit" class="btn btn-primary">Save</button>
+                        <div class="card-footer">
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-success w-sm">Submit</button>
                             </div>
                         </div>
                     </form>
