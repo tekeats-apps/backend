@@ -28,7 +28,6 @@
 
     <div id="scrollbar">
         <div class="container-fluid">
-
             <div id="two-column-menu">
             </div>
             <ul class="navbar-nav" id="navbar-nav">
@@ -45,7 +44,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="">
+                    <a class="nav-link menu-link {{ Route::is('vendor.customers.list') ? 'active' : '' }}" href="{{ route('vendor.customers.list') }}">
                         <i class="ri-account-circle-fill text-green"></i> <span>Customers</span>
                     </a>
                 </li>
