@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use App\Http\Controllers\API\V1\Vendor\CustomerController;
+use App\Http\Controllers\API\V1\Vendor\SettingController;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 /*
@@ -26,18 +27,24 @@ Route::middleware([
     Route::controller(CustomerController::class)
         ->prefix('customers')
         ->group(function () {
-            Route::post('/register', 'register')->name('customer.register');
-            Route::post('/login', 'login')->name('customer.login');
+            Route::post('/register', 'register');
+            Route::post('/login', 'login');
         });
 
     Route::middleware(['auth:customers'])->group(function () {
         Route::controller(CustomerController::class)
         ->prefix('customers')
         ->group(function () {
-            Route::get('/get-profile', 'getProfile')->name('customer.get.profile.info');
-            Route::put('/update-profile', 'updateProfile')->name('customer.update.profile');
-            Route::post('/update-password', 'updatePassword')->name('customer.update.password');
-            Route::post('/logout', 'logout')->name('customer.logout');
+            Route::get('/get-profile', 'getProfile');
+            Route::put('/update-profile', 'updateProfile');
+            Route::post('/update-password', 'updatePassword');
+            Route::post('/logout', 'logout');
+        });
+
+        Route::controller(SettingController::class)
+        ->prefix('settings')
+        ->group(function () {
+            Route::get('/get-restaurant-settings', 'getSettings');
         });
     });
 });

@@ -9,6 +9,15 @@ class DeliverySetting extends Model
 {
     use HasFactory;
 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        if (request()->capture()->is('api/*')) {
+            $this->hidden = array_merge($this->hidden, ['id']);
+        }
+    }
+
     const DELIVERY_UNITS = [
         'kilometers',
         'miles',
