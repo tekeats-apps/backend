@@ -1,4 +1,5 @@
 <div>
+    @include('plugins.alerts.alerts')
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
