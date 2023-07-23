@@ -36,7 +36,7 @@ class CreateProductRequest extends FormRequest
             'product_tags' => 'nullable|array',
             'seo_title' => 'nullable|string|max:255',
             'seo_description' => 'nullable|string',
-            'seo_keywords' => 'nullable|array',
+            'seo_keywords' => 'nullable|string',
         ];
     }
 
@@ -48,14 +48,14 @@ class CreateProductRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Please enter a product name.',
-            'name.unique' => 'This product name is already taken.',
-            'price.required' => 'Please enter a product price.',
-            'category_id.required' => 'Please select a product category.',
-            'category_id.exists' => 'The selected product category is invalid.',
-            'image.image' => 'The product image must be an image.',
-            'image.mimes' => 'The product image must be a file of type: jpeg, png, jpg, gif, svg.',
-            'image.max' => 'The product image may not be larger than 2048 kilobytes.'
+            'name.required' => 'Please enter a catchy name for your product.',
+            'name.unique' => 'Oops! This product name is already taken. Please choose a unique name.',
+            'price.required' => 'Please enter the price of your amazing product.',
+            'category_id.required' => 'Please select a category for your product.',
+            'category_id.exists' => 'Oh no! The selected product category is invalid. Please choose a valid category.',
+            'image.image' => 'Hmm, it seems the file you uploaded is not a valid image. Please upload an image file.',
+            'image.mimes' => 'Oops! The product image should be in one of the following formats: JPEG, PNG, JPG, GIF, SVG.',
+            'image.max' => 'The product image you uploaded is too large. Please ensure it is under 2MB in size.',
         ];
     }
 }

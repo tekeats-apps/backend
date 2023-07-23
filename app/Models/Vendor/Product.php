@@ -39,15 +39,31 @@ class Product extends Model
         return $this->belongsToMany(Extra::class);
     }
 
+    public function variants()
+    {
+        return $this->belongsToMany(Variant::class);
+    }
+
     public function findExtraByName($name)
     {
         return $this->extras()->where('name', $name)->first();
+    }
+
+    public function findVariantByName($name)
+    {
+        return $this->variants()->where('name', $name)->first();
     }
 
     public function scopeGetProductExtras($query, $productId, $sortField = 'id', $sortDirection = 'desc')
     {
         $product = $query->findOrFail($productId);
         return $product->extras()->orderBy($sortField, $sortDirection);;
+    }
+
+    public function scopeGetProductVariants($query, $productId, $sortField = 'id', $sortDirection = 'desc')
+    {
+        $product = $query->findOrFail($productId);
+        return $product->variants()->orderBy($sortField, $sortDirection);;
     }
 
     protected function getImageAttribute($value)
@@ -64,11 +80,10 @@ class Product extends Model
 
     public function scopeCreateProduct($query, array $validatedData)
     {
-        $tagIds = $validatedData['product_tags'];
+        $tagIds = $this->getProductTags($validatedData);
         unset($validatedData['product_tags']);
         $product = $query->create($validatedData);
-        if (count($tagIds) > 0) {
-            // Attach the tags
+        if (!empty($tagIds)) {
             $product->tags()->attach($tagIds);
         }
         return $product;
@@ -92,13 +107,21 @@ class Product extends Model
 
     public function scopeUpdateProduct($query, $id, array $validatedData)
     {
-        $tagIds = $validatedData['product_tags'];
+        $tagIds = $this->getProductTags($validatedData);
         unset($validatedData['product_tags']);
         $product = $query->findOrFail($id);
         $product->update($validatedData);
-        // Sync the tags
         $product->tags()->sync($tagIds);
 
         return $product;
+    }
+
+    protected function getProductTags($validatedData)
+    {
+        $tagIds = [];
+        if (isset($validatedData['product_tags'])) {
+            $tagIds = $validatedData['product_tags'];
+        }
+        return $tagIds;
     }
 }

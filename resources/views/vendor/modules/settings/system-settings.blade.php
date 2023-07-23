@@ -1,10 +1,10 @@
-@extends('store.layouts.main')
+@extends('vendor.layouts.main')
 @section('title')
     {{ __('System Settings') }}
 @endsection
 @section('content')
     {{-- Breadcrumbs Component --}}
-    @component('store.layouts.components.breadcrumb')
+    @component('vendor.layouts.components.breadcrumb')
         @slot('li_1')
             {{ __('System Settings') }}
         @endslot
@@ -25,40 +25,42 @@
                         <div class="col-lg-3">
                             <div class="nav nav-pills flex-column nav-pills-tab custom-verti-nav-pills text-center"
                                 role="tablist" aria-orientation="vertical">
-                                <a class="nav-link active show" id="custom-v-pills-restaurant-info-tab"
-                                    data-bs-toggle="pill" href="#custom-v-pills-restaurant-info" role="tab"
-                                    aria-controls="custom-v-pills-restaurant-info" aria-selected="true">
+                                <a class="nav-link {{ $tab === 'custom-v-pills-restaurant-info' ? 'active' : '' }}"
+                                    id="custom-v-pills-restaurant-info-tab" data-bs-toggle="pill"
+                                    href="#custom-v-pills-restaurant-info" role="tab"
+                                    aria-controls="custom-v-pills-restaurant-info"
+                                    aria-selected="{{ $tab === 'custom-v-pills-restaurant-info' ? 'true' : 'false' }}">
                                     <i class="ri-store-2-fill d-block fs-20 mb-1"></i>
                                     Restaurant Info</a>
-                                <a class="nav-link" id="custom-v-pills-delivery-settings-tab" data-bs-toggle="pill"
+                                <a class="nav-link {{ $tab === 'custom-v-pills-delivery-settings' ? 'active' : '' }}"
+                                    id="custom-v-pills-delivery-settings-tab" data-bs-toggle="pill"
                                     href="#custom-v-pills-delivery-settings" role="tab"
-                                    aria-controls="custom-v-pills-delivery-settings" aria-selected="false">
+                                    aria-controls="custom-v-pills-delivery-settings"
+                                    aria-selected="{{ $tab === 'custom-v-pills-delivery-settings' ? 'true' : 'false' }}">
                                     <i class="ri-truck-fill d-block fs-20 mb-1"></i>
                                     Delivery</a>
-                                <a class="nav-link" id="custom-v-pills-localization-tab" data-bs-toggle="pill"
+                                <a class="nav-link {{ $tab === 'custom-v-pills-localization' ? 'active' : '' }}"
+                                    id="custom-v-pills-localization-tab" data-bs-toggle="pill"
                                     href="#custom-v-pills-localization" role="tab"
-                                    aria-controls="custom-v-pills-localization" aria-selected="false">
+                                    aria-controls="custom-v-pills-localization"
+                                    aria-selected="{{ $tab === 'custom-v-pills-localization' ? 'true' : 'false' }}">
                                     <i class="ri-settings-4-fill d-block fs-20 mb-1"></i>
                                     Localization</a>
-                                <a class="nav-link" id="custom-v-pills-ordering-tab" data-bs-toggle="pill"
-                                    href="#custom-v-pills-ordering" role="tab" aria-controls="custom-v-pills-ordering"
-                                    aria-selected="false">
+                                <a class="nav-link {{ $tab === 'custom-v-pills-ordering' ? 'active' : '' }}"
+                                    id="custom-v-pills-ordering-tab" data-bs-toggle="pill" href="#custom-v-pills-ordering"
+                                    role="tab" aria-controls="custom-v-pills-ordering"
+                                    aria-selected="{{ $tab === 'custom-v-pills-ordering' ? 'true' : 'false' }}">
                                     <i class="ri-shopping-cart-2-fill d-block fs-20 mb-1"></i>
                                     Online Ordering</a>
-                                <a class="nav-link" id="custom-v-pills-menu-tab" data-bs-toggle="pill"
-                                    href="#custom-v-pills-menu" role="tab" aria-controls="custom-v-pills-menu"
-                                    aria-selected="false">
-                                    <i class="ri-shopping-basket-2-line d-block fs-20 mb-1"></i>
-                                    Menu Management</a>
                             </div>
+
                         </div> <!-- end col-->
                         <div class="col-lg-9">
                             <div class="tab-content text-muted mt-3 mt-lg-0">
-                                @include('store.modules.settings.partials.system.restaurant-info')
-                                @include('store.modules.settings.partials.system.delivery')
-                                @include('store.modules.settings.partials.system.localization')
-                                @include('store.modules.settings.partials.system.ordering')
-                                @include('store.modules.settings.partials.system.menu')
+                                @include('vendor.modules.settings.partials.system.restaurant-info')
+                                @include('vendor.modules.settings.partials.system.delivery')
+                                @include('vendor.modules.settings.partials.system.localization')
+                                @include('vendor.modules.settings.partials.system.ordering')
                             </div>
                         </div> <!-- end col-->
                     </div> <!-- end row-->
@@ -68,3 +70,32 @@
         </div>
     </div>
 @endsection
+@push('script')
+    <script>
+        $(document).ready(function() {
+            function getParameterByName(name) {
+                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                    results = regex.exec(location.search);
+                return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+            }
+            var tabName = getParameterByName('tab');
+            if (tabName) {
+                $('.nav-pills .nav-link').removeClass('active');
+                $('#' + tabName + '-tab').addClass('active');
+
+                $('.tab-content .tab-pane').removeClass('active show');
+                $('#' + tabName).addClass('active show');
+            }
+
+            $('.nav-pills .nav-link').click(function(e) {
+                e.preventDefault();
+                var tabId = $(this).attr('id').replace('-tab', '');
+                history.pushState(null, '', '?tab=' + tabId);
+                $('.nav-pills .nav-link, .tab-content .tab-pane').removeClass('active show');
+                $(this).addClass('active');
+                $('#' + tabId).addClass('active show');
+            });
+        });
+    </script>
+@endpush

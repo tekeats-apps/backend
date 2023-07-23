@@ -5,6 +5,7 @@ namespace App\Models\Vendor;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Customer extends Authenticatable
@@ -77,6 +78,40 @@ class Customer extends Authenticatable
     public function getIsEmailVerifiedAttribute()
     {
         return !is_null($this->email_verified_at);
+    }
+
+    public function scopeList($query, $search, $status, $sortField, $sortDirection)
+    {
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('first_name', 'like', '%' . $search . '%')
+                    ->orWhere('last_name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            });
+        }
+
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+        return $query->orderBy($sortField, $sortDirection);
+    }
+
+    protected function statusText(): Attribute
+    {
+        $status = 'Inactive';
+        if ($this->status) {
+            $status = 'Active';
+        }
+        return new Attribute(
+            get: fn () => $status,
+        );
+    }
+
+    protected function fullName(): Attribute
+    {
+        return new Attribute(
+            get: fn () => "{$this->first_name} {$this->last_name}",
+        );
     }
 
     public function scopeCreateNew($query, $first_name, $last_name, $email, $password)

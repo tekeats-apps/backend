@@ -13,6 +13,7 @@ use App\Http\Controllers\Vendor\DashboardController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\Vendor\AuthController as StoreAuthController;
+use App\Http\Controllers\Vendor\CustomerController;
 use App\Http\Controllers\Vendor\UserController as StoreUserController;
 
 /*
@@ -148,6 +149,17 @@ Route::middleware([
                     Route::get('/payment-settings', 'paymentSettings')->name('payment');
                     Route::get('/notification-settings', 'notificationSettings')->name('notification');
                     Route::get('/storage-settings', 'storageSettings')->name('storage');
+                });
+
+            // Customers Routes Group
+            Route::controller(CustomerController::class)
+                ->prefix('customers')
+                ->as('vendor.customers.')
+                ->group(function () {
+                    Route::get('/', 'index')->name('list');
+                    Route::get('/edit/{user}', 'edit')->name('edit');
+                    Route::put('/update/{user}', 'update')->name('update');
+                    Route::put('/password/update/{user}', 'passwordUpdate')->name('password.update');
                 });
         });
     });
