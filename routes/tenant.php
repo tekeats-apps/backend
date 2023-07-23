@@ -146,9 +146,8 @@ Route::middleware([
                 ->as('vendor.settings.')
                 ->group(function () {
                     Route::get('/system-settings', 'systemSettings')->name('system');
-                    Route::get('/payment-settings', 'paymentSettings')->name('payment');
-                    Route::get('/notification-settings', 'notificationSettings')->name('notification');
-                    Route::get('/storage-settings', 'storageSettings')->name('storage');
+                    Route::get('/opening/hours', 'openingHours')->name('opening.hours');
+                    Route::post('/opening/hours/store', 'saveOpeningHours')->name('store.opening.hours');
                 });
 
             // Customers Routes Group

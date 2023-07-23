@@ -96,15 +96,9 @@
                                 <a href="{{ route('vendor.settings.system') }}" class="nav-link {{ Route::is('vendor.settings.system') ? 'active' : '' }}">System
                                     Settings</a>
                             </li>
-                            {{-- <li class="nav-item">
-                                <a href="{{ route('vendor.settings.notification') }}" class="nav-link {{ Route::is('vendor.settings.notification') ? 'active' : '' }}"> Notifications Settings</a>
-                            </li>
                             <li class="nav-item">
-                                <a href="{{ route('vendor.settings.storage') }}" class="nav-link {{ Route::is('vendor.settings.storage') ? 'active' : '' }}">Storage Settings</a>
+                                <a href="{{ route('vendor.settings.opening.hours') }}" class="nav-link {{ Route::is('vendor.settings.opening.hours') ? 'active' : '' }}"> Opening Hours</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('vendor.settings.payment') }}" class="nav-link {{ Route::is('vendor.settings.payment') ? 'active' : '' }}">Payment Settings</a>
-                            </li> --}}
                         </ul>
                     </div>
                 </li>
