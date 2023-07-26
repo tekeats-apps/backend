@@ -2,6 +2,10 @@
 @section('title')
     {{ __('System Settings') }}
 @endsection
+@push('css')
+    @include('plugins.dropify.css')
+@endpush
+
 @section('content')
     {{-- Breadcrumbs Component --}}
     @component('vendor.layouts.components.breadcrumb')
@@ -32,6 +36,12 @@
                                     aria-selected="{{ $tab === 'custom-v-pills-restaurant-info' ? 'true' : 'false' }}">
                                     <i class="ri-store-2-fill d-block fs-20 mb-1"></i>
                                     Restaurant Info</a>
+                                <a class="nav-link {{ $tab === 'custom-v-pills-media' ? 'active' : '' }}"
+                                    id="custom-v-pills-media-tab" data-bs-toggle="pill" href="#custom-v-pills-media"
+                                    role="tab" aria-controls="custom-v-pills-media"
+                                    aria-selected="{{ $tab === 'custom-v-pills-media' ? 'true' : 'false' }}">
+                                    <i class="ri-image-2-fill d-block fs-20 mb-1"></i>
+                                    Media</a>
                                 <a class="nav-link {{ $tab === 'custom-v-pills-delivery-settings' ? 'active' : '' }}"
                                     id="custom-v-pills-delivery-settings-tab" data-bs-toggle="pill"
                                     href="#custom-v-pills-delivery-settings" role="tab"
@@ -52,6 +62,7 @@
                                     aria-selected="{{ $tab === 'custom-v-pills-ordering' ? 'true' : 'false' }}">
                                     <i class="ri-shopping-cart-2-fill d-block fs-20 mb-1"></i>
                                     Online Ordering</a>
+
                             </div>
 
                         </div> <!-- end col-->
@@ -61,6 +72,7 @@
                                 @include('vendor.modules.settings.partials.system.delivery')
                                 @include('vendor.modules.settings.partials.system.localization')
                                 @include('vendor.modules.settings.partials.system.ordering')
+                                @include('vendor.modules.settings.partials.system.media')
                             </div>
                         </div> <!-- end col-->
                     </div> <!-- end row-->
@@ -71,6 +83,7 @@
     </div>
 @endsection
 @push('script')
+    @include('plugins.dropify.js')
     <script>
         $(document).ready(function() {
             function getParameterByName(name) {

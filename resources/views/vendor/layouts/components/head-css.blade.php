@@ -14,9 +14,13 @@
 
 <link href="{{ URL::asset('assets/libs/toastr/toastr.min.css') }}" rel="stylesheet" type="text/css" />
 
+<style>
+    .dropify-wrapper .dropify-message p {
+        font-family: 'dropify' !important;
+        font-size: 30px !important;
+    }
+</style>
+
 @livewireStyles
 
 @stack('css')
-
-
-
