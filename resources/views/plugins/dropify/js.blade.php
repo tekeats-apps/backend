@@ -3,7 +3,6 @@
     var drEvent = $('.dropify').dropify();
 
     function removeImage(recordId, tableField, tableName, imagePath) {
-        console.log("🚀 ~ file: js.blade.php:6 ~ removeImage ~ tableField:", tableField)
         $.ajax({
             type: 'POST',
             url: '{{ route('dropify.remove.image') }}', // Change this to the actual route
