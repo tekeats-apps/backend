@@ -2,10 +2,6 @@
 @section('title')
     {{ __('System Settings') }}
 @endsection
-@push('css')
-    @include('plugins.dropify.css')
-@endpush
-
 @section('content')
     {{-- Breadcrumbs Component --}}
     @component('vendor.layouts.components.breadcrumb')
@@ -83,7 +79,6 @@
     </div>
 @endsection
 @push('script')
-    @include('plugins.dropify.js')
     <script>
         $(document).ready(function() {
             function getParameterByName(name) {

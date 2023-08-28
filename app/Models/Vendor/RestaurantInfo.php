@@ -9,6 +9,8 @@ class RestaurantInfo extends Model
 {
     use HasFactory;
 
+    const IMAGE_PATH = 'restaurant';
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);

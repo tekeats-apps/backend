@@ -7,15 +7,21 @@ use App\Models\Vendor\Slot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Vendor\RestaurantMedia;
+use App\Traits\TenantImageUploadTrait;
 use App\Models\Vendor\RestaurantOpeningHour;
+use App\Http\Requests\Vendor\Settings\MediaUploadRequest;
 use App\Http\Requests\Vendor\Settings\StoreOpeningHoursRequest;
 
 class SettingController extends Controller
 {
+    use TenantImageUploadTrait;
+
     public function systemSettings(Request $request)
     {
         $tab = $request->query('tab', 'custom-v-pills-restaurant-info');
-        return view('vendor.modules.settings.system-settings', compact('tab'));
+        $media = RestaurantMedia::first();
+        return view('vendor.modules.settings.system-settings', compact('tab', 'media'));
     }
 
     public function openingHours()
@@ -73,6 +79,36 @@ class SettingController extends Controller
 
         // Delete the removed slots
         Slot::whereIn('id', $slotsToRemove)->delete();
+    }
+
+    public function updateMedia(MediaUploadRequest $request)
+    {
+        $validatedData = $request->validated();
+        try {
+            $media = RestaurantMedia::firstOrCreate([]);
+            $this->processMediaUpload($validatedData, $media, 'logo');
+            $this->processMediaUpload($validatedData, $media, 'favicon');
+
+            return redirect()->route('vendor.settings.system', ['tab' => 'custom-v-pills-media'])->with('success', "Media Upload Successfully!");
+        } catch (Exception $e) {
+            return redirect()->route('vendor.settings.system', ['tab' => 'custom-v-pills-media'])->with('error', $e->getMessage());
+        }
+    }
+
+    protected function processMediaUpload($validatedData, $media, $fieldName)
+    {
+        if (isset($validatedData[$fieldName]) && !empty($validatedData[$fieldName])) {
+            $image = $validatedData[$fieldName];
+            $module = RestaurantMedia::IMAGE_PATH;
+            $tableField = $fieldName;
+            $tableName = 'restaurant_media';
+
+            if ($media->{$fieldName}) {
+                $this->delete_image_by_name($module, $media->{$fieldName});
+            }
+
+            $this->uploadImage($image, $module, $media->id, $tableField, $tableName);
+        }
     }
 
 
