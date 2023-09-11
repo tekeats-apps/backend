@@ -7,6 +7,7 @@ use App\Http\Controllers\Vendor\TagController;
 use App\Http\Controllers\Vendor\HomeController;
 use App\Http\Controllers\Vendor\RoleController;
 use App\Http\Controllers\QuickSettingController;
+use App\Http\Controllers\Vendor\OrderController;
 use App\Http\Controllers\Vendor\ProductController;
 use App\Http\Controllers\Vendor\SettingController;
 use App\Http\Controllers\Vendor\CategoryController;
@@ -161,6 +162,16 @@ Route::middleware([
                     Route::get('/edit/{user}', 'edit')->name('edit');
                     Route::put('/update/{user}', 'update')->name('update');
                     Route::put('/password/update/{user}', 'passwordUpdate')->name('password.update');
+                });
+
+            //Orders Routes Group
+            Route::controller(OrderController::class)
+                ->prefix('orders')
+                ->as('vendor.order.')
+                ->group(function () {
+                    Route::get('/',  'index')->name('list');
+                    Route::get('/create',  'create')->name('create');
+                    Route::post('/create',  'store')->name('store');
                 });
         });
     });
