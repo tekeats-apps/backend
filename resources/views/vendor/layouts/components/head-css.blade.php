@@ -14,9 +14,13 @@
 
 <link href="{{ URL::asset('assets/libs/toastr/toastr.min.css') }}" rel="stylesheet" type="text/css" />
 
+<style>
+    .dropify-wrapper .dropify-message p {
+        font-family: 'dropify' !important;
+        font-size: 30px !important;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 @livewireStyles
 
 @stack('css')
-
-
-

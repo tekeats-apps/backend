@@ -6,14 +6,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Vendor\TagController;
 use App\Http\Controllers\Vendor\HomeController;
 use App\Http\Controllers\Vendor\RoleController;
+use App\Http\Controllers\QuickSettingController;
 use App\Http\Controllers\Vendor\ProductController;
 use App\Http\Controllers\Vendor\SettingController;
 use App\Http\Controllers\Vendor\CategoryController;
+use App\Http\Controllers\Vendor\CustomerController;
 use App\Http\Controllers\Vendor\DashboardController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\Vendor\AuthController as StoreAuthController;
-use App\Http\Controllers\Vendor\CustomerController;
 use App\Http\Controllers\Vendor\UserController as StoreUserController;
 
 /*
@@ -33,7 +34,7 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
-
+    Route::post('dropify/remove/image', [QuickSettingController::class, 'removeDropifyImage'])->name('dropify.remove.image');
     Route::prefix('vendor')->group(function () {
 
         // Auth Routes Group (Guest)
@@ -146,9 +147,9 @@ Route::middleware([
                 ->as('vendor.settings.')
                 ->group(function () {
                     Route::get('/system-settings', 'systemSettings')->name('system');
-                    Route::get('/payment-settings', 'paymentSettings')->name('payment');
-                    Route::get('/notification-settings', 'notificationSettings')->name('notification');
-                    Route::get('/storage-settings', 'storageSettings')->name('storage');
+                    Route::get('/opening/hours', 'openingHours')->name('opening.hours');
+                    Route::post('/opening/hours/store', 'saveOpeningHours')->name('store.opening.hours');
+                    Route::post('/update/media', 'updateMedia')->name('update.media');
                 });
 
             // Customers Routes Group

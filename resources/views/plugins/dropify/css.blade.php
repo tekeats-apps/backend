@@ -2,7 +2,7 @@
 <style type="text/css">
     @font-face {
         font-family: "dropify";
-        src: url('assets/libs/dropify/dist/fonts/dropify.tff')";
+        src: "{{ URL::asset('assets/libs/dropify/dist/fonts/dropify.ttf') }}";
 
     }
 </style>
