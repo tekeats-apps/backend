@@ -170,8 +170,6 @@ Route::middleware([
                 ->as('vendor.order.')
                 ->group(function () {
                     Route::get('/',  'index')->name('list');
-                    Route::get('/create',  'create')->name('create');
-                    Route::post('/create',  'store')->name('store');
                 });
         });
     });

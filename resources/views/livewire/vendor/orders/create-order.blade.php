@@ -31,37 +31,42 @@
                                         <h5 class="card-title">{{ $product['name'] }}</h5>
                                         <p class="card-text">Price: ${{ number_format($product['price'], 2) }}</p>
 
-                                        <!-- Variant Selection -->
-                                        <div class="mb-3">
-                                            <label for="variant-selection-{{ $index }}" class="form-label">Select
-                                                Variant (Optional)</label>
-                                            <select class="form-control" id="variant-selection-{{ $index }}"
-                                                wire:change="updateProductVariant({{ $index }}, $event.target.value)">
-                                                <!-- Populate this dropdown with variants from your database -->
-                                                <option value="">--Select Variant--</option>
-                                                @foreach ($variants as $variant)
-                                                    <option value="{{ $variant['id'] }}"
-                                                        {{ $product['variant'] == $variant['id'] ? 'selected' : '' }}>
-                                                        {{ $variant['name'] }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <!-- Extras Selection -->
-                                        <div class="mb-3">
-                                            <label for="extras-selection-{{ $index }}" class="form-label">Select
-                                                Extras (Optional)</label>
-                                            <select class="form-control" id="extras-selection-{{ $index }}"
-                                                wire:change="updateProductExtras({{ $index }}, $event.target.value)">
-                                                <!-- Populate this dropdown with extras from your database -->
-                                                <option value="">--Select Extras--</option>
-                                                @foreach ($extras as $extra)
-                                                    <option value="{{ $extra['id'] }}"
-                                                        {{ $product['extras'] == $extra['id'] ? 'selected' : '' }}>
-                                                        {{ $extra['name'] }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
+                                        @if (!empty($product['variants']) && is_array($product['variants']))
+                                            <div class="mb-3">
+                                                <label for="variant-selection-{{ $index }}"
+                                                    class="form-label">Select
+                                                    Variant (Optional)</label>
+                                                <select class="form-control" id="variant-selection-{{ $index }}"
+                                                    wire:change="updateProductVariant({{ $index }}, $event.target.value)">
+                                                    <option value="">--Select Variant--</option>
+                                                    @foreach ($product['variants'] as $variant)
+                                                        <option value="{{ $variant['id'] }}"
+                                                            {{ $product['variant'] == $variant['id'] ? 'selected' : '' }}>
+                                                            {{ $variant['name'] }}
+                                                            (${{ number_format($variant['price'], 2) }})
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @endif
+                                        @if (!empty($product['variants']) && is_array($product['variants']))
+                                            <div class="mb-3">
+                                                <label for="extras-selection-{{ $index }}"
+                                                    class="form-label">Select
+                                                    Extras (Optional)</label>
+                                                <select class="form-control" id="extras-selection-{{ $index }}"
+                                                    wire:change="updateProductExtras({{ $index }}, $event.target.value)">
+                                                    <option value="">--Select Extras--</option>
+                                                    @foreach ($product['extras'] as $extra)
+                                                        <option value="{{ $extra['id'] }}"
+                                                            {{ $product['extras'] == $extra['id'] ? 'selected' : '' }}>
+                                                            {{ $extra['name'] }}
+                                                            (${{ number_format($extra['price'], 2) }})
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @endif
                                         <!-- Quantity -->
                                         <div class="mb-3">
                                             <label for="product-quantity-{{ $index }}"
@@ -103,7 +108,6 @@
                                         <tr>
                                             <td>
                                                 <div class="avatar-md bg-light rounded p-1">
-                                                    <!-- You can dynamically load product images here -->
                                                     <img src="{{ URL::asset('build/images/products/img-placeholder.png') }}"
                                                         alt="" class="img-fluid d-block">
                                                 </div>
@@ -112,22 +116,24 @@
                                                 <h5 class="fs-14">{{ $product['name'] }}</h5>
                                                 <p class="text-muted mb-0">${{ number_format($product['price'], 2) }} x
                                                     {{ $product['quantity'] }}</p>
-                                                @if ($product['variant'])
-                                                    <p class="text-muted mb-0">
-                                                        Variant:
-                                                        {{ collect($variants)->firstWhere('id', $product['variant'])['name'] }}
-                                                        -
-                                                        ${{ number_format(collect($variants)->firstWhere('id', $product['variant'])['price'], 2) }}
+                                                {{-- @if ($product['variants'])
+                                                    <p class="mb-0">
+                                                        Variants:
                                                     </p>
+                                                    <li class="text-muted mb-0">
+                                                        {{ collect($product['variants'])->firstWhere('id', $product['variant'])['name'] }}
+                                                        (${{ number_format(collect($product['variants'])->firstWhere('id', $product['variant'])['price'], 2) }})
+                                                    </li>
                                                 @endif
                                                 @if ($product['extras'])
-                                                    <p class="text-muted mb-0">
+                                                    <p class="mb-0">
                                                         Extras:
-                                                        {{ collect($extras)->firstWhere('id', $product['extras'])['name'] }}
-                                                        -
-                                                        ${{ number_format(collect($extras)->firstWhere('id', $product['extras'])['price'], 2) }}
                                                     </p>
-                                                @endif
+                                                    <li class="text-muted mb-0">
+                                                        {{ collect($extras)->firstWhere('id', $product['extras'])['name'] }}
+                                                        (${{ number_format(collect($extras)->firstWhere('id', $product['extras'])['price'], 2) }})
+                                                    </li>
+                                                @endif --}}
                                             </td>
                                             <td class="text-end">
                                                 ${{ number_format($product['subtotal'], 2) }}</td>
