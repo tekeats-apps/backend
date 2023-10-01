@@ -16,10 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('variant_id')->nullable();
-            $table->unsignedBigInteger('extras_id')->nullable();
-
+            $table->json('extras')->nullable();
             $table->integer('quantity')->default(1);
-
             $table->text('special_instructions')->nullable();
 
             $table->decimal('subtotal', 10, 2);
@@ -29,7 +27,13 @@ return new class extends Migration
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('variant_id')->references('id')->on('variants')->onDelete('set null');
-            $table->foreign('extras_id')->references('id')->on('extras')->onDelete('set null');
+
+            // Indexes
+            $table->index('order_id');
+            $table->index('product_id');
+            $table->index('variant_id');
+            $table->index(['order_id', 'product_id']); // composite index
+            $table->index(['order_id', 'created_at']); // for ordering by creation time within a specific order
         });
     }
 

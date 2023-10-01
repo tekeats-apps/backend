@@ -42,6 +42,15 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+
+            // Indexes
+            $table->index('customer_id');
+            $table->index('status');
+            $table->index('payment_method');
+            $table->index('order_type');
+            $table->index(['customer_id', 'status']); // Composite index
+            $table->index(['customer_id', 'order_type']);
+            $table->index(['customer_id', 'created_at']); // For ordering by creation time within a specific customer
         });
     }
 
