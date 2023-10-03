@@ -225,6 +225,7 @@ return [
     "privacy-policy" => "Política de privacidad",
     "hot" => "Caliente",
 
-
+    "plugin" => "complemento",
+    "plugins" => "complementos",
 ];
 ?>
