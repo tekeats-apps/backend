@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Plugin extends Model
 {
@@ -34,10 +36,25 @@ class Plugin extends Model
             $query->where(function ($subQuery) use ($search) {
                 $subQuery->where('name', 'like', '%' . $search . '%')
                     ->orWhere('description', 'like', '%' . $search . '%')
-                    ->orWhere('version', 'like', '%' . $search . '%');
+                    ->orWhere('version', 'like', '%' . $search . '%')
+                    ->orWhereHas('type', function ($query) use ($search) {
+                        $query->where('name', 'like', '%' . $search . '%');
+                    });
             });
         }
 
         return $query->orderBy($sortField, $sortDirection);
+    }
+
+    public function featured(): Attribute
+    {
+        return new Attribute(
+            set: fn ($value) => $value === 'on' ? 1 : 0
+        );
+    }
+
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(PluginType::class, 'plugin_type_id');
     }
 }

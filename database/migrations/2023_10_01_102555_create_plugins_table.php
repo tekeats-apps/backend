@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->unsignedBigInteger('plugin_type_id');
+            $table->foreign('plugin_type_id')->references('id')->on('plugin_types')->onDelete('cascade');
             $table->string('name');
             $table->text('image')->nullable();
             $table->text('documentation')->nullable();

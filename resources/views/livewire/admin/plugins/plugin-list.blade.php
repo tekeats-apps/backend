@@ -53,16 +53,14 @@
                         <option value="expired">Expired</option>
                     </select>
                 </div>
-            </div>
-            <div class="col-xxl-2 col-sm-4">
-                <label for="status"> Payment Status</label>
+            </div>--}}
+            {{-- <div class="col-xxl-2 col-sm-4">
+                <label for="status"> Plugin Status</label>
                 <div class="input-light">
-                    <select class="form-control" wire:model.debounce.500ms="paymentStatus" data-choices
+                    <select class="form-control" wire:model.debounce.500ms="pluginStatus" data-choices
                         data-choices-search-false>
-                        <option value="">All</option>
-                        <option value="paid">Paid</option>
-                        <option value="unpaid">Unpaid</option>
-                        <option value="failed">Failed</option>
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
                     </select>
                 </div>
             </div> --}}
@@ -80,10 +78,10 @@
                                 <label class="form-check-label" for="responsivetableCheck"></label>
                             </div>
                         </th>
-                        <th class="sort text-uppercase" scope="col" wire:click="sortBy('customer_name')">Plugin Name
+                        <th class="sort text-uppercase" scope="col">Plugin Name
                         </th>
+                        <th class="sort text-uppercase" scope="col">Type</th>
                         <th class="sort text-uppercase" scope="col">Description</th>
-                        {{-- <th class="sort text-uppercase" scope="col">Version</th> --}}
                         <th class="sort text-uppercase" scope="col">Status</th>
                         <th class="text-uppercase" scope="col">Action</th>
                     </tr>
@@ -110,11 +108,12 @@
                                         </div>
                                     </div>
                                 </td>
-
+                                <td>
+                                    {{ $plugin?->type?->name }}
+                                </td>
                                 <td>
                                     {{ Str::limit($plugin->description, 40, '...') }}
                                 </td>
-
                                 <td>
                                     @if ($plugin->active)
                                         <span class="text-success">
@@ -131,7 +130,7 @@
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
-                                            <a class="dropdown-item" href="javascript:void(0);" data-id="">
+                                            <a class="dropdown-item" href="{{ route('admin.plugins.edit', $plugin?->uuid) }}" data-id="{{ $plugin?->uuid }}">
                                                 <i class="ri-edit-fill align-bottom me-2 text-muted"></i>
                                                 Edit</a>
                                         </li>
@@ -140,7 +139,7 @@
                                                 View</a></li>
                                         <li>
                                             <a class="dropdown-item" wire:click="destroy('{{ $plugin?->uuid }}')"
-                                                href="javascript:void(0);" data-id="">
+                                                href="javascript:void(0);" data-id="" data-toggle="modal" data-target="#deletePlugin">
                                                 <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
                                                 Delete</a>
                                         </li>
@@ -173,7 +172,7 @@
         <!-- end table responsive -->
 
         <!-- Modal -->
-        <div class="modal fade flip" id="deleteOrder" tabindex="-1" aria-labelledby="deleteOrderLabel"
+        <div class="modal fade flip" id="deletePlugin" tabindex="-1" aria-labelledby="deletePluginLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">

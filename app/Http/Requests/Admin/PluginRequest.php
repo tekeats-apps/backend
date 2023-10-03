@@ -22,18 +22,35 @@ class PluginRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'plugin_type_id' => ['required'],
-            'name' => ['required', 'string', 'max:255'],
-            'image' => ['nullable', File::types(['png', 'jpg', 'jpeg'])->size(1024 * 2)],
-            'documentation' => ['nullable', File::types('pdf')->size(1024 * 2)],
-            'video' => ['nullable', 'url'],
-            'version' => ['nullable', 'numeric', 'between:0,99.99'],
-            'description' => ['required', 'string', 'max:20000'],
-            'is_paid' => ['required', 'boolean'],
-            'active' => ['required', 'boolean'],
-            'featured' => ['nullable']
-        ];
+        switch ($this->getMethod()) {
+            case 'POST':
+                return [
+                    'plugin_type_id' => ['required'],
+                    'name' => ['required', 'string', 'max:255'],
+                    'image' => ['nullable', File::types(['png', 'jpg', 'jpeg'])->size(1024 * 2)],
+                    'documentation' => ['nullable', File::types('pdf')->size(1024 * 2)],
+                    'video' => ['nullable', 'url'],
+                    'version' => ['nullable', 'numeric', 'between:0,99.99'],
+                    'description' => ['required', 'string', 'max:20000'],
+                    'is_paid' => ['required', 'boolean'],
+                    'active' => ['required', 'boolean'],
+                    'featured' => ['nullable']
+                ];
+                break;
+            case 'PUT':
+                return [
+                    'plugin_type_id' => ['required'],
+                    'name' => ['required', 'string', 'max:255'],
+                    'image' => ['nullable', File::types(['png', 'jpg', 'jpeg'])->size(1024 * 2)],
+                    'documentation' => ['nullable', File::types('pdf')->size(1024 * 2)],
+                    'video' => ['nullable', 'url'],
+                    'version' => ['nullable', 'numeric', 'between:0,99.99'],
+                    'description' => ['required', 'string', 'max:20000'],
+                    'is_paid' => ['required', 'boolean'],
+                    'active' => ['required', 'boolean'],
+                    'featured' => ['nullable']
+                ];
+        }
     }
 
     public function messages()

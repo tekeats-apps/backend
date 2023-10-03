@@ -19,7 +19,7 @@ class PluginList extends Component
 
     protected function getPlugins()
     {
-        return Plugin::getList($this->search, $this->sortField, $this->sortDirection)->paginate($this->perPage);
+        return Plugin::with('type')->getList($this->search, $this->sortField, $this->sortDirection)->paginate($this->perPage);
     }
 
     public function destroy($uuid)

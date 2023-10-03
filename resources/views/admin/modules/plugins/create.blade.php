@@ -33,8 +33,11 @@
                                     <select class="form-select @error('plugin_type_id') is-invalid @enderror"
                                         name="plugin_type_id" id="plugin_type" required>
                                         <option value="">Select Plugin Type</option>
-                                        <option value="type1">Type 1</option>
-                                        <option value="type2">Type 2</option>
+                                        @isset($pluginTypes)
+                                            @foreach ($pluginTypes as $pluginType)
+                                                <option value="{{ $pluginType?->id }}">{{ $pluginType?->name }}</option>
+                                            @endforeach
+                                        @endisset
                                     </select>
                                     @error('plugin_type_id')
                                         <div class="invalid-feedback">{{ $message }}</div>

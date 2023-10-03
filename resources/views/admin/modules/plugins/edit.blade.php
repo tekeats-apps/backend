@@ -12,7 +12,7 @@
             Manage Plugins
         @endslot
     @endcomponent
-    <form id="plugin-form" action="{{ route('admin.plugins.update') }}" method="POST" autocomplete="off"
+    <form id="plugin-form" action="{{ route('admin.plugins.update', $plugin?->uuid) }}" method="POST" autocomplete="off"
         enctype="multipart/form-data">
         @csrf @method('PUT')
         <div class="row">
@@ -33,8 +33,12 @@
                                     <select class="form-select @error('plugin_type_id') is-invalid @enderror"
                                         name="plugin_type_id" id="plugin_type" required>
                                         <option value="">Select Plugin Type</option>
-                                        <option value="type1">Type 1</option>
-                                        <option value="type2">Type 2</option>
+                                        @isset($pluginTypes)
+                                            @foreach ($pluginTypes as $pluginType)
+                                                <option value="{{ $pluginType?->id }}" @selected($pluginType?->id == $plugin?->type?->id)>
+                                                    {{ $pluginType?->name }}</option>
+                                            @endforeach
+                                        @endisset
                                     </select>
                                     @error('plugin_type_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -46,8 +50,8 @@
                                 <div class="mb-3">
                                     <label class="form-label">Name</label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                        name="name" value="{{ $plugin?->name }}" id="name"
-                                        placeholder="Enter name" required>
+                                        name="name" value="{{ $plugin?->name }}" id="name" placeholder="Enter name"
+                                        required>
                                     @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -150,7 +154,8 @@
 
                             <div class="col-lg-12 mb-3">
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="featured" name="featured" @checked($plugin?->featured)/>
+                                    <input type="checkbox" class="form-check-input" id="featured" name="featured"
+                                        @checked($plugin?->featured) />
                                     <label class="form-check-label" for="featured">Featured ?</label>
                                 </div>
                             </div>

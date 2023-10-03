@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Plugin;
+use App\Models\PluginType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PluginRequest;
@@ -14,7 +15,6 @@ class PluginController extends Controller
      */
     public function index()
     {
-        // dd(Plugin::all());
         return view('admin.modules.plugins.index');
     }
 
@@ -23,7 +23,8 @@ class PluginController extends Controller
      */
     public function create()
     {
-        return view('admin.modules.plugins.create');
+        $pluginTypes = PluginType::all();
+        return view('admin.modules.plugins.create', compact('pluginTypes'));
     }
 
     /**
@@ -50,11 +51,12 @@ class PluginController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $uuid)
     {
         try {
-            $plugin = Plugin::findOrFail($id);
-            return view('admin.modules.plugins.edit', compact('plugin'));
+            $pluginTypes = PluginType::all();
+            $plugin = Plugin::with('type')->findOrFail($uuid);
+            return view('admin.modules.plugins.edit', compact('pluginTypes', 'plugin'));
         } catch (\Exception $e) {
             return redirect()->route('admin.plugins.list')->with('error', 'Failed to get plugin: ' . $e->getMessage());
         }
@@ -63,22 +65,14 @@ class PluginController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PluginRequest $request, string $id)
+    public function update(PluginRequest $request, string $uuid)
     {
         try {
-            $plugin = Plugin::findOrFail($id);
+            $plugin = Plugin::findOrFail($uuid);
             $plugin->update($request->validated());
             return redirect()->route('admin.plugins.list')->with('success', 'Plugin updated successfully!');
         } catch (\Exception $e) {
-            return redirect()->route('admin.plugins.list')->with('error', 'Failed to create plugin: ' . $e->getMessage());
+            return redirect()->route('admin.plugins.list')->with('error', 'Failed to update plugin: ' . $e->getMessage());
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
