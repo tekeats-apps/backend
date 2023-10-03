@@ -5,8 +5,9 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OrderController;
-use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PluginController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PluginTypeController;
 use App\Http\Controllers\Admin\RestaurantController;
 
 /*
@@ -96,13 +97,24 @@ Route::prefix('admin')->group(function () {
                 Route::post('/create',  'store')->name('store');
             });
 
-        // Plugins Routes Group
+        // Plugin Type Routes Group
+        Route::controller(PluginTypeController::class)
+            ->prefix('plugin-types')
+            ->as('admin.plugin.types.')->group(function () {
+                Route::get('/', 'index')->name('list');
+                Route::get('/create',  'create')->name('create');
+                Route::post('/store',  'store')->name('store');
+                Route::get('/edit/{id}',  'edit')->name('edit');
+                Route::put('/update/{id}', 'update')->name('update');
+            });
+
+        // Plugin Routes Group
         Route::controller(PluginController::class)
             ->prefix('plugins')
             ->as('admin.plugins.')->group(function () {
                 Route::get('/', 'index')->name('list');
                 Route::get('/create',  'create')->name('create');
-                Route::post('/create',  'store')->name('store');
+                Route::post('/store',  'store')->name('store');
             });
     });
 });

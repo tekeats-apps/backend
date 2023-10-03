@@ -1,13 +1,13 @@
-<div class="card" id="pluginList">
+<div class="card" id="pluginTypeList">
     <div class="card-header border-0">
         <div class="d-flex align-items-center">
-            <h5 class="card-title mb-0 flex-grow-1">@lang('translation.plugins')</h5>
+            <h5 class="card-title mb-0 flex-grow-1">Plugin Types</h5>
             <div class="flex-shrink-0">
                 <div class="d-flex gap-2 flex-wrap">
                     <button class="btn btn-primary" id="remove-actions" onClick="deleteMultiple()"><i
                             class="ri-delete-bin-2-line"></i></button>
-                    <a href="{{ route('admin.plugins.create') }}" class="btn btn-success"><i
-                            class="ri-add-line align-bottom me-1"></i> Create Plugin</a>
+                    <a href="{{ route('admin.plugin.types.create') }}" class="btn btn-success"><i
+                            class="ri-add-line align-bottom me-1"></i> Create Type</a>
                 </div>
             </div>
         </div>
@@ -18,54 +18,10 @@
                 <label for="search"> Search</label>
                 <div class="search-box">
                     <input type="text" wire:model.debounce.500ms="search" id="search"
-                        class="form-control search bg-light border-light"
-                        placeholder="Search for name, description, price or something...">
+                        class="form-control search bg-light border-light" placeholder="Search for name or something...">
                     <i class="ri-search-line search-icon"></i>
                 </div>
             </div>
-            {{-- <div class="col-xxl-2 col-sm-4">
-                <label for="end-date-field"> Start Date</label>
-                <input type="text" wire:model.defer="startDate"
-                    class="form-control bg-light border-light date-field @error('startDate') is-invalid @enderror"
-                    id="start-date-field" placeholder="Select start date">
-                @error('startDate')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-            <div class="col-xxl-2 col-sm-4">
-                <label for="end-date-field"> End Date</label>
-                <input type="text" wire:model.defer="endDate"
-                    class="form-control bg-light border-light date-field @error('endDate') is-invalid @enderror"
-                    id="end-date-field" placeholder="Select end date">
-                @error('endDate')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-            <div class="col-xxl-2 col-sm-4">
-                <label for="status"> Order Status</label>
-                <div class="input-light">
-                    <select class="form-control" wire:model.debounce.500ms="status" data-choices
-                        data-choices-search-false>
-                        <option value="">All</option>
-                        <option value="active">Active</option>
-                        <option value="pending">Pending</option>
-                        <option value="failed">Failed</option>
-                        <option value="expired">Expired</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-xxl-2 col-sm-4">
-                <label for="status"> Payment Status</label>
-                <div class="input-light">
-                    <select class="form-control" wire:model.debounce.500ms="paymentStatus" data-choices
-                        data-choices-search-false>
-                        <option value="">All</option>
-                        <option value="paid">Paid</option>
-                        <option value="unpaid">Unpaid</option>
-                        <option value="failed">Failed</option>
-                    </select>
-                </div>
-            </div> --}}
         </div>
     </div>
     <div class="card-body">
@@ -80,17 +36,14 @@
                                 <label class="form-check-label" for="responsivetableCheck"></label>
                             </div>
                         </th>
-                        <th class="sort text-uppercase" scope="col" wire:click="sortBy('customer_name')">Plugin Name
+                        <th class="sort text-uppercase" scope="col">Type Name
                         </th>
-                        <th class="sort text-uppercase" scope="col">Description</th>
-                        {{-- <th class="sort text-uppercase" scope="col">Version</th> --}}
-                        <th class="sort text-uppercase" scope="col">Status</th>
                         <th class="text-uppercase" scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @isset($plugins)
-                        @foreach ($plugins as $plugin)
+                    @isset($pluginTypes)
+                        @foreach ($pluginTypes as $type)
                             <tr>
                                 <th scope="row">
                                     <div class="form-check">
@@ -100,29 +53,7 @@
                                     </div>
                                 </th>
                                 <td>
-                                    <div class="d-flex gap-2 align-items-center">
-                                        <div class="flex-shrink-0">
-                                            <img src="{{ URL::asset('assets/images/users/avatar-3.jpg') }}" alt=""
-                                                class="avatar-xs rounded-circle" />
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            {{ $plugin?->name }}
-                                        </div>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    {{ Str::limit($plugin->description, 40, '...') }}
-                                </td>
-
-                                <td>
-                                    @if ($plugin->active)
-                                        <span class="text-success">
-                                            <i class="ri-checkbox-circle-line fs-17 align-middle"></i> Active</span>
-                                    @else
-                                        <span class="text-danger">
-                                            <i class="ri-close-circle-line fs-17 align-middle"></i> Inactive</span>
-                                    @endif
+                                    {{ $type?->name }}
                                 </td>
                                 <td>
                                     <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
@@ -131,15 +62,14 @@
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
-                                            <a class="dropdown-item" href="javascript:void(0);" data-id="">
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.plugin.types.edit', $type?->id) }}"
+                                                data-id="{{ $type?->id }}">
                                                 <i class="ri-edit-fill align-bottom me-2 text-muted"></i>
                                                 Edit</a>
                                         </li>
-                                        <li><a class="dropdown-item" href="javascript:void(0);" data-id="">
-                                                <i class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                View</a></li>
                                         <li>
-                                            <a class="dropdown-item" wire:click="destroy('{{ $plugin?->uuid }}')"
+                                            <a class="dropdown-item" wire:click="destroy('{{ $type?->id }}')"
                                                 href="javascript:void(0);" data-id="">
                                                 <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
                                                 Delete</a>
@@ -154,16 +84,15 @@
             {{-- <div>
                 {{ $plugins->links() }}
             </div> --}}
-            @unless (count($plugins))
+            @unless (count($pluginTypes))
                 <div class="noresult">
                     <div class="text-center">
                         <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
                             colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px">
                         </lord-icon>
                         <h5 class="mt-2">Sorry! No Result Found</h5>
-                        <p class="text-muted mb-0">We've searched more than 150+ plugins We
-                            did not find any
-                            plugins for you search.</p>
+                        <p class="text-muted mb-0">We've searched more than 150+ plugin types We
+                            did not find any types for you search.</p>
                     </div>
                 </div>
             @endunless
