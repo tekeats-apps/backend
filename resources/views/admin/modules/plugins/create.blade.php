@@ -125,37 +125,34 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-12 mb-3">
-                                <label for="payment_status" class="form-label">Payment Status</label>
-                                <select class="form-select @error('is_paid') is-invalid @enderror" name="is_paid"
-                                    id="payment_status" required>
-                                    <option value="">Select Payment Status</option>
-                                    <option value="1">Paid</option>
-                                    <option value="0">Unpaid</option>
-                                </select>
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="paid" name="is_paid" />
+                                    <label class="form-check-label" for="paid">Paid ?</label>
+                                </div>
                                 @error('is_paid')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback small">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <div class="col-lg-12 mb-3">
-                                <label for="plugin-status" class="form-label">Plugin Status</label>
-                                <select class="form-select @error('active') is-invalid @enderror" name="active"
-                                    id="plugin-status" required>
-                                    <option value="">Select Plugin Status</option>
-                                    <option value="1">Active</option>
-                                    <option value="0">Inactive</option>
-                                </select>
-                                @error('active')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-lg-12 mb-3">
+                            <div class="col-lg-6 mb-3">
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="featured" name="featured" />
                                     <label class="form-check-label" for="featured">Featured ?</label>
                                 </div>
+                                @error('featured')
+                                    <div class="invalid-feedback small">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="active" name="active" />
+                                    <label class="form-check-label" for="active">Active</label>
+                                </div>
+                                @error('active')
+                                    <div class="invalid-feedback small">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -178,15 +175,11 @@
                     plugin_type_id: "required",
                     name: "required",
                     description: "required",
-                    is_paid: "required",
-                    active: "required",
                 },
                 messages: {
                     plugin_type_id: "Please select the plugin type",
                     name: "Please enter the name",
                     description: "Please enter the description",
-                    is_paid: "Please select payment status of plugin",
-                    active: "Please select status of plugin",
                 }
             });
         });

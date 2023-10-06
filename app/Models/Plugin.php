@@ -46,6 +46,20 @@ class Plugin extends Model
         return $query->orderBy($sortField, $sortDirection);
     }
 
+    public function isPaid(): Attribute
+    {
+        return new Attribute(
+            set: fn ($value) => $value === 'on' ? 1 : 0
+        );
+    }
+
+    public function active(): Attribute
+    {
+        return new Attribute(
+            set: fn ($value) => $value === 'on' ? 1 : 0
+        );
+    }
+
     public function featured(): Attribute
     {
         return new Attribute(

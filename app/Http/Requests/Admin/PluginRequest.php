@@ -32,8 +32,8 @@ class PluginRequest extends FormRequest
                     'video' => ['nullable', 'url'],
                     'version' => ['nullable', 'numeric', 'between:0,99.99'],
                     'description' => ['required', 'string', 'max:20000'],
-                    'is_paid' => ['required', 'boolean'],
-                    'active' => ['required', 'boolean'],
+                    'is_paid' => ['nullable'],
+                    'active' => ['nullable'],
                     'featured' => ['nullable']
                 ];
                 break;
@@ -46,8 +46,8 @@ class PluginRequest extends FormRequest
                     'video' => ['nullable', 'url'],
                     'version' => ['nullable', 'numeric', 'between:0,99.99'],
                     'description' => ['required', 'string', 'max:20000'],
-                    'is_paid' => ['required', 'boolean'],
-                    'active' => ['required', 'boolean'],
+                    'is_paid' => ['nullable'],
+                    'active' => ['nullable'],
                     'featured' => ['nullable']
                 ];
         }
@@ -57,8 +57,6 @@ class PluginRequest extends FormRequest
     {
         return [
             'plugin_type_id.required' => 'The plugin type field is required.',
-            'is_paid.required' => 'The payment status field is required.',
-            'active.required' => 'The plugin status field is required.'
         ];
     }
 }
