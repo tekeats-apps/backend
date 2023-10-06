@@ -138,7 +138,7 @@
                                                 <i class="ri-eye-fill align-bottom me-2 text-muted"></i>
                                                 View</a></li>
                                         <li>
-                                            <a class="dropdown-item" wire:click="destroy('{{ $plugin?->uuid }}')"
+                                            <a class="dropdown-item" wire:click="confirmDelete('{{ $plugin?->uuid }}')"
                                                 href="javascript:void(0);" data-id="" data-toggle="modal" data-target="#deletePlugin">
                                                 <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
                                                 Delete</a>

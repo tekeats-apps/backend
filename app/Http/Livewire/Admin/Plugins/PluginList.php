@@ -12,6 +12,8 @@ class PluginList extends Component
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
 
+    protected $listeners = ['delete-plugin' => 'destroy'];
+
     public function render()
     {
         return view('livewire.admin.plugins.plugin-list', ['plugins' => $this->getPlugins()]);
@@ -20,6 +22,16 @@ class PluginList extends Component
     protected function getPlugins()
     {
         return Plugin::with('type')->getList($this->search, $this->sortField, $this->sortDirection)->paginate($this->perPage);
+    }
+
+    public function confirmDelete($id)
+    {
+        // Show the SweetAlert confirmation dialog
+        $this->emit('swal:confirm-delete', [
+            'title' => 'Are you sure?',
+            'text' => 'You are about to delete the plugin. This action cannot be undone.',
+            'pluginId' => $id,
+        ]);
     }
 
     public function destroy($uuid)

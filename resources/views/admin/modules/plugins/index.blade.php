@@ -2,6 +2,9 @@
 @section('title')
     @lang('translation.plugins')
 @endsection
+@push('css')
+    @include('plugins.sweetalert2.css')
+@endpush
 @section('content')
     {{-- Breadcrumbs Component --}}
     @component('admin.layouts.components.breadcrumb')
@@ -23,3 +26,24 @@
         <!--end col-->
     </div>
 @endsection
+@push('script')
+    @include('plugins.sweetalert2.js')
+    <script>
+        document.addEventListener('livewire:load', function() {
+            Livewire.on('swal:confirm-delete', function(data) {
+                Swal.fire({
+                    title: data.title,
+                    text: data.text,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Delete',
+                    cancelButtonText: 'Cancel',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.emit('delete-plugin', data.pluginId);
+                    }
+                });
+            });
+        });
+    </script>
+@endpush
