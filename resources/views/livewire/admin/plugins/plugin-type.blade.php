@@ -69,7 +69,7 @@
                                                 Edit</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" wire:click="destroy('{{ $type?->id }}')"
+                                            <a class="dropdown-item" wire:click="confirmDelete('{{ $type?->id }}')"
                                                 href="javascript:void(0);" data-id="">
                                                 <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
                                                 Delete</a>
