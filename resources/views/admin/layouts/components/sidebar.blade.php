@@ -58,6 +58,21 @@
                         <i class="ri-account-circle-fill"></i> <span>@lang('translation.users')</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ request()->is('admin/plans*') ? 'active' : '' }}" href="#sidebarPlans" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarPlans">
+                        <i class="ri-file-list-3-line"></i> <span>Plans</span>
+                    </a>
+                    <div class="collapse menu-dropdown {{ request()->is('admin/plans*') ? 'show' : '' }}" id="sidebarPlans">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.plans.features.list') }}" class="nav-link {{ request()->routeIs('admin.plans.features.list') ? 'active' : '' }}">Features</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Subscriptions</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
             </ul>
         </div>
         <!-- Sidebar -->
