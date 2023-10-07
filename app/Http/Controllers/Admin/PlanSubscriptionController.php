@@ -49,17 +49,27 @@ class PlanSubscriptionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $uuid)
     {
-        //
+        try {
+            $planSubscription = PlanSubscription::findOrFail($uuid);
+            return view('admin.modules.plan-subscriptions.edit', compact('planSubscription'));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.plans.subscriptions.list')->with('error', 'Failed to get plan subscription: ' . $e->getMessage());
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PlanSubscriptionRequest $request, string $uuid)
     {
-        //
+        try {
+            PlanSubscription::findOrFail($uuid)->update($request->validated());
+            return redirect()->route('admin.plans.subscriptions.list')->with('success', 'Plan subscription updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.plans.subscriptions.list')->with('error', 'Failed to update plan subscription: ' . $e->getMessage());
+        }
     }
 
     /**

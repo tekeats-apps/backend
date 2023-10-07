@@ -9,11 +9,11 @@
             Plan Subscriptions
         @endslot
         @slot('title')
-            Create Plan
+            Edit Plan
         @endslot
     @endcomponent
-    <form id="plan-subscription-form" action="{{ route('admin.plans.subscriptions.store') }}" method="POST" autocomplete="off">
-        @csrf
+    <form id="plan-subscription-form" action="{{ route('admin.plans.subscriptions.update', $planSubscription?->uuid) }}" method="POST" autocomplete="off">
+        @csrf @method('PUT')
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="card">
@@ -30,7 +30,7 @@
                                 <div class="mb-3">
                                     <label class="form-label required">Plan Name</label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                        name="name" value="{{ old('name') ?? '' }}" id="name"
+                                        name="name" value="{{ $planSubscription?->name }}" id="name"
                                         placeholder="Enter plan name" required>
                                     @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -43,8 +43,8 @@
                                 <select class="form-select @error('duration') is-invalid @enderror"
                                     name="duration" id="duration" required>
                                     <option value="">Select Duration Type</option>
-                                    <option value="Yearly">Yearly</option>
-                                    <option value="Monthly">Monthly</option>
+                                    <option value="Yearly" @selected($planSubscription?->duration === 'Yearly')>Yearly</option>
+                                    <option value="Monthly" @selected($planSubscription?->duration === 'Monthly')>Monthly</option>
                                 </select>
                                 @error('duration')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -55,7 +55,7 @@
                                 <div class="mb-3">
                                     <label class="form-label required">Price</label>
                                     <input type="number" class="form-control @error('price') is-invalid @enderror"
-                                        name="price" value="{{ old('price') ?? '' }}" id="price"
+                                        name="price" value="{{ $planSubscription?->price }}" id="price"
                                         placeholder="Enter price" required>
                                     @error('price')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -67,7 +67,7 @@
                                 <div class="mb-3">
                                     <label class="form-label">Discount</label>
                                     <input type="number" class="form-control @error('discount') is-invalid @enderror"
-                                        name="discount" value="{{ old('discount') ?? '' }}" id="discount"
+                                        name="discount" value="{{ $planSubscription?->discount }}" id="discount"
                                         placeholder="Enter discount" />
                                     @error('discount')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -80,7 +80,7 @@
                                     <label class="form-label">Trial Period</label>
                                     <input type="text"
                                         class="form-control @error('trial_period_days') is-invalid @enderror"
-                                        name="trial_period_days" value="{{ old('trial_period_days') ?? '' }}"
+                                        name="trial_period_days" value="{{ $planSubscription?->trial_period_days }}"
                                         id="trial_period_days" placeholder="Enter trial period days" />
                                     @error('trial_period_days')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -92,7 +92,7 @@
                                 <div class="mb-3">
                                     <label class="form-label required">Description</label>
                                     <textarea class="form-control @error('description') is-invalid @enderror" name="description"
-                                        placeholder="Enter plan description" id="description">{{ old('description') ?? '' }}</textarea>
+                                        placeholder="Enter plan description" id="description">{{ $planSubscription?->description }}</textarea>
                                     @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

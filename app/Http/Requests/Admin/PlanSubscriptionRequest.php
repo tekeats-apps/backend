@@ -21,13 +21,25 @@ class PlanSubscriptionRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'name' => ['required', 'string', 'max:255'],
-            'duration' => ['required', 'string','in:Monthly,Yearly'],
-            'price' => ['required', 'numeric', 'between:0,999999999.99'],
-            'discount' => ['nullable', 'numeric', 'between:0,999999999.99'],
-            'trial_period_days' => ['nullable', 'string', 'max:255'],
-            'description' => ['required', 'string', 'max:20000']
-        ];
+        switch ($this->getMethod()) {
+            case 'POST':
+                return [
+                    'name' => ['required', 'string', 'unique:plan_subscriptions,name', 'max:255'],
+                    'duration' => ['required', 'string', 'in:Monthly,Yearly'],
+                    'price' => ['required', 'numeric', 'between:0,999999999.99'],
+                    'discount' => ['nullable', 'numeric', 'between:0,999999999.99'],
+                    'trial_period_days' => ['nullable', 'string', 'max:255'],
+                    'description' => ['required', 'string', 'max:20000']
+                ];
+            case 'PUT':
+                return [
+                    'name' => ['required', 'string', 'unique:plan_subscriptions,name,' . $this->uuid. ',uuid', 'max:255'],
+                    'duration' => ['required', 'string', 'in:Monthly,Yearly'],
+                    'price' => ['required', 'numeric', 'between:0,999999999.99'],
+                    'discount' => ['nullable', 'numeric', 'between:0,999999999.99'],
+                    'trial_period_days' => ['nullable', 'string', 'max:255'],
+                    'description' => ['required', 'string', 'max:20000']
+                ];
+        }
     }
 }
