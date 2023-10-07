@@ -43,7 +43,12 @@ class PlanFeatureController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $planFeature = PlanFeature::findOrFail($id);
+            return view('admin.modules.plan-features.show', compact('planFeature'));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.plans.features.list')->with('error', 'Failed to get plan features: ' . $e->getMessage());
+        }
     }
 
     /**
