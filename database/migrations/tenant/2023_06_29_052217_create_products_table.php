@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('description')->nullable();
 
             $table->boolean('featured')->default(0);
-            $table->boolean('extras')->default(0);
+            $table->boolean('is_extras_enabled')->default(0);
             $table->boolean('is_variants_enabled')->default(0);
             $table->boolean('is_product_timing_enabled')->default(0);
 

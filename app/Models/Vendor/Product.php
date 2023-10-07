@@ -15,7 +15,7 @@ class Product extends Model
     // Fields to be mass-assigned
     protected $fillable = [
         'name', 'description', 'price', 'prepration_time', 'status',
-        'featured', 'extras', 'is_variants_enabled', 'is_product_timing_enabled',
+        'featured', 'is_extras_enabled', 'is_variants_enabled', 'is_product_timing_enabled',
         'category_id', 'image', 'product_tags', 'slug', 'seo_title', 'seo_description', 'seo_keywords'
     ];
 
