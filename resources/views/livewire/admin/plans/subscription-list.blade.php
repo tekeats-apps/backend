@@ -79,7 +79,7 @@
                                                 <i class="ri-eye-fill align-bottom me-2 text-muted"></i>
                                                 View</a></li>
                                         <li>
-                                            <a class="dropdown-item" wire:click="confirmDelete('{{ $planSubscription?->id }}')"
+                                            <a class="dropdown-item" wire:click="confirmDelete('{{ $planSubscription?->uuid }}')"
                                                 href="javascript:void(0);" data-id="">
                                                 <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
                                                 Delete</a>
