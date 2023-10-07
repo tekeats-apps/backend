@@ -80,10 +80,10 @@
                     <div class="collapse menu-dropdown {{ request()->is('admin/plans*') ? 'show' : '' }}" id="sidebarPlans">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.plans.features.list') }}" class="nav-link {{ request()->routeIs('admin.plans.features.list') ? 'active' : '' }}">Features</a>
+                                <a href="{{ route('admin.plans.features.list') }}" class="nav-link {{ request()->is('admin/plans/features*') ? 'active' : '' }}">Features</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link">Subscriptions</a>
+                                <a href="{{ route('admin.plans.subscriptions.list') }}" class="nav-link {{ request()->is('admin/plans/subscriptions*') ? 'active' : '' }}">Subscriptions</a>
                             </li>
                         </ul>
                     </div>
