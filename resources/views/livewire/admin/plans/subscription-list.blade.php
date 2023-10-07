@@ -1,13 +1,13 @@
 <div class="card" id="planSubscriptionsList">
     <div class="card-header border-0">
         <div class="d-flex align-items-center">
-            <h5 class="card-title mb-0 flex-grow-1">Plan Subscriptions</h5>
+            <h5 class="card-title mb-0 flex-grow-1">Subscription Plans</h5>
             <div class="flex-shrink-0">
                 <div class="d-flex gap-2 flex-wrap">
                     <button class="btn btn-primary" id="remove-actions" onClick="deleteMultiple()"><i
                             class="ri-delete-bin-2-line"></i></button>
                     <a href="{{ route('admin.plans.subscriptions.create') }}" class="btn btn-success"><i
-                            class="ri-add-line align-bottom me-1"></i> Create Plan Subscription</a>
+                            class="ri-add-line align-bottom me-1"></i> Create Subscription Plan</a>
                 </div>
             </div>
         </div>

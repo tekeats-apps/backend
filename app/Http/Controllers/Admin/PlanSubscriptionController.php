@@ -41,9 +41,14 @@ class PlanSubscriptionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $uuid)
     {
-        //
+        try {
+            $planSubscription = PlanSubscription::findOrFail($uuid);
+            return view('admin.modules.plan-subscriptions.show', compact('planSubscription'));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.plans.subscriptions.list')->with('error', 'Failed to get plan subscription: ' . $e->getMessage());
+        }
     }
 
     /**

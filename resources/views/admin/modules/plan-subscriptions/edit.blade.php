@@ -1,27 +1,28 @@
 @extends('admin.layouts.main')
 @section('title')
-    Plan Subscriptions
+    Subscription Plans
 @endsection
 @section('content')
     {{-- Breadcrumbs Component --}}
     @component('admin.layouts.components.breadcrumb')
         @slot('li_1')
-            Plan Subscriptions
+            Subscription Plans
         @endslot
         @slot('title')
-            Edit Plan
+            Edit Subscription Plan
         @endslot
     @endcomponent
-    <form id="plan-subscription-form" action="{{ route('admin.plans.subscriptions.update', $planSubscription?->uuid) }}" method="POST" autocomplete="off">
+    <form id="plan-subscription-form" action="{{ route('admin.plans.subscriptions.update', $planSubscription?->uuid) }}"
+        method="POST" autocomplete="off">
         @csrf @method('PUT')
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Plan Information <span class="float-end">
+                        <h5 class="card-title mb-0">Subscription Plan Information <span class="float-end">
                                 <a href="{{ route('admin.plans.subscriptions.list') }}"
                                     class="btn btn-info btn-label bt-sm waves-effect waves-light"> <i
-                                        class="ri-arrow-go-back-line label-icon"></i>Back to Plan Subscriptions </a>
+                                        class="ri-arrow-go-back-line label-icon"></i>Back to Subscription Plans </a>
                             </span></h5>
                     </div>
                     <div class="card-body">
@@ -40,8 +41,8 @@
 
                             <div class="col-lg-6 mb-3">
                                 <label for="duration" class="form-label required">Duration</label>
-                                <select class="form-select @error('duration') is-invalid @enderror"
-                                    name="duration" id="duration" required>
+                                <select class="form-select @error('duration') is-invalid @enderror" name="duration"
+                                    id="duration" required>
                                     <option value="">Select Duration Type</option>
                                     <option value="Yearly" @selected($planSubscription?->duration === 'Yearly')>Yearly</option>
                                     <option value="Monthly" @selected($planSubscription?->duration === 'Monthly')>Monthly</option>

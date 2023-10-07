@@ -21,5 +21,8 @@
         content: " *" !important;
         color: #c00 !important;
     }
+    .back {
+        font-size: 1.1rem;
+    }
 </style>
 @stack('css')

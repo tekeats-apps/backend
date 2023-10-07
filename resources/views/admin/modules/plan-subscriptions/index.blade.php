@@ -1,6 +1,6 @@
 @extends('admin.layouts.main')
 @section('title')
-    Plan Subscriptions
+    Subscription Plans
 @endsection
 @push('css')
     @include('plugins.sweetalert2.css')
@@ -9,10 +9,10 @@
     {{-- Breadcrumbs Component --}}
     @component('admin.layouts.components.breadcrumb')
         @slot('li_1')
-            Plan Subscriptions
+            Subscription Plans
         @endslot
         @slot('title')
-            Manage Plan Subscriptions
+            Manage Subscription Plans
         @endslot
     @endcomponent
     {{-- Main Content --}}
@@ -43,7 +43,9 @@
             });
         });
 
-        document.addEventListener('success', ({detail}) => {
+        document.addEventListener('success', ({
+            detail
+        }) => {
             toastr.options = {
                 "closeButton": true,
                 "preventDuplicates": true,
@@ -52,7 +54,9 @@
             toastr.success(detail.message)
         });
 
-        document.addEventListener('error', ({detail}) => {
+        document.addEventListener('error', ({
+            detail
+        }) => {
             toastr.options = {
                 "closeButton": true,
                 "preventDuplicates": true,
