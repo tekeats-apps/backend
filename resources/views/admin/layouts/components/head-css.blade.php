@@ -16,7 +16,10 @@
 
 @livewireStyles
 
+<style>
+    .required::after {
+        content: " *" !important;
+        color: #c00 !important;
+    }
+</style>
 @stack('css')
-
-
-
