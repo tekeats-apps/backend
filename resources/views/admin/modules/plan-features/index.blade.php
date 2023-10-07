@@ -17,9 +17,6 @@
     @endcomponent
     {{-- Main Content --}}
     <div class="row">
-        @if (session('error'))
-            <div class="mx-3 text-danger">{{ session('error') }}</div>
-        @endif
         <div class="col-lg-12">
             @livewire('admin.plans.feature-list')
         </div>
@@ -44,6 +41,24 @@
                     }
                 });
             });
+
+            Livewire.on('delete', function(data) {
+                toastr.options = {
+                    "closeButton": true,
+                    "preventDuplicates": true,
+                    "progressBar": true
+                }
+                toastr.success(data.message);
+            });
+
+            Livewire.on('exception', (data) => {
+                toastr.options = {
+                    "closeButton": true,
+                    "preventDuplicates": true,
+                    "progressBar": true
+                }
+                toastr.error(data.message);
+            })
         });
     </script>
 @endpush

@@ -58,7 +58,7 @@
                                     {{ $planFeature?->feature_name }}
                                 </td>
                                 <td>
-                                    {{ Str::limit($planFeature->feature_description, 50, '...') }}
+                                    {{ Str::limit($planFeature->feature_description, 60, '...') }}
                                 </td>
                                 <td>
                                     <button class="btn btn-soft-secondary btn-sm dropdown" type="button"

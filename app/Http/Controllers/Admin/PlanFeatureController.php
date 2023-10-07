@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\PlanFeatureRequest;
+use App\Models\PlanFeature;
 use Illuminate\Http\Request;
 
 class PlanFeatureController extends Controller
@@ -20,15 +22,20 @@ class PlanFeatureController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.modules.plan-features.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PlanFeatureRequest $request)
     {
-        //
+        try {
+            PlanFeature::create($request->validated());
+            return redirect()->route('admin.plans.features.list')->with('success', 'Plan feature created successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.plans.features.list')->with('error', 'Failed to create plan feature: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -44,22 +51,24 @@ class PlanFeatureController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            $planFeature = PlanFeature::findOrFail($id);
+            return view('admin.modules.plan-features.edit', compact('planFeature'));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.plans.features.list')->with('error', 'Failed to get plan features: ' . $e->getMessage());
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PlanFeatureRequest $request, string $id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        try {
+            PlanFeature::findOrFail($id)->update($request->validated());
+            return redirect()->route('admin.plans.features.list')->with('success', 'Plan feature updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.plans.features.list')->with('error', 'Failed to update plan feature: ' . $e->getMessage());
+        }
     }
 }
