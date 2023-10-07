@@ -77,7 +77,6 @@ class Product extends Model
 
         return $image;
     }
-
     public function scopeCreateProduct($query, array $validatedData)
     {
         $tagIds = $this->getProductTags($validatedData);

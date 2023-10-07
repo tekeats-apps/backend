@@ -9,6 +9,17 @@ class RestaurantInfo extends Model
 {
     use HasFactory;
 
+    const IMAGE_PATH = 'restaurant';
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        if (request()->capture()->is('api/*')) {
+            $this->hidden = array_merge($this->hidden, ['id']);
+        }
+    }
+
     protected $fillable = [
         'name',
         'email',

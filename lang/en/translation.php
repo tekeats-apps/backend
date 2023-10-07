@@ -231,6 +231,8 @@ return [
     "api-key" => "API Key",
     "privacy-policy" => "Privacy Policy",
     "hot" => "Hot",
+    "plugin" => "Plugin",
+    "plugins" => "Plugins"
 ];
 ?>
 
