@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Vendor\Order;
+use App\Observers\Tenant\OrderObserver;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,5 +27,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+        Order::observe(OrderObserver::class);
     }
 }

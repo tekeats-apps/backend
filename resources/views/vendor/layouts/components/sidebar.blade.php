@@ -39,7 +39,7 @@
                 </li>
                 <li class="menu-title"><span>Orders Management</span></li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="">
+                    <a class="nav-link menu-link {{ Route::is('vendor.order.list') ? 'active' : '' }}" href="{{ route('vendor.order.list') }}">
                         <i class="ri-shopping-basket-2-line"></i> <span>Orders</span>
                     </a>
                 </li>

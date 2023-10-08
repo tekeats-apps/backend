@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\V1\Vendor\OrderController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
-use App\Http\Controllers\API\V1\Vendor\CustomerController;
 use App\Http\Controllers\API\V1\Vendor\SettingController;
+use App\Http\Controllers\API\V1\Vendor\CustomerController;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 /*
@@ -25,7 +26,7 @@ Route::middleware([
 
     // Customer Authentication Routes
     Route::controller(CustomerController::class)
-        ->prefix('customers')
+        ->prefix('customer')
         ->group(function () {
             Route::post('/register', 'register');
             Route::post('/login', 'login');
@@ -45,6 +46,12 @@ Route::middleware([
         ->prefix('settings')
         ->group(function () {
             Route::get('/get-restaurant-settings', 'getSettings');
+        });
+
+        Route::controller(OrderController::class)
+        ->prefix('order')
+        ->group(function () {
+            Route::post('/place-order', 'placeOrder');
         });
     });
 });
