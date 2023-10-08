@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Facades\DB;
 use Storage;
+use Illuminate\Support\Facades\DB;
 
 trait TenantImageUploadTrait
 {
