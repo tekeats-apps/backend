@@ -24,12 +24,12 @@ class PluginTypeRequest extends FormRequest
         switch ($this->getMethod()) {
             case 'POST':
                 return [
-                    'name' => ['required', 'string', 'max:255']
+                    'name' => ['required', 'string', 'unique:plugin_types,name', 'max:255']
                 ];
                 break;
             case 'PUT':
                 return [
-                    'name' => ['required', 'string', 'max:255']
+                    'name' => ['required', 'string', 'unique:plugin_types,name,' . $this->id, 'max:255']
                 ];
         }
     }

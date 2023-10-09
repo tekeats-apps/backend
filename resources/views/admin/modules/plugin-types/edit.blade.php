@@ -9,7 +9,7 @@
             Plugin Types
         @endslot
         @slot('title')
-            Manage Plugins
+            Edit Plugin Type
         @endslot
     @endcomponent
     <form id="plugin-type-form" action="{{ route('admin.plugin.types.update', $pluginType?->id) }}" method="POST" autocomplete="off">

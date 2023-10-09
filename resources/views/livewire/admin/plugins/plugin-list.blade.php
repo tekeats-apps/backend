@@ -130,15 +130,15 @@
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
-                                            <a class="dropdown-item" href="{{ route('admin.plugins.edit', $plugin?->uuid) }}" data-id="{{ $plugin?->uuid }}">
+                                            <a class="dropdown-item" href="{{ route('admin.plugins.edit', $plugin?->id) }}" data-id="{{ $plugin?->id }}">
                                                 <i class="ri-edit-fill align-bottom me-2 text-muted"></i>
                                                 Edit</a>
                                         </li>
-                                        <li><a class="dropdown-item" href="javascript:void(0);" data-id="">
+                                        <li><a class="dropdown-item" href="{{ route('admin.plugins.show', $plugin?->id) }}" data-id="">
                                                 <i class="ri-eye-fill align-bottom me-2 text-muted"></i>
                                                 View</a></li>
                                         <li>
-                                            <a class="dropdown-item" wire:click="confirmDelete('{{ $plugin?->uuid }}')"
+                                            <a class="dropdown-item" wire:click="confirmDelete('{{ $plugin?->id }}')"
                                                 href="javascript:void(0);" data-id="" data-toggle="modal" data-target="#deletePlugin">
                                                 <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
                                                 Delete</a>

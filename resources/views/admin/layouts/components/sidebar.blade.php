@@ -58,6 +58,7 @@
                         <i class="ri-account-circle-fill"></i> <span>@lang('translation.users')</span>
                     </a>
                 </li>
+                {{-- Plugins Tab --}}
                 <li class="nav-item">
                     <a class="nav-link menu-link {{ request()->is('admin/plugins*') ? 'active' : '' }}" href="#sidebarPlugins" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarPlugins">
                         <i class="ri-plug-line"></i> <span>@lang('translation.plugins')</span>
@@ -65,14 +66,15 @@
                     <div class="collapse menu-dropdown {{ request()->is('admin/plugins*') ? 'show' : '' }}" id="sidebarPlugins">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.plugin.types.list') }}" class="nav-link {{ request()->routeIs('admin.plugin.types.list') ? 'active' : '' }}">Types</a>
+                                <a href="{{ route('admin.plugin.types.list') }}" class="nav-link {{ request()->is('admin/plugins/types*') ? 'active' : '' }}">Types</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.plugins.list') }}" class="nav-link {{ request()->routeIs('admin.plugins.list') ? 'active' : '' }}">@lang('translation.plugins')</a>
+                                <a href="{{ route('admin.plugins.list') }}" class="nav-link {{ request()->is('admin/plugins*') ? 'active' : '' }}">@lang('translation.plugins')</a>
                             </li>
                         </ul>
                     </div>
                 </li>
+                {{-- Subscriptions Tab --}}
                 <li class="nav-item">
                     <a class="nav-link menu-link {{ request()->is('admin/plans*') ? 'active' : '' }}" href="#sidebarPlans" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarPlans">
                         <i class="ri-file-list-3-line"></i> <span>Plans</span>
