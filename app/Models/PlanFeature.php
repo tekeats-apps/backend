@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class PlanFeature extends Model
 {
@@ -21,5 +22,10 @@ class PlanFeature extends Model
         }
 
         return $query->orderBy($sortField, $sortDirection);
+    }
+
+    public function planSubscriptions(): BelongsToMany
+    {
+        return $this->belongsToMany(PlanSubscription::class, 'plan_feature_pivot', 'feature_id', 'plan_id', 'id', 'id');
     }
 }

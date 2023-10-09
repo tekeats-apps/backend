@@ -29,15 +29,17 @@ class PlanSubscriptionRequest extends FormRequest
                     'price' => ['required', 'numeric', 'between:0,999999999.99'],
                     'discount' => ['nullable', 'numeric', 'between:0,999999999.99'],
                     'trial_period_days' => ['nullable', 'string', 'max:255'],
+                    'features' => ['nullable'],
                     'description' => ['required', 'string', 'max:20000']
                 ];
             case 'PUT':
                 return [
-                    'name' => ['required', 'string', 'unique:plan_subscriptions,name,' . $this->uuid. ',uuid', 'max:255'],
+                    'name' => ['required', 'string', 'unique:plan_subscriptions,name,' . $this->id, 'max:255'],
                     'duration' => ['required', 'string', 'in:Monthly,Yearly'],
                     'price' => ['required', 'numeric', 'between:0,999999999.99'],
                     'discount' => ['nullable', 'numeric', 'between:0,999999999.99'],
                     'trial_period_days' => ['nullable', 'string', 'max:255'],
+                    'features' => ['nullable'],
                     'description' => ['required', 'string', 'max:20000']
                 ];
         }

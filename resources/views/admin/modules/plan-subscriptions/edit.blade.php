@@ -2,6 +2,10 @@
 @section('title')
     Subscription Plans
 @endsection
+@section('on-top-css')
+    <!--select2 cdn-->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" type="text/css" />
+@endsection
 @section('content')
     {{-- Breadcrumbs Component --}}
     @component('admin.layouts.components.breadcrumb')
@@ -12,7 +16,7 @@
             Edit Subscription Plan
         @endslot
     @endcomponent
-    <form id="plan-subscription-form" action="{{ route('admin.plans.subscriptions.update', $planSubscription?->uuid) }}"
+    <form id="plan-subscription-form" action="{{ route('admin.plans.subscriptions.update', $planSubscription?->id) }}"
         method="POST" autocomplete="off">
         @csrf @method('PUT')
         <div class="row justify-content-center">
@@ -89,6 +93,18 @@
                                 </div>
                             </div>
 
+                            <div class="col-lg-6">
+                                <label for="duration" class="form-label">Features</label>
+                                <select class="select-multiple" name="features[]" multiple="multiple">
+                                    @isset($planFeatures)
+                                        @foreach ($planFeatures as $key => $planFeature)
+                                            <option value="{{ $planFeature?->id }}" @selected($planFeature?->id == isset($planSubscription?->planFeatures[$key]['id']))>
+                                                {{ $planFeature?->feature_name }}</option>
+                                        @endforeach
+                                    @endisset
+                                </select>
+                            </div>
+
                             <div class="col-lg-12">
                                 <div class="mb-3">
                                     <label class="form-label required">Description</label>
@@ -112,6 +128,8 @@
     </form>
 @endsection
 @push('script')
+    <!--select2 cdn-->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ URL::asset('assets/libs/validation/validate.min.js') }}"></script>
     <script>
         $().ready(function() {
@@ -129,6 +147,34 @@
                     description: "Please enter the description",
                 }
             });
+        });
+
+        // initialize select2
+        $(document).ready(function() {
+            $('.select-multiple').select2({
+                placeholder: "Select a feature",
+            });
+            var data = [{
+                    id: 0,
+                    text: 'enhancement'
+                },
+                {
+                    id: 1,
+                    text: 'bug'
+                },
+                {
+                    id: 2,
+                    text: 'duplicate'
+                },
+                {
+                    id: 3,
+                    text: 'invalid'
+                },
+                {
+                    id: 4,
+                    text: 'wontfix'
+                }
+            ];
         });
     </script>
 @endpush
