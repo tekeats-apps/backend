@@ -45,7 +45,12 @@ class PluginController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $plugin = Plugin::with('type')->findOrFail($id);
+            return view('admin.modules.plugins.show', compact('plugin'));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.plugins.list')->with('error', 'Failed to get plugin: ' . $e->getMessage());
+        }
     }
 
     /**

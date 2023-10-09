@@ -116,6 +116,7 @@ Route::prefix('admin')->group(function () {
                 Route::get('/', 'index')->name('list');
                 Route::get('/create',  'create')->name('create');
                 Route::post('/store',  'store')->name('store');
+                Route::get('/show/{uuid}',  'show')->name('show');
                 Route::get('/edit/{uuid}',  'edit')->name('edit');
                 Route::put('/update/{uuid}', 'update')->name('update');
             });

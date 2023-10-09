@@ -134,7 +134,7 @@
                                                 <i class="ri-edit-fill align-bottom me-2 text-muted"></i>
                                                 Edit</a>
                                         </li>
-                                        <li><a class="dropdown-item" href="javascript:void(0);" data-id="">
+                                        <li><a class="dropdown-item" href="{{ route('admin.plugins.show', $plugin?->uuid) }}" data-id="">
                                                 <i class="ri-eye-fill align-bottom me-2 text-muted"></i>
                                                 View</a></li>
                                         <li>
