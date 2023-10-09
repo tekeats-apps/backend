@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Models\Vendor\Order;
-use App\Observers\Tenant\OrderObserver;
+use App\Models\PlanSubscription;
 use Illuminate\Support\Facades\Schema;
+use App\Observers\Tenant\OrderObserver;
 use Illuminate\Support\ServiceProvider;
+use App\Observers\PlanSubscriptionObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,5 +30,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         Order::observe(OrderObserver::class);
+        PlanSubscription::observe(PlanSubscriptionObserver::class);
     }
 }

@@ -14,6 +14,7 @@ class Plugin extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
+        'id',
         'uuid',
         'plugin_type_id',
         'name',
