@@ -39,9 +39,9 @@ class FeatureList extends Component
         try {
             PlanFeature::findOrFail($id)->delete();
 
-            $this->emit('delete', ['message' => 'Plan feature deleted successfully!']);
+            $this->dispatchBrowserEvent('success', ['message' => 'Plan feature deleted successfully!']);
         } catch (\Exception $e) {
-            $this->emit('exception', ['message' => 'Failed to delete plan feature: ' . $e->getMessage()]);
+            $this->dispatchBrowserEvent('error', ['message' => 'Failed to delete plan feature: ' . $e->getMessage()]);
         }
     }
 }
