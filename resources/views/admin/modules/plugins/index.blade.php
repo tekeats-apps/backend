@@ -45,5 +45,27 @@
                 });
             });
         });
+
+        document.addEventListener('success', ({
+            detail
+        }) => {
+            toastr.options = {
+                "closeButton": true,
+                "preventDuplicates": true,
+                "progressBar": true
+            }
+            toastr.success(detail.message)
+        });
+
+        document.addEventListener('error', ({
+            detail
+        }) => {
+            toastr.options = {
+                "closeButton": true,
+                "preventDuplicates": true,
+                "progressBar": true
+            }
+            toastr.error(detail.message);
+        });
     </script>
 @endpush
