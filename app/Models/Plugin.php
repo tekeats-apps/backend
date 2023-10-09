@@ -28,7 +28,10 @@ class Plugin extends Model
         'featured'
     ];
 
-    protected $primaryKey = 'uuid';
+    public function uniqueIds()
+    {
+        return ['uuid'];
+    }
 
     public function scopeGetList($query, $search, $sortField, $sortDirection)
     {

@@ -56,11 +56,11 @@ class PluginController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $uuid)
+    public function edit(string $id)
     {
         try {
             $pluginTypes = PluginType::all();
-            $plugin = Plugin::with('type')->findOrFail($uuid);
+            $plugin = Plugin::with('type')->findOrFail($id);
             return view('admin.modules.plugins.edit', compact('pluginTypes', 'plugin'));
         } catch (\Exception $e) {
             return redirect()->route('admin.plugins.list')->with('error', 'Failed to get plugin: ' . $e->getMessage());
@@ -70,10 +70,10 @@ class PluginController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PluginRequest $request, string $uuid)
+    public function update(PluginRequest $request, string $id)
     {
         try {
-            $plugin = Plugin::findOrFail($uuid);
+            $plugin = Plugin::findOrFail($id);
             $plugin->update($request->validated());
             return redirect()->route('admin.plugins.list')->with('success', 'Plugin updated successfully!');
         } catch (\Exception $e) {
