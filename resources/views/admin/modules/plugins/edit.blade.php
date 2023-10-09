@@ -9,7 +9,7 @@
             @lang('translation.plugins')
         @endslot
         @slot('title')
-            Manage Plugins
+            Edit Plugin
         @endslot
     @endcomponent
     <form id="plugin-form" action="{{ route('admin.plugins.update', $plugin?->uuid) }}" method="POST" autocomplete="off"

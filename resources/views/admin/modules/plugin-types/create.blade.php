@@ -9,7 +9,7 @@
             Plugin Types
         @endslot
         @slot('title')
-            Manage Plugins
+            Create Plugin Type
         @endslot
     @endcomponent
     <form id="plugin-type-form" action="{{ route('admin.plugin.types.store') }}" method="POST" autocomplete="off">

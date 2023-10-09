@@ -9,7 +9,7 @@
             @lang('translation.plugins')
         @endslot
         @slot('title')
-            Manage Plugins
+            Create Plugin
         @endslot
     @endcomponent
     <form id="plugin-form" action="{{ route('admin.plugins.store') }}" method="POST" autocomplete="off"
