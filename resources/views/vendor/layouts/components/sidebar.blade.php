@@ -69,6 +69,11 @@
                         <i class="ri-coupon-line"></i> <span>Copouns</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ request()->is('vendor.taxes.list') ? 'active' : '' }}" href="{{ route('vendor.taxes.list') }}">
+                        <i class="ri-money-dollar-circle-line"></i> <span>Taxes</span>
+                    </a>
+                </li>
                 <li class="menu-title"><span>User Management</span></li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="">

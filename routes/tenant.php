@@ -16,6 +16,7 @@ use App\Http\Controllers\Vendor\DashboardController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\Vendor\AuthController as StoreAuthController;
+use App\Http\Controllers\Vendor\TaxController;
 use App\Http\Controllers\Vendor\UserController as StoreUserController;
 
 /*
@@ -170,6 +171,13 @@ Route::middleware([
                 ->as('vendor.order.')
                 ->group(function () {
                     Route::get('/',  'index')->name('list');
+                });
+
+            // Tax Routes Group
+            Route::controller(TaxController::class)
+                ->prefix('taxes')
+                ->as('vendor.taxes.')->group(function () {
+                    Route::get('/', 'index')->name('list');
                 });
         });
     });
