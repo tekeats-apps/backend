@@ -2,6 +2,7 @@
 
 namespace App\Models\Vendor;
 
+use App\Enums\Vendor\Tax\TypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +12,9 @@ class Tax extends Model
 
     protected $fillable = ['title', 'description', 'type', 'amount', 'active'];
 
+    protected $casts = [
+        'type' => TypeEnum::class
+    ];
 
     public function scopeGetList($query, $search, $sortField, $sortDirection)
     {

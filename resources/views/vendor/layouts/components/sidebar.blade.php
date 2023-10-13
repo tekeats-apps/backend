@@ -70,7 +70,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link {{ request()->is('vendor.taxes.list') ? 'active' : '' }}" href="{{ route('vendor.taxes.list') }}">
+                    <a class="nav-link menu-link {{ Route::is('vendor.taxes*') ? 'active' : '' }}" href="{{ route('vendor.taxes.list') }}">
                         <i class="ri-money-dollar-circle-line"></i> <span>Taxes</span>
                     </a>
                 </li>

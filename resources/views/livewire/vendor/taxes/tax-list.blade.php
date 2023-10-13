@@ -9,9 +9,9 @@
                 </div>
                 <div class="col-sm-auto">
                     <div class="d-flex flex-wrap align-items-start gap-2">
-                        <a type="button" href="#"
+                        <a type="button" href="{{ route('vendor.taxes.create') }}"
                             class="btn btn-success btn-label waves-effect waves-light"><i
-                                class="ri-add-line label-icon align-middle fs-16 me-2"></i> Add Tax</a>
+                                class="ri-add-line label-icon align-middle fs-16 me-2"></i> Add New Tax</a>
                     </div>
                 </div>
             </div>

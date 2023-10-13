@@ -178,6 +178,8 @@ Route::middleware([
                 ->prefix('taxes')
                 ->as('vendor.taxes.')->group(function () {
                     Route::get('/', 'index')->name('list');
+                    Route::get('/create', 'create')->name('create');
+                    Route::post('/store', 'store')->name('store');
                 });
         });
     });

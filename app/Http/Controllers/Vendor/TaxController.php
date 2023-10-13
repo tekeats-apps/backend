@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Vendor;
 
+use App\Enums\Vendor\Tax\TypeEnum;
+use App\Models\Vendor\Tax;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Vendor\TaxRequest;
 
 class TaxController extends Controller
 {
@@ -20,15 +22,21 @@ class TaxController extends Controller
      */
     public function create()
     {
-        //
+        $taxTypes = TypeEnum::values();
+        return view('vendor.modules.taxes.create', compact('taxTypes'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TaxRequest $request)
     {
-        //
+        try {
+            Tax::create($request->validated());
+            return redirect()->route('vendor.taxes.list')->with('success', 'Tax created successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('vendor.taxes.list')->with('error', 'Failed to create tax: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -50,7 +58,7 @@ class TaxController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(TaxRequest $request, string $id)
     {
         //
     }
