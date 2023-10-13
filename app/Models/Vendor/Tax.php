@@ -3,8 +3,9 @@
 namespace App\Models\Vendor;
 
 use App\Enums\Vendor\Tax\TypeEnum;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tax extends Model
 {

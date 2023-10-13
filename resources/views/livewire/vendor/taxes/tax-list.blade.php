@@ -75,7 +75,13 @@
                                 {{ $tax?->amount }}
                             </td>
                             <td>
-                                {{ $tax?->active }}
+                                @if ($tax?->active)
+                                    <span class="text-success">
+                                        <i class="ri-checkbox-circle-line fs-17 align-middle"></i> Active</span>
+                                @else
+                                    <span class="text-danger">
+                                        <i class="ri-close-circle-line fs-17 align-middle"></i> Inactive</span>
+                                @endif
                             </td>
                             <td>
                                 <div class="dropdown d-inline-block">
@@ -84,11 +90,11 @@
                                         <i class="ri-more-fill align-middle"></i>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end">
-                                        {{-- <li><a href="{{ route('vendor.customers.edit', $tax->id) }}"
+                                        <li><a href="{{ route('vendor.taxes.edit', $tax?->id) }}"
                                                 class="dropdown-item edit-item-btn" role="button"><i
                                                     class="ri-pencil-fill align-bottom me-2 text-info"></i>
                                                 Edit</a>
-                                        </li> --}}
+                                        </li>
                                         {{-- <li>
                                             <a class="dropdown-item remove-item-btn" role="button">
                                                 <i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i>
@@ -97,11 +103,11 @@
                                         </li> --}}
                                         <li>
                                             <a class="dropdown-item status-change-btn" role="button"
-                                                wire:click="toggleStatus({{ $tax->id }})"
-                                                data-status="{{ $tax->status }}">
+                                                wire:click="toggleStatus({{ $tax?->id }})"
+                                                data-status="{{ $tax?->status }}">
                                                 <i
-                                                    class="{{ $tax->status ? 'ri-arrow-down-fill text-danger' : 'ri-arrow-up-fill text-success' }} align-bottom me-2"></i>
-                                                {{ $tax->status ? 'Deactivate' : 'Activate' }}
+                                                    class="{{ $tax?->status ? 'ri-arrow-down-fill text-danger' : 'ri-arrow-up-fill text-success' }} align-bottom me-2"></i>
+                                                {{ $tax?->status ? 'Deactivate' : 'Activate' }}
                                             </a>
                                         </li>
                                     </ul>
@@ -125,7 +131,7 @@
                 </div>
             @endunless
             <div class="d-flex justify-content-end">
-                {{ $taxes->links() }}
+                {{ $taxes?->links() }}
             </div>
         </div>
     </div>

@@ -52,7 +52,13 @@ class TaxController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            $taxTypes = TypeEnum::values();
+            $tax = Tax::findOrFail($id);
+            return view('vendor.modules.taxes.edit', compact('tax', 'taxTypes'));
+        } catch (\Exception $e) {
+            return redirect()->route('vendor.taxes.list')->with('error', 'Failed to find tax: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -60,7 +66,12 @@ class TaxController extends Controller
      */
     public function update(TaxRequest $request, string $id)
     {
-        //
+        try {
+            Tax::findOrFail($id)->update($request->validated());
+            return redirect()->route('vendor.taxes.list')->with('success', 'Tax updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('vendor.taxes.list')->with('error', 'Failed to update tax: ' . $e->getMessage());
+        }
     }
 
     /**

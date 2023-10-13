@@ -23,12 +23,24 @@ class TaxRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'title' => ['required', 'string', 'max:191'],
-            'description' => ['nullable', 'string', 'max:20000'],
-            'type' => ['required', Rule::in(TypeEnum::values())],
-            'amount' => ['required', 'numeric', 'between:0,99999999.99'],
-            'active' => ['required']
-        ];
+        switch ($this->getMethod()) {
+            case 'POST':
+                return [
+                    'title' => ['required', 'string', 'max:191', 'unique:taxes,title'],
+                    'description' => ['nullable', 'string', 'max:20000'],
+                    'type' => ['required', Rule::in(TypeEnum::values())],
+                    'amount' => ['required', 'numeric', 'between:0,99999999.99'],
+                    'active' => ['nullable']
+                ];
+            case 'PUT':
+                // dd($this->active);
+                return [
+                    'title' => ['required', 'string', 'max:191', 'unique:taxes,title,' . $this->id],
+                    'description' => ['nullable', 'string', 'max:20000'],
+                    'type' => ['required', Rule::in(TypeEnum::values())],
+                    'amount' => ['required', 'numeric', 'between:0,99999999.99'],
+                    'active' => ['nullable']
+                ];
+        }
     }
 }

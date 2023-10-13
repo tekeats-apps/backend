@@ -13,12 +13,12 @@
             Taxes
         @endslot
         @slot('title')
-            Add New Tax
+            Edit Tax
         @endslot
     @endcomponent
 
-    <form id="tax-form" action="{{ route('vendor.taxes.store') }}" method="POST" autocomplete="off">
-        @csrf
+    <form id="tax-form" action="{{ route('vendor.taxes.update', $tax?->id) }}" method="POST" autocomplete="off">
+        @csrf @method('PUT')
 
         <div class="row">
             <div class="col-lg-8">
@@ -37,7 +37,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Title</label>
                                             <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                                name="title" value="{{ old('title') }}" placeholder="Enter tax title"
+                                                name="title" value="{{ $tax?->title }}" placeholder="Enter tax title"
                                                 required>
                                             @error('title')
                                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -49,7 +49,7 @@
                                             <label class="form-label">Amount</label>
                                             <input type="number" min="0" step="0.01"
                                                 class="form-control @error('amount') is-invalid @enderror" name="amount"
-                                                value="{{ old('amount') }}" placeholder="Enter amount" required>
+                                                value="{{ $tax?->amount }}" placeholder="Enter amount" required>
                                             @error('amount')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -58,7 +58,7 @@
                                     <div class="col-lg-12 mb-2">
                                         <label for="description-field" class="form-label">Description</label>
                                         <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description-field"
-                                            rows="5">{{ old('description') }}</textarea>
+                                            rows="5">{{ $tax?->description }}</textarea>
                                         @error('description')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -93,7 +93,8 @@
                                                 <option value="">Select Tax Type</option>
                                                 @isset($taxTypes)
                                                     @foreach ($taxTypes as $taxType)
-                                                        <option value="{{ $taxType }}">{{ ucfirst($taxType) }}</option>
+                                                        <option value="{{ $taxType }}" @selected($taxType == $tax?->type?->value)>
+                                                            {{ ucfirst($taxType) }}</option>
                                                     @endforeach
                                                 @endisset
                                             </select>
@@ -106,7 +107,8 @@
                                         <div class="form-check form-switch form-switch-lg form-switch-success">
                                             <input class="form-check-input @error('active') is-invalid @enderror"
                                                 type="checkbox" name="active" id="active" value="1"
-                                                {{ old('active') }}>
+                                                data-toggle="toggle" data-on="Yes" data-off="No"
+                                                @checked($tax?->active)>
                                             <label class="form-check-label" for="active">Active</label>
                                         </div>
                                         @error('active')
@@ -148,7 +150,6 @@
                     }
                 }
             });
-
         });
     </script>
 @endpush
