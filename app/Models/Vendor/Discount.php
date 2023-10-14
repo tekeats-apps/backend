@@ -17,4 +17,18 @@ class Discount extends Model
         'type' => DiscountTypeEnum::class,
         'active' => DiscountActiveEnum::class
     ];
+
+    public function scopeGetList($query, $search, $sortField, $sortDirection)
+    {
+        if (!empty($search)) {
+            $query->where(function ($subQuery) use ($search) {
+                $subQuery->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%')
+                    ->orWhere('type', 'like', '%' . $search . '%')
+                    ->orWhere('amount', 'like', '%' . $search . '%');
+            });
+        }
+
+        return $query->orderBy($sortField, $sortDirection);
+    }
 }

@@ -16,6 +16,7 @@ use App\Http\Controllers\Vendor\DashboardController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\Vendor\AuthController as StoreAuthController;
+use App\Http\Controllers\Vendor\DiscountController;
 use App\Http\Controllers\Vendor\UserController as StoreUserController;
 
 /*
@@ -170,6 +171,13 @@ Route::middleware([
                 ->as('vendor.order.')
                 ->group(function () {
                     Route::get('/',  'index')->name('list');
+                });
+
+            // Discount Routes Group
+            Route::controller(DiscountController::class)
+                ->prefix('discounts')
+                ->as('vendor.discounts.')->group(function () {
+                    Route::get('/', 'index')->name('list');
                 });
         });
     });
