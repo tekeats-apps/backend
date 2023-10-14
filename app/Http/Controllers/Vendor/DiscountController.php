@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Vendor;
 
+use App\Enums\Vendor\DiscountTypeEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Vendor\DiscountRequest;
+use App\Models\Vendor\Discount;
 use Illuminate\Http\Request;
 
 class DiscountController extends Controller
@@ -20,15 +23,21 @@ class DiscountController extends Controller
      */
     public function create()
     {
-        //
+        $discountTypes = DiscountTypeEnum::values();
+        return view('vendor.modules.discounts.create', compact('discountTypes'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(DiscountRequest $request)
     {
-        //
+        try {
+            Discount::create($request->validated());
+            return redirect()->route('vendor.discounts.list')->with('success', 'Discount created successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('vendor.discounts.list')->with('error', 'Failed to create discount: ' . $e->getMessage());
+        }
     }
 
     /**
