@@ -53,22 +53,25 @@ class DiscountController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            $discountTypes = DiscountTypeEnum::values();
+            $discount = Discount::findOrFail($id);
+            return view('vendor.modules.discounts.edit', compact('discount', 'discountTypes'));
+        } catch (\Exception $e) {
+            return redirect()->route('vendor.discounts.list')->with('error', 'Failed to find discount: ' . $e->getMessage());
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(DiscountRequest $request, string $id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        try {
+            Discount::findOrFail($id)->update($request->validated());
+            return redirect()->route('vendor.discounts.list')->with('success', 'Discount updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('vendor.discounts.list')->with('error', 'Failed to update discount: ' . $e->getMessage());
+        }
     }
 }
