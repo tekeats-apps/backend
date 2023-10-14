@@ -45,7 +45,12 @@ class DiscountController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $discount = Discount::findOrFail($id);
+            return view('vendor.modules.discounts.show', compact('discount'));
+        } catch (\Exception $e) {
+            return redirect()->route('vendor.discounts.list')->with('error', 'Failed to find discount: ' . $e->getMessage());
+        }
     }
 
     /**
