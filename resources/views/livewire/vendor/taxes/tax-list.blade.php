@@ -24,7 +24,7 @@
                     <div class="search-box">
                         <input type="text" wire:model.debounce.500ms="search" id="search"
                             class="form-control search bg-light border-light"
-                            placeholder="Search for customer name, email, role, status or something...">
+                            placeholder="Search for tax title, type, amount, status or something...">
                         <i class="ri-search-line search-icon"></i>
                     </div>
                 </div>
