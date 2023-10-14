@@ -73,12 +73,4 @@ class TaxController extends Controller
             return redirect()->route('vendor.taxes.list')->with('error', 'Failed to update tax: ' . $e->getMessage());
         }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }
