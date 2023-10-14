@@ -24,6 +24,20 @@ class TaxList extends Component
         return Tax::getList($this->search, $this->sortField, $this->sortDirection)->paginate($this->perPage);
     }
 
+    public function toggleStatus($id)
+    {
+        try {
+            $tax = Tax::findOrFail($id);
+            $tax->active = !$tax->active;
+            $tax->save();
+
+            $message = $tax->active ? 'Active' : 'Inactive';
+            $this->dispatchBrowserEvent('success', ['message' => 'Status updated to ' . $message]);
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to update tax status: ' . $e->getMessage());
+        }
+    }
+
     public function confirmDelete($id)
     {
         // Show the SweetAlert confirmation dialog
@@ -40,7 +54,7 @@ class TaxList extends Component
             Tax::findOrFail($id)->delete();
             $this->dispatchBrowserEvent('success', ['message' => 'Tax deleted successfully!']);
         } catch (\Exception $e) {
-            $this->dispatchBrowserEvent('error', ['message' => 'Failed to delete tax: ' . $e->getMessage()]);
+            session()->flash('error', 'Failed to delete tax: ' . $e->getMessage());
         }
     }
 }
