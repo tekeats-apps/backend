@@ -6,7 +6,6 @@ use App\Enums\Vendor\DiscountTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Vendor\DiscountRequest;
 use App\Models\Vendor\Discount;
-use Illuminate\Http\Request;
 
 class DiscountController extends Controller
 {

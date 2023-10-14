@@ -14,8 +14,7 @@ class Discount extends Model
     protected $fillable = ['title', 'description', 'type', 'amount', 'active'];
 
     protected $casts = [
-        'type' => DiscountTypeEnum::class,
-        'active' => DiscountActiveEnum::class
+        'type' => DiscountTypeEnum::class
     ];
 
     public function scopeGetList($query, $search, $sortField, $sortDirection)

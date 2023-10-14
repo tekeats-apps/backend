@@ -76,7 +76,7 @@
                                 {{ $discount?->amount }}
                             </td>
                             <td>
-                                @if ($discount?->active)
+                                @if ($discount?->active == 1)
                                     <span class="text-success">
                                         <i class="ri-checkbox-circle-line fs-17 align-middle"></i> Active</span>
                                 @else
@@ -96,11 +96,14 @@
                                                     class="ri-pencil-fill align-bottom me-2 text-info"></i>
                                                 Edit</a>
                                         </li>
-                                        <li><a class="dropdown-item" href="{{ route('vendor.discounts.show', $discount?->id) }}" data-id="{{ $discount?->id }}">
-                                            <i class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                            View</a></li>
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('vendor.discounts.show', $discount?->id) }}"
+                                                data-id="{{ $discount?->id }}">
+                                                <i class="ri-eye-fill align-bottom me-2 text-muted"></i>
+                                                View</a></li>
                                         <li>
-                                            <a class="dropdown-item remove-item-btn" role="button" wire:click="confirmDelete('{{ $discount?->id }}')">
+                                            <a class="dropdown-item remove-item-btn" role="button"
+                                                wire:click="confirmDelete('{{ $discount?->id }}')">
                                                 <i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i>
                                                 Delete
                                             </a>

@@ -24,6 +24,20 @@ class DiscountList extends Component
         return Discount::getList($this->search, $this->sortField, $this->sortDirection)->paginate($this->perPage);
     }
 
+    public function toggleStatus($id)
+    {
+        try {
+            $discount = Discount::findOrFail($id);
+            $discount->active = !$discount->active;
+            $discount->save();
+
+            $message = $discount->active ? 'Active' : 'Inactive';
+            $this->dispatchBrowserEvent('success', ['message' => 'Status updated to ' . $message]);
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to update discount status: ' . $e->getMessage());
+        }
+    }
+
     public function confirmDelete($id)
     {
         // Show the SweetAlert confirmation dialog

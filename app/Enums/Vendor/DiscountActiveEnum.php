@@ -12,6 +12,6 @@ enum DiscountActiveEnum: int
     use Values;
     use InvokableCases;
 
-    case ACTIVE = 1;
-    case IN_ACTIVE = 0;
+    case ACTIVE = true;
+    case IN_ACTIVE = false;
 }
