@@ -31,7 +31,7 @@
                 {{-- <div class="col-xxl-2 col-sm-4">
                     <label for="status"> Status</label>
                     <div class="input-light" wire:ignore>
-                        <select class="form-control" wire:model.debounce.500ms="status" data-choices
+                        <select class="form-control" wire:model.debounce.500ms="active" data-choices
                             data-choices-search-false>
                             <option value="">All</option>
                             <option value="1">Active</option>
@@ -96,6 +96,9 @@
                                                     class="ri-pencil-fill align-bottom me-2 text-info"></i>
                                                 Edit</a>
                                         </li>
+                                        <li><a class="dropdown-item" href="{{ route('vendor.taxes.show', $tax?->id) }}" data-id="{{ $tax?->id }}">
+                                            <i class="ri-eye-fill align-bottom me-2 text-muted"></i>
+                                            View</a></li>
                                         <li>
                                             <a class="dropdown-item remove-item-btn" role="button" wire:click="confirmDelete('{{ $tax?->id }}')">
                                                 <i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i>

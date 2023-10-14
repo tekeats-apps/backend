@@ -9,6 +9,7 @@ class TaxList extends Component
 {
     public $search;
     public $perPage = 10;
+    // public $active;
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
 

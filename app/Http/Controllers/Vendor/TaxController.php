@@ -44,7 +44,12 @@ class TaxController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $tax = Tax::findOrFail($id);
+            return view('vendor.modules.taxes.show', compact('tax'));
+        } catch (\Exception $e) {
+            return redirect()->route('vendor.taxes.list')->with('error', 'Failed to find tax: ' . $e->getMessage());
+        }
     }
 
     /**
