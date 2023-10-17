@@ -74,6 +74,11 @@
                         <i class="ri-money-dollar-circle-line"></i> <span>Taxes</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ Route::is('vendor.discounts*') ? 'active' : '' }}" href="{{ route('vendor.discounts.list') }}">
+                        <i class="ri-percent-line"></i> <span>Discounts</span>
+                    </a>
+                </li>
                 <li class="menu-title"><span>User Management</span></li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="">
