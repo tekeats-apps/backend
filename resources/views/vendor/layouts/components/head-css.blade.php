@@ -23,4 +23,13 @@
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 @livewireStyles
 
+<style>
+    .required::after {
+        content: " *" !important;
+        color: #c00 !important;
+    }
+    .back {
+        font-size: 1.1rem;
+    }
+</style>
 @stack('css')
