@@ -63,9 +63,10 @@ Route::middleware([
 
 
         Route::controller(OrderController::class)
-            ->prefix('order')
+            ->prefix('orders')
             ->group(function () {
-                Route::post('/place-order', 'placeOrder');
+                Route::get('calculate-delivery-charges', 'calculateDeliveryCharges');
+                Route::post('place-order', 'placeOrder');
             });
     });
 });

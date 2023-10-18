@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1\Vendor;
 
 use App\Traits\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Vendor\Orders\GetDeliveryChargesRequest;
 use App\Services\Tenant\Order\OrderService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Vendor\Orders\PlaceOrderRequest;
@@ -18,6 +19,10 @@ class OrderController extends Controller
     public function __construct(OrderService $orderService)
     {
         $this->orderService = $orderService;
+    }
+
+    public function calculateDeliveryCharges(GetDeliveryChargesRequest $request){
+
     }
 
     public function placeOrder(PlaceOrderRequest $request)
