@@ -14,8 +14,8 @@ class RestaurantInfo extends Component
     public string $address_2;
     public string $country;
     public string $city;
-    public float $latitude;
-    public float $longitude;
+    public ?float $latitude;
+    public ?float $longitude;
 
     protected $rules = [
         'name' => 'required',

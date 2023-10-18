@@ -2,28 +2,34 @@
 
 namespace App\Http\Livewire\Vendor\Settings;
 
+use App\Enums\Tenant\DeliveryTypes;
+use App\Enums\Tenant\DistanceUnit;
 use Exception;
 use Livewire\Component;
 use Illuminate\Validation\Rule;
+use App\Settings\DeliverySettings;
 use Illuminate\Support\Facades\Log;
-use App\Models\Vendor\DeliverySetting as RestaurantDeliverySetting;
 
 class DeliverySetting extends Component
 {
-    public $free_delivery;
-    public $delivery_unit;
-    public $delivery_radius;
-    public $delivery_charges;
-    public $additional_charges;
+    public bool $free_delivery;
+    public string $free_delivery_charge_type;
+    public float $free_delivery_radius;
+    public string $delivery_charge_type;
+    public string $distance_unit;
+    public float $distance_based_radius;
+    public float $flat_delivery_charge;
 
     protected function rules()
     {
         return [
             'free_delivery' => 'boolean',
-            'delivery_unit' => ['required', Rule::in(RestaurantDeliverySetting::DELIVERY_UNITS)],
-            'delivery_radius' => 'required|numeric',
-            'delivery_charges' => 'required|numeric',
-            'additional_charges' => 'required|numeric',
+            'free_delivery_charge_type' => ['required', 'in:' . implode(',', DeliveryTypes::getAll())],
+            'free_delivery_radius' => 'required_if:free_delivery_charge_type,' . DeliveryTypes::DISTANCE . '|numeric',
+            'delivery_charge_type' => ['required', 'in:' . implode(',', DeliveryTypes::getAll())],
+            'distance_unit' => ['required', 'in:' . implode(',', DistanceUnit::getAll())],
+            'distance_based_radius' => 'required_if:delivery_charge_type,' . DeliveryTypes::DISTANCE . '|numeric',
+            'flat_delivery_charge' => 'required_if:delivery_charge_type,Flat|numeric',
         ];
     }
 
@@ -33,16 +39,15 @@ class DeliverySetting extends Component
         return RestaurantDeliverySetting::DELIVERY_UNITS;
     }
 
-    public function mount()
+    public function mount(DeliverySettings $settings)
     {
-        $deliverySetting = RestaurantDeliverySetting::first();
-        if ($deliverySetting) {
-            $this->free_delivery = $deliverySetting->free_delivery;
-            $this->delivery_unit = $deliverySetting->delivery_unit;
-            $this->delivery_radius = $deliverySetting->delivery_radius;
-            $this->delivery_charges = $deliverySetting->delivery_charges;
-            $this->additional_charges = $deliverySetting->additional_charges;
-        }
+        $this->free_delivery = $settings->free_delivery ?? false;
+        $this->free_delivery_charge_type = $settings->free_delivery_charge_type ?? 'flat';
+        $this->free_delivery_radius = $settings->free_delivery_radius ?? 0;
+        $this->delivery_charge_type = $settings->delivery_charge_type ?? 'flat';
+        $this->distance_unit = $settings->distance_unit ?? 'kilometers';
+        $this->distance_based_radius = $settings->distance_based_radius ?? 0;
+        $this->flat_delivery_charge = $settings->flat_delivery_charge ?? 0.00;
     }
 
     public function render()
@@ -55,29 +60,26 @@ class DeliverySetting extends Component
         $this->validateOnly($propertyName);
     }
 
-    public function save()
+    public function save(DeliverySettings $settings)
     {
         $this->validate();
         try {
             $data = [
                 'free_delivery' => $this->free_delivery,
-                'delivery_unit' => $this->delivery_unit,
-                'delivery_radius' => $this->delivery_radius,
-                'delivery_charges' => $this->delivery_charges,
-                'additional_charges' => $this->additional_charges
+                'free_delivery_charge_type' => $this->free_delivery_charge_type,
+                'free_delivery_radius' => $this->free_delivery_radius,
+                'delivery_charge_type' => $this->delivery_charge_type,
+                'distance_unit' => $this->distance_unit,
+                'distance_based_radius' => $this->distance_based_radius,
+                'flat_delivery_charge' => $this->flat_delivery_charge,
             ];
 
-            $restaurant = RestaurantDeliverySetting::first();
-            if ($restaurant) {
-                $restaurant->update($data);
-            } else {
-                RestaurantDeliverySetting::create($data);
-            }
+            $settings->merge($data)->save();
 
             session()->flash('message', 'Delivery Settings Successfully Updated.');
-        } catch (Exception $e) {
-            Log::error('An error occurred while updating the restaurant delivery settings: ', ['error' => $e]);
-            session()->flash('error', 'An error occurred while updating the restaurant delivery settings:' . $e->getMessage());
+        } catch (\Exception $e) {
+            Log::error('An error occurred while updating the delivery settings: ', ['error' => $e]);
+            session()->flash('error', 'An error occurred while updating the delivery settings: ' . $e->getMessage());
         }
     }
 }
