@@ -27,6 +27,8 @@ class PlaceOrderRequest extends FormRequest
             'coupon_code' => 'nullable|string|exists:coupons,code',
             'notes' => 'nullable|string',
 
+            'address_id' => 'nullable|required_if:order_type,delivery|exists:addresses,id',
+
             // For order items
             'items' => 'required|array',
             'items.*.product_id' => 'required|exists:products,id',

@@ -2,6 +2,7 @@
 
 namespace App\Models\Vendor;
 
+use App\Models\Vendor\Address;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
@@ -122,5 +123,10 @@ class Customer extends Authenticatable
             'email' => $email,
             'password' => Hash::make($password),
         ]);
+    }
+
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
     }
 }

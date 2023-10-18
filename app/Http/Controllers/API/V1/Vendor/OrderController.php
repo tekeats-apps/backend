@@ -4,9 +4,12 @@ namespace App\Http\Controllers\API\V1\Vendor;
 
 use App\Traits\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Vendor\Orders\GetDeliveryChargesRequest;
 use App\Services\Tenant\Order\OrderService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Vendor\Orders\PlaceOrderRequest;
+use App\Services\Tenant\Order\Directors\OrderDirector;
+use App\Services\Tenant\Order\Builders\OrderBuilder;
 
 class OrderController extends Controller
 {
@@ -18,12 +21,15 @@ class OrderController extends Controller
         $this->orderService = $orderService;
     }
 
+    public function calculateDeliveryCharges(GetDeliveryChargesRequest $request){
+
+    }
+
     public function placeOrder(PlaceOrderRequest $request)
     {
         $data = [];
-        $validatedData = $request->validated();
-        $validatedData['customer_id'] = $request->user()->id;
-        $order = $this->orderService->placeOrder($validatedData);
+        $director = new OrderDirector();
+        $order = $director->placeOrder(new OrderBuilder($this->orderService), $request->validated(), $request->user());
         $data['order_id'] = $order->order_id;
         return $this->successResponse($data, "Order successfully placed!", Response::HTTP_CREATED);
     }
