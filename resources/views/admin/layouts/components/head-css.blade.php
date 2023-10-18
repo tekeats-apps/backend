@@ -1,3 +1,4 @@
+@yield('on-top-css')
 <!-- Layout config Js -->
 <script src="{{ URL::asset('assets/js/layout.js') }}"></script>
 
@@ -16,7 +17,13 @@
 
 @livewireStyles
 
+<style>
+    .required::after {
+        content: " *" !important;
+        color: #c00 !important;
+    }
+    .back {
+        font-size: 1.1rem;
+    }
+</style>
 @stack('css')
-
-
-

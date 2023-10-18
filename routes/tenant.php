@@ -16,6 +16,8 @@ use App\Http\Controllers\Vendor\DashboardController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\Vendor\AuthController as StoreAuthController;
+use App\Http\Controllers\Vendor\TaxController;
+use App\Http\Controllers\Vendor\DiscountController;
 use App\Http\Controllers\Vendor\UserController as StoreUserController;
 
 /*
@@ -170,6 +172,30 @@ Route::middleware([
                 ->as('vendor.order.')
                 ->group(function () {
                     Route::get('/',  'index')->name('list');
+                });
+
+            // Tax Routes Group
+            Route::controller(TaxController::class)
+                ->prefix('taxes')
+                ->as('vendor.taxes.')->group(function () {
+                    Route::get('/', 'index')->name('list');
+                    Route::get('/create', 'create')->name('create');
+                    Route::post('/store', 'store')->name('store');
+                    Route::get('/show/{id}', 'show')->name('show');
+                    Route::get('/edit/{id}', 'edit')->name('edit');
+                    Route::put('/update/{id}', 'update')->name('update');
+                });
+
+            // Discount Routes Group
+            Route::controller(DiscountController::class)
+                ->prefix('discounts')
+                ->as('vendor.discounts.')->group(function () {
+                    Route::get('/', 'index')->name('list');
+                    Route::get('/create', 'create')->name('create');
+                    Route::post('/store', 'store')->name('store');
+                    Route::get('/show/{id}', 'show')->name('show');
+                    Route::get('/edit/{id}', 'edit')->name('edit');
+                    Route::put('/update/{id}', 'update')->name('update');
                 });
         });
     });

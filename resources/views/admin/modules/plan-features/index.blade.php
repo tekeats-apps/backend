@@ -41,24 +41,28 @@
                     }
                 });
             });
+        });
 
-            Livewire.on('delete', function(data) {
-                toastr.options = {
-                    "closeButton": true,
-                    "preventDuplicates": true,
-                    "progressBar": true
-                }
-                toastr.success(data.message);
-            });
+        document.addEventListener('success', ({
+            detail
+        }) => {
+            toastr.options = {
+                "closeButton": true,
+                "preventDuplicates": true,
+                "progressBar": true
+            }
+            toastr.success(detail.message)
+        });
 
-            Livewire.on('exception', (data) => {
-                toastr.options = {
-                    "closeButton": true,
-                    "preventDuplicates": true,
-                    "progressBar": true
-                }
-                toastr.error(data.message);
-            })
+        document.addEventListener('error', ({
+            detail
+        }) => {
+            toastr.options = {
+                "closeButton": true,
+                "preventDuplicates": true,
+                "progressBar": true
+            }
+            toastr.error(detail.message);
         });
     </script>
 @endpush

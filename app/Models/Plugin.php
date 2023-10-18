@@ -14,6 +14,7 @@ class Plugin extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
+        'id',
         'uuid',
         'plugin_type_id',
         'name',
@@ -28,7 +29,10 @@ class Plugin extends Model
         'featured'
     ];
 
-    protected $primaryKey = 'uuid';
+    public function uniqueIds()
+    {
+        return ['uuid'];
+    }
 
     public function scopeGetList($query, $search, $sortField, $sortDirection)
     {

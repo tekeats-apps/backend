@@ -9,10 +9,10 @@
             @lang('translation.plugins')
         @endslot
         @slot('title')
-            Manage Plugins
+            Edit Plugin
         @endslot
     @endcomponent
-    <form id="plugin-form" action="{{ route('admin.plugins.update', $plugin?->uuid) }}" method="POST" autocomplete="off"
+    <form id="plugin-form" action="{{ route('admin.plugins.update', $plugin?->id) }}" method="POST" autocomplete="off"
         enctype="multipart/form-data">
         @csrf @method('PUT')
         <div class="row">

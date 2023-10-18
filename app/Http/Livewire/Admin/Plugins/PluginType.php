@@ -38,9 +38,9 @@ class PluginType extends Component
     {
         try {
             Type::findOrFail($id)->delete();
-            session()->flash('success', 'Plugin type deleted successfully!');
+            $this->dispatchBrowserEvent('success', ['message' => 'Plugin type deleted successfully!']);
         } catch (\Exception $e) {
-            session()->flash('error', 'Failed to delete plugin type: ' . $e->getMessage());
+            $this->dispatchBrowserEvent('error', ['message' => 'Failed to delete plugin type: ' . $e->getMessage()]);
         }
     }
 }

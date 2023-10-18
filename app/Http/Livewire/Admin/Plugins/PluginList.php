@@ -38,9 +38,9 @@ class PluginList extends Component
     {
         try {
             Plugin::findOrFail($uuid)->delete();
-            session()->flash('success', 'Plugin deleted successfully!');
+            $this->dispatchBrowserEvent('success', ['message' => 'Plugin deleted successfully!']);
         } catch (\Exception $e) {
-            session()->flash('error', 'Failed to delete plugin: ' . $e->getMessage());
+            $this->dispatchBrowserEvent('error', ['message' => 'Failed to delete plugin: ' . $e->getMessage()]);
         }
     }
 }
