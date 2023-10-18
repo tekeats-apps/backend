@@ -17,9 +17,17 @@
         <div class="card">
             <div class="card-header border-0">
                 <div class="d-flex align-items-center">
-                    <h4 class="mb-0 flex-grow-1">
+                    <a href="javascript:void(0);" onclick="history.back()" class="me-2" title="back"><i
+                            class="ri-arrow-left-line back"></i></a>
+                    <h5 class="card-title mb-0 flex-grow-1">
                         {{ truncate($planFeature?->feature_name, 100) }}
-                    </h4>
+                    </h5>
+                    <div class="flex-shrink-0">
+                        <div class="d-flex gap-2 flex-wrap">
+                            <a href="{{ route('admin.plans.features.edit', $planFeature?->id) }}"
+                                class="btn btn-success"><i class="ri-pencil-line align-bottom me-1"></i> Edit</a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="card-body bg-soft-light border border-dashed border-start-0 border-end-0">

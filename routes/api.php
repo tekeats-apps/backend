@@ -4,8 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\V1\Vendor\OrderController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use App\Http\Controllers\API\V1\Vendor\SettingController;
-use App\Http\Controllers\API\V1\Vendor\CustomerController;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use App\Http\Controllers\API\V1\Vendor\Customer\AddressController;
+use App\Http\Controllers\API\V1\Vendor\Customer\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,24 +35,38 @@ Route::middleware([
 
     Route::middleware(['auth:customers'])->group(function () {
         Route::controller(CustomerController::class)
-        ->prefix('customers')
-        ->group(function () {
-            Route::get('/get-profile', 'getProfile');
-            Route::put('/update-profile', 'updateProfile');
-            Route::post('/update-password', 'updatePassword');
-            Route::post('/logout', 'logout');
-        });
+            ->prefix('customer')
+            ->group(function () {
+                Route::get('/get-profile', 'getProfile');
+                Route::put('/update-profile', 'updateProfile');
+                Route::post('/update-password', 'updatePassword');
+                Route::post('/logout', 'logout');
+
+                Route::controller(AddressController::class)
+                    ->prefix('address')
+                    ->group(function () {
+                        Route::post('/store', 'storeAddress');
+                        Route::get('/list', 'getAddresses');
+                        Route::get('/edit/{id}', 'editAdress');
+                        Route::put('/update/{id}', 'updateAdress');
+                        Route::delete('/delete/{id}', 'destroyAdress');
+                    });
+            });
 
         Route::controller(SettingController::class)
-        ->prefix('settings')
-        ->group(function () {
-            Route::get('/get-restaurant-settings', 'getSettings');
-        });
+            ->prefix('setting')
+            ->group(function () {
+                Route::get('/get-restaurant-settings', 'getSettings');
+            });
+
+
+
 
         Route::controller(OrderController::class)
-        ->prefix('order')
-        ->group(function () {
-            Route::post('/place-order', 'placeOrder');
-        });
+            ->prefix('orders')
+            ->group(function () {
+                Route::get('calculate-delivery-charges', 'calculateDeliveryCharges');
+                Route::post('place-order', 'placeOrder');
+            });
     });
 });
