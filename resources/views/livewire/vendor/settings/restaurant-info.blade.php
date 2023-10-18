@@ -12,7 +12,7 @@
                             <div class="col-lg-6 mb-2">
                                 <label class="form-label">Restaurant Name</label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                    wire:model.defer="name" id="name" placeholder="Enter name">
+                                    wire:model="name" id="name" placeholder="Enter name">
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -23,7 +23,7 @@
                             <div class="col-lg-6 mb-2">
                                 <label class="form-label">Email Address</label>
                                 <input type="text" class="form-control @error('email') is-invalid @enderror"
-                                    wire:model.defer="email" id="email" placeholder="Enter a valid email address">
+                                    wire:model="email" id="email" placeholder="Enter a valid email address">
                                 @error('email')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -34,7 +34,7 @@
                             <div class="col-lg-6 mb-2">
                                 <label class="form-label">Phone Number</label>
                                 <input type="text" class="form-control @error('phone') is-invalid @enderror"
-                                    wire:model.defer="phone" id="phone"
+                                    wire:model="phone" id="phone"
                                     placeholder="Enter your valid phone number">
                                 {{-- <div class="input-group" data-input-flag>
                                     <button class="btn btn-light border" type="button" data-bs-toggle="dropdown"
@@ -64,7 +64,7 @@
                             <div class="col-lg-6 mb-2">
                                 <label class="form-label">Address</label>
                                 <input type="text" class="form-control @error('address') is-invalid @enderror"
-                                    wire:model.defer="address" id="address" placeholder="Enter your business address">
+                                    wire:model="address" id="address" placeholder="Enter your business address">
                                 @error('address')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -75,7 +75,7 @@
                             <div class="col-lg-6 mb-2">
                                 <label class="form-label">Address II</label>
                                 <input type="text" class="form-control @error('address_2') is-invalid @enderror"
-                                    wire:model.defer="address_2" id="address_2"
+                                    wire:model="address_2" id="address_2"
                                     placeholder="Appartment, Building, Suite# or Floor#">
                                 @error('address_2')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -88,7 +88,7 @@
                             <div class="col-lg-6 mb-2">
                                 <label class="form-label">Country</label>
                                 <input type="text" class="form-control @error('country') is-invalid @enderror"
-                                    wire:model.defer="country" id="country" placeholder="Enter country name">
+                                    wire:model="country" id="country" placeholder="Enter country name">
                                 @error('country')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -99,7 +99,7 @@
                             <div class="col-lg-6 mb-2">
                                 <label class="form-label">City</label>
                                 <input type="text" class="form-control @error('city') is-invalid @enderror"
-                                    wire:model.defer="city" id="city" placeholder="City name">
+                                    wire:model="city" id="city" placeholder="City name">
                                 @error('city')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -109,8 +109,8 @@
                             </div>
                             <div class="col-lg-6 mb-2">
                                 <label class="form-label">Latitude</label>
-                                <input type="text" class="form-control @error('latitude') is-invalid @enderror"
-                                    wire:model.defer="latitude" id="latitude" placeholder="Latitude eg. 3722323.12">
+                                <input type="number" min="-90" max="90" step="0.000001" class="form-control @error('latitude') is-invalid @enderror"
+                                    wire:model="latitude" id="latitude" placeholder="Latitude eg. 3722323.12">
                                 @error('latitude')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -120,8 +120,8 @@
                             </div>
                             <div class="col-lg-6 mb-2">
                                 <label class="form-label">Longitude</label>
-                                <input type="text" class="form-control @error('longitude') is-invalid @enderror"
-                                    wire:model.defer="longitude" id="longitude"
+                                <input type="number" min="-180" max="180" step="0.000001" class="form-control @error('longitude') is-invalid @enderror"
+                                    wire:model="longitude" id="longitude"
                                     placeholder="Longitude eg. 3722323.12">
                                 @error('longitude')
                                     <div class="invalid-feedback">{{ $message }}</div>
