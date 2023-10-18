@@ -36,24 +36,6 @@
                                 <input type="text" class="form-control @error('phone') is-invalid @enderror"
                                     wire:model="phone" id="phone"
                                     placeholder="Enter your valid phone number">
-                                {{-- <div class="input-group" data-input-flag>
-                                    <button class="btn btn-light border" type="button" data-bs-toggle="dropdown"
-                                        aria-expanded="false"><img src="{{ URL::asset('assets/images/flags/us.svg') }}"
-                                            alt="flag img" height="20" class="country-flagimg rounded"><span
-                                            class="ms-2 country-codeno">+ 1</span></button>
-                                    <input type="text"
-                                        class="form-control rounded-end flag-input @error('phone') is-invalid @enderror"
-                                        wire:model.defer="phone" placeholder="Enter number"
-                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
-                                    <div class="dropdown-menu w-100">
-                                        <div class="p-2 px-3 pt-1 searchlist-input">
-                                            <input type="text"
-                                                class="form-control form-control-sm border search-countryList"
-                                                placeholder="Search country name or country code..." />
-                                        </div>
-                                        <ul class="list-unstyled dropdown-menu-list mb-0"></ul>
-                                    </div>
-                                </div> --}}
                                 @error('phone')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
