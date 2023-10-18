@@ -9,6 +9,6 @@ class OrderObserver
 {
     public function created(Order $order)
     {
-        event(new OrderPlacedEvent($order));
+        // event(new OrderPlacedEvent($order));
     }
 }
