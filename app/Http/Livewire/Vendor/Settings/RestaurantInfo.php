@@ -2,21 +2,20 @@
 
 namespace App\Http\Livewire\Vendor\Settings;
 
-use Exception;
 use Livewire\Component;
-use App\Models\Vendor\RestaurantInfo as RestaurantInformation;
+use App\Settings\GeneralSettings;
 
 class RestaurantInfo extends Component
 {
-    public $name;
-    public $email;
-    public $phone;
-    public $address;
-    public $address_2;
-    public $country;
-    public $city;
-    public $latitude;
-    public $longitude;
+    public string $name;
+    public string $email;
+    public string $phone;
+    public string $address;
+    public string $address_2;
+    public string $country;
+    public string $city;
+    public ?float $latitude;
+    public ?float $longitude;
 
     protected $rules = [
         'name' => 'required',
@@ -26,27 +25,22 @@ class RestaurantInfo extends Component
         'address_2' => 'nullable',
         'country' => 'nullable',
         'city' => 'nullable',
-        'latitude' => 'nullable',
-        'longitude' => 'nullable',
+        'latitude' => ['required', 'numeric', 'regex:/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/'],
+        'longitude' => ['required', 'numeric', 'regex:/^[-]?((([0-9]?[0-9])|[0-1][0-7][0-9])\.(\d+))|(180(\.0+)?)$/'],
     ];
 
-    public function mount()
+    public function mount(GeneralSettings $settings)
     {
-        $this->name = tenant()->business_name ?? '';
-        $this->email = tenant()->email ?? '';
 
-        $restaurant = RestaurantInformation::first();
-        if ($restaurant) {
-            $this->name = $restaurant->name;
-            $this->email = $restaurant->email;
-            $this->phone = $restaurant->phone;
-            $this->address = $restaurant->address;
-            $this->address_2 = $restaurant->address_2;
-            $this->country = $restaurant->country;
-            $this->city = $restaurant->city;
-            $this->latitude = $restaurant->latitude;
-            $this->longitude = $restaurant->longitude;
-        }
+        $this->name = $settings->name ?? tenant()->business_name;
+        $this->email = $settings->email ?? tenant()->email;
+        $this->phone = $settings->phone ?? '';
+        $this->address = $settings->address ?? '';
+        $this->address_2 = $settings->address_2 ?? '';
+        $this->country = $settings->country ?? '';
+        $this->city = $settings->city ?? '';
+        $this->latitude = $settings->latitude ?? 0.000000;
+        $this->longitude = $settings->longitude ?? 0.00000;
     }
 
     public function render()
@@ -59,37 +53,26 @@ class RestaurantInfo extends Component
         $this->validateOnly($propertyName);
     }
 
-    public function updateRestaurantInformation()
+    public function updateRestaurantInformation(GeneralSettings $settings)
     {
         $this->validate();
-        try {
-            $data = [
-                'name' => $this->name,
-                'email' => $this->email,
-                'phone' => $this->phone,
-                'address' => $this->address,
-                'address_2' => $this->address_2,
-                'country' => $this->country,
-                'city' => $this->city,
-                'latitude' => $this->latitude,
-                'longitude' => $this->longitude,
-            ];
 
-            $restaurant = RestaurantInformation::first();
-            if ($restaurant) {
-                $restaurant->update($data);
-            } else {
-                RestaurantInformation::create($data);
-            }
+        $settings->name = $this->name;
+        $settings->email = $this->email;
+        $settings->phone = $this->phone;
+        $settings->address = $this->address;
+        $settings->address_2 = $this->address_2;
+        $settings->country = $this->country;
+        $settings->city = $this->city;
+        $settings->latitude = $this->latitude !== null ? (float)$this->latitude : null;
+        $settings->longitude = $this->longitude !== null ? (float)$this->longitude : null;
 
-            tenant()->business_name = $restaurant->name;
-            tenant()->email = $restaurant->email;
-            tenant()->save();
+        $settings->save();
 
-            session()->flash('message', 'Restaurant information updated successfully.');
-        } catch (Exception $e) {
-            session()->flash('error', 'An error occurred while updating the restaurant information:' . $e->getMessage());
-            // You can log the exception or perform additional error handling here
-        }
+        tenant()->business_name = $settings->name;
+        tenant()->email = $settings->email;
+        tenant()->save();
+
+        session()->flash('message', 'Restaurrestaurantant information updated successfully.');
     }
 }
