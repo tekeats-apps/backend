@@ -14,7 +14,7 @@ class DeliverySettings extends Settings
     public string $delivery_charge_type; // Flat, DistanceBased
     public string $distance_unit; // Kilometers, Miles, Meters
     public ?float $distance_based_radius;
-    public ?float $flat_delivery_charge;
+    public ?float $delivery_charges;
 
     public ?array $range_based_charges; // This can be an array of arrays or objects to hold multiple ranges
 

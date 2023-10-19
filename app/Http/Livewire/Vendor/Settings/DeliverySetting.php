@@ -18,7 +18,7 @@ class DeliverySetting extends Component
     public string $delivery_charge_type;
     public string $distance_unit;
     public float $distance_based_radius;
-    public float $flat_delivery_charge;
+    public float $delivery_charges;
 
     protected function rules()
     {
@@ -29,14 +29,19 @@ class DeliverySetting extends Component
             'delivery_charge_type' => ['required', 'in:' . implode(',', DeliveryTypes::getAll())],
             'distance_unit' => ['required', 'in:' . implode(',', DistanceUnit::getAll())],
             'distance_based_radius' => 'required_if:delivery_charge_type,' . DeliveryTypes::DISTANCE . '|numeric',
-            'flat_delivery_charge' => 'required_if:delivery_charge_type,Flat|numeric',
+            'delivery_charges' => 'required_if:delivery_charge_type,Flat|numeric',
         ];
     }
 
 
     public function getDeliveryUnitsProperty()
     {
-        return RestaurantDeliverySetting::DELIVERY_UNITS;
+        return DistanceUnit::getAll();
+    }
+
+    public function getDeliveryTypesProperty()
+    {
+        return DeliveryTypes::getAll();
     }
 
     public function mount(DeliverySettings $settings)
@@ -47,7 +52,7 @@ class DeliverySetting extends Component
         $this->delivery_charge_type = $settings->delivery_charge_type ?? 'flat';
         $this->distance_unit = $settings->distance_unit ?? 'kilometers';
         $this->distance_based_radius = $settings->distance_based_radius ?? 0;
-        $this->flat_delivery_charge = $settings->flat_delivery_charge ?? 0.00;
+        $this->delivery_charges = $settings->delivery_charges ?? 0.00;
     }
 
     public function render()
@@ -64,17 +69,15 @@ class DeliverySetting extends Component
     {
         $this->validate();
         try {
-            $data = [
-                'free_delivery' => $this->free_delivery,
-                'free_delivery_charge_type' => $this->free_delivery_charge_type,
-                'free_delivery_radius' => $this->free_delivery_radius,
-                'delivery_charge_type' => $this->delivery_charge_type,
-                'distance_unit' => $this->distance_unit,
-                'distance_based_radius' => $this->distance_based_radius,
-                'flat_delivery_charge' => $this->flat_delivery_charge,
-            ];
+            $settings->free_delivery = $this->free_delivery;
+            $settings->free_delivery_charge_type = $this->free_delivery_charge_type;
+            $settings->free_delivery_radius = $this->free_delivery_radius;
+            $settings->delivery_charge_type = $this->delivery_charge_type;
+            $settings->distance_unit = $this->distance_unit;
+            $settings->distance_based_radius = $this->distance_based_radius;
+            $settings->delivery_charges = $this->delivery_charges;
 
-            $settings->merge($data)->save();
+            $settings->save();
 
             session()->flash('message', 'Delivery Settings Successfully Updated.');
         } catch (\Exception $e) {
