@@ -4,25 +4,31 @@ namespace App\Http\Controllers\API\V1\Vendor;
 
 use App\Traits\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Vendor\Orders\GetDeliveryChargesRequest;
 use App\Services\Tenant\Order\OrderService;
 use Symfony\Component\HttpFoundation\Response;
+use App\Services\Tenant\Order\Builders\OrderBuilder;
+use App\Services\Tenant\Order\DeliveryChargeService;
 use App\Http\Requests\Vendor\Orders\PlaceOrderRequest;
 use App\Services\Tenant\Order\Directors\OrderDirector;
-use App\Services\Tenant\Order\Builders\OrderBuilder;
+use App\Http\Requests\Vendor\Orders\GetDeliveryChargesRequest;
 
 class OrderController extends Controller
 {
     use ApiResponse;
     protected $orderService;
+    protected $deliveryChargeService;
 
-    public function __construct(OrderService $orderService)
+    public function __construct(OrderService $orderService, DeliveryChargeService $deliveryChargeService)
     {
         $this->orderService = $orderService;
+        $this->deliveryChargeService = $deliveryChargeService;
     }
 
-    public function calculateDeliveryCharges(GetDeliveryChargesRequest $request){
-
+    public function calculateDeliveryCharges(GetDeliveryChargesRequest $request)
+    {
+        $data = $request->validated();
+        $deliveryCharge = $this->deliveryChargeService->calculateDeliveryCharge($data['address_id']);
+        return $this->successResponse(['delivery_charges' => $deliveryCharge], "Delivery charge calculated successfully!");
     }
 
     public function placeOrder(PlaceOrderRequest $request)

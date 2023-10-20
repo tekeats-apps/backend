@@ -11,7 +11,7 @@ class GetDeliveryChargesRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,7 @@ class GetDeliveryChargesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'address_id' => 'required|exists:addresses,id'
         ];
     }
 }
