@@ -26,9 +26,8 @@ class CouponController extends Controller
     public function create()
     {
         $couponTypes = CouponType::cases();
-        $couponOptions = CouponOption::cases();
         $couponAmountTypes = CouponAmountType::cases();
-        return view('vendor.modules.coupons.create', compact('couponTypes', 'couponOptions', 'couponAmountTypes'));
+        return view('vendor.modules.coupons.create', compact('couponTypes', 'couponAmountTypes'));
     }
 
     /**
@@ -45,34 +44,31 @@ class CouponController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        try {
+            $couponTypes = CouponType::cases();
+
+            $couponAmountTypes = CouponAmountType::cases();
+            $coupon = Coupon::findOrFail($id);
+            return view('vendor.modules.coupons.edit', compact('coupon', 'couponTypes', 'couponAmountTypes'));
+        } catch (\Exception $e) {
+            return redirect()->route('vendor.coupons.list')->with('error', 'Failed to find coupon: ' . $e->getMessage());
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CouponRequest $request, string $id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        try {
+            Coupon::findOrFail($id)->update($request->validated());
+            return redirect()->route('vendor.coupons.list')->with('success', 'Coupon updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('vendor.coupons.list')->with('error', 'Failed to update coupon: ' . $e->getMessage());
+        }
     }
 }
