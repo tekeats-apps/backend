@@ -38,4 +38,20 @@ class Coupon extends Model
         'type' => CouponType::class,
         'amount_type' => CouponAmountType::class,
     ];
+
+    public function scopeGetList($query, $search, $sortField, $sortDirection)
+    {
+        if (!empty($search)) {
+            $query->where(function ($subQuery) use ($search) {
+                $subQuery->where('coupon_option', 'like', '%' . $search . '%')
+                    ->orWhere('coupon_code', 'like', '%' . $search . '%')
+                    ->orWhere('type', 'like', '%' . $search . '%')
+                    ->orWhere('amount_type', 'like', '%' . $search . '%')
+                    ->orWhere('amount', 'like', '%' . $search . '%')
+                    ->orWhere('expiry_date', 'like', '%' . $search . '%');
+            });
+        }
+
+        return $query->orderBy($sortField, $sortDirection);
+    }
 }
