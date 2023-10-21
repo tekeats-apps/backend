@@ -11,6 +11,8 @@
 <script type='text/javascript' src='{{ URL::asset('assets/libs/flatpickr/flatpickr.min.js') }}'></script>
 <script type='text/javascript' src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
 @livewireScripts
+{{-- custom script --}}
+<script type='text/javascript' src="{{ URL::asset('/assets/js/script.init.js') }}"></script>
 <script>
     @if (Session::has('success'))
         toastr.options = {
