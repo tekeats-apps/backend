@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Vendor\TaxActive;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('type');
             $table->decimal('amount');
-            $table->boolean('active')->default(false);
+            $table->boolean('active')->default(TaxActive::INACTIVE->value);
             $table->timestamps();
         });
     }
