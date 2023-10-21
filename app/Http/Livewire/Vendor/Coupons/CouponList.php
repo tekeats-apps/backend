@@ -24,6 +24,20 @@ class CouponList extends Component
         return Coupon::getList($this->search, $this->sortField, $this->sortDirection)->paginate($this->perPage);
     }
 
+    public function toggleStatus($id)
+    {
+        try {
+            $coupon = Coupon::findOrFail($id);
+            $coupon->active = !$coupon->active;
+            $coupon->update();
+
+            $message = $coupon->active ? 'Active' : 'Inactive';
+            $this->dispatchBrowserEvent('alert', ['type' => 'success', 'message' => 'Status updated to ' . $message]);
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to update coupon status: ' . $e->getMessage());
+        }
+    }
+
     public function confirmDelete($id)
     {
         // Show the SweetAlert confirmation dialog
@@ -38,7 +52,7 @@ class CouponList extends Component
     {
         try {
             Coupon::findOrFail($id)->delete();
-            $this->dispatchBrowserEvent('alert', ['type' => 'success','message' => 'Coupon deleted successfully!']);
+            $this->dispatchBrowserEvent('alert', ['type' => 'success', 'message' => 'Coupon deleted successfully!']);
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to delete coupon: ' . $e->getMessage());
         }

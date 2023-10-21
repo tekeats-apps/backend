@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('amount_type');
             $table->decimal('amount');
             $table->date('expiry_date')->nullable();
-            $table->boolean('active')->default(CouponActive::IN_ACTIVE->value);
+            $table->boolean('active')->default(CouponActive::INACTIVE->value);
             $table->timestamps();
         });
     }

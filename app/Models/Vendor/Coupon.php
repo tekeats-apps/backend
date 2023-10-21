@@ -2,6 +2,7 @@
 
 namespace App\Models\Vendor;
 
+use App\Enums\Vendor\CouponActive;
 use Illuminate\Support\Str;
 use App\Enums\Vendor\CouponType;
 use App\Enums\Vendor\CouponOption;
@@ -69,10 +70,23 @@ class Coupon extends Model
                     ->orWhere('type', 'like', '%' . $search . '%')
                     ->orWhere('amount_type', 'like', '%' . $search . '%')
                     ->orWhere('amount', 'like', '%' . $search . '%')
-                    ->orWhere('expiry_date', 'like', '%' . $search . '%');
+                    ->orWhere('expiry_date', 'like', '%' . $search . '%')
+                    ->status($search);
             });
         }
 
         return $query->orderBy($sortField, $sortDirection);
+    }
+
+    // exact match searching for status
+    public function scopeStatus($query, $keyword)
+    {
+        if ($keyword == 'active' || $keyword == 'Active' || $keyword == 'ACTIVE') {
+            return $query->orWhere('active', CouponActive::ACTIVE->value);
+        }
+
+        if ($keyword == 'inactive' || $keyword == 'Inactive' || $keyword == 'INACTIVE') {
+            return $query->orWhere('active', CouponActive::INACTIVE->value);
+        }
     }
 }

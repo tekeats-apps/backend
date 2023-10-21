@@ -5,6 +5,6 @@ namespace App\Enums\Vendor;
 enum CouponActive: int
 {
 
-    case ACTIVE = true;
-    case IN_ACTIVE = false;
+    case ACTIVE = 1;
+    case INACTIVE = 0;
 }
