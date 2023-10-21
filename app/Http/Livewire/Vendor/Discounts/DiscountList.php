@@ -28,11 +28,11 @@ class DiscountList extends Component
     {
         try {
             $discount = Discount::findOrFail($id);
-            $discount->active = !$discount->active;
-            $discount->save();
+            $discount->active = !$discount->active->value;
+            $discount->update();
 
             $message = $discount->active ? 'Active' : 'Inactive';
-            $this->dispatchBrowserEvent('success', ['message' => 'Status updated to ' . $message]);
+            $this->dispatchBrowserEvent('alert', ['type' => 'success', 'message' => 'Status updated to ' . $message]);
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to update discount status: ' . $e->getMessage());
         }
@@ -52,7 +52,7 @@ class DiscountList extends Component
     {
         try {
             Discount::findOrFail($id)->delete();
-            $this->dispatchBrowserEvent('success', ['message' => 'Discount deleted successfully!']);
+            $this->dispatchBrowserEvent('alert', ['type' => 'success', 'message' => 'Discount deleted successfully!']);
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to delete discount: ' . $e->getMessage());
         }

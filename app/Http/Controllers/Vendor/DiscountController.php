@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Vendor;
 
-use App\Enums\Vendor\DiscountTypeEnum;
+use App\Enums\Vendor\DiscountType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Vendor\DiscountRequest;
 use App\Models\Vendor\Discount;
@@ -22,7 +22,7 @@ class DiscountController extends Controller
      */
     public function create()
     {
-        $discountTypes = DiscountTypeEnum::values();
+        $discountTypes = DiscountType::cases();
         return view('vendor.modules.discounts.create', compact('discountTypes'));
     }
 
@@ -58,7 +58,7 @@ class DiscountController extends Controller
     public function edit(string $id)
     {
         try {
-            $discountTypes = DiscountTypeEnum::values();
+            $discountTypes = DiscountType::cases();
             $discount = Discount::findOrFail($id);
             return view('vendor.modules.discounts.edit', compact('discount', 'discountTypes'));
         } catch (\Exception $e) {

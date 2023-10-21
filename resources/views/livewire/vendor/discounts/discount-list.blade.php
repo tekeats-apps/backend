@@ -70,13 +70,13 @@
                                 {{ $discount?->title }}
                             </td>
                             <td>
-                                {{ $discount?->type }}
+                                {{ $discount?->type->value }}
                             </td>
                             <td>
                                 {{ $discount?->amount }}
                             </td>
                             <td>
-                                @if ($discount?->active == 1)
+                                @if ($discount?->active?->value)
                                     <span class="text-success">
                                         <i class="ri-checkbox-circle-line fs-17 align-middle"></i> Active</span>
                                 @else
@@ -111,10 +111,10 @@
                                         <li>
                                             <a class="dropdown-item status-change-btn" role="button"
                                                 wire:click="toggleStatus({{ $discount?->id }})"
-                                                data-status="{{ $discount?->active }}">
+                                                data-status="{{ $discount?->active?->value }}">
                                                 <i
-                                                    class="{{ $discount?->active ? 'ri-arrow-down-fill text-danger' : 'ri-arrow-up-fill text-success' }} align-bottom me-2"></i>
-                                                {{ $discount?->active ? 'Deactivate' : 'Activate' }}
+                                                    class="{{ $discount?->active?->value ? 'ri-arrow-down-fill text-danger' : 'ri-arrow-up-fill text-success' }} align-bottom me-2"></i>
+                                                {{ $discount?->active?->value ? 'Deactivate' : 'Activate' }}
                                             </a>
                                         </li>
                                     </ul>
@@ -133,7 +133,7 @@
                         <h5 class="mt-2">Sorry! No Result Found</h5>
                         <p class="text-muted mb-0">We've searched our all records
                             did not find any
-                            tax details for you search.</p>
+                            discount details for you search.</p>
                     </div>
                 </div>
             @endunless
