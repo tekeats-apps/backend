@@ -2,11 +2,14 @@
 
 namespace App\Models\Vendor;
 
-use App\Enums\Vendor\CouponAmountType;
-use App\Enums\Vendor\CouponOption;
+use Illuminate\Support\Str;
 use App\Enums\Vendor\CouponType;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\Vendor\CouponOption;
+use App\Enums\Vendor\CouponAmountType;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Coupon extends Model
 {
@@ -38,6 +41,24 @@ class Coupon extends Model
         'type' => CouponType::class,
         'amount_type' => CouponAmountType::class,
     ];
+
+    public function couponCode(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => $value = $this->coupon_option->value == CouponOption::AUTOMATIC->value
+                ? Str::random(8)
+                : $value
+        );
+    }
+
+    public function expiryDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value
+                ? Carbon::parse($value)->format('d M, Y')
+                : $value
+        );
+    }
 
     public function scopeGetList($query, $search, $sortField, $sortDirection)
     {

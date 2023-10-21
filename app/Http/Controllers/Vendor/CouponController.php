@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers\Vendor;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Vendor\Coupon;
+use App\Enums\Vendor\CouponType;
+use App\Enums\Vendor\CouponOption;
+use App\Http\Controllers\Controller;
+use App\Enums\Vendor\CouponAmountType;
+use App\Http\Requests\Vendor\CouponRequest;
 
 class CouponController extends Controller
 {
@@ -20,15 +25,23 @@ class CouponController extends Controller
      */
     public function create()
     {
-        //
+        $couponTypes = CouponType::cases();
+        $couponOptions = CouponOption::cases();
+        $couponAmountTypes = CouponAmountType::cases();
+        return view('vendor.modules.coupons.create', compact('couponTypes', 'couponOptions', 'couponAmountTypes'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CouponRequest $request)
     {
-        //
+        try {
+            Coupon::create(array_merge($request->validated(), ['vendor_id' => 'ef345c96-0d9d-4847-88c2-d8b168f61a25']));
+            return redirect()->route('vendor.coupons.list')->with('success', 'Coupon created successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('vendor.coupons.list')->with('error', 'Failed to create coupon: ' . $e->getMessage());
+        }
     }
 
     /**

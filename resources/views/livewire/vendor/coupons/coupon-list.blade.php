@@ -50,9 +50,10 @@
                                 <input class="form-check-input fs-15" type="checkbox" id="checkAll" value="1">
                             </div>
                         </th>
-                        <th>Coupon Option</th>
                         <th>Coupon Code</th>
                         <th>Type</th>
+                        <th>Amount Type</th>
+                        <th>Amount</th>
                         <th>Expiry Date</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -68,13 +69,16 @@
                                 </div>
                             </th>
                             <td>
-                                {{ $coupon?->coupon_option }}
-                            </td>
-                            <td>
                                 {{ $coupon?->coupon_code }}
                             </td>
                             <td>
                                 {{ $coupon?->type }}
+                            </td>
+                            <td>
+                                {{ $coupon?->amount_type }}
+                            </td>
+                            <td>
+                                {{ $coupon?->amount }}
                             </td>
                             <td>
                                 {{ $coupon?->expiry_date }}
