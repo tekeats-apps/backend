@@ -27,8 +27,10 @@ class OrderController extends Controller
     public function calculateDeliveryCharges(GetDeliveryChargesRequest $request)
     {
         $data = $request->validated();
-        $deliveryCharge = $this->deliveryChargeService->calculateDeliveryCharge($data['address_id']);
-        return $this->successResponse(['delivery_charges' => $deliveryCharge], "Delivery charge calculated successfully!");
+        // dd($data);
+        $address_id = (int) $data['address_id'];
+        $delivery = $this->deliveryChargeService->calculateDeliveryCharge($address_id);
+        return $this->successResponse($delivery, "Delivery charge calculated successfully!");
     }
 
     public function placeOrder(PlaceOrderRequest $request)
