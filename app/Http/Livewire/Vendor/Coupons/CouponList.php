@@ -23,4 +23,24 @@ class CouponList extends Component
     {
         return Coupon::getList($this->search, $this->sortField, $this->sortDirection)->paginate($this->perPage);
     }
+
+    public function confirmDelete($id)
+    {
+        // Show the SweetAlert confirmation dialog
+        $this->emit('swal:confirm-delete', [
+            'title' => 'Are you sure?',
+            'text' => 'You are about to delete the coupon. This action cannot be undone.',
+            'id' => $id,
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        try {
+            Coupon::findOrFail($id)->delete();
+            $this->dispatchBrowserEvent('alert', ['type' => 'success','message' => 'Coupon deleted successfully!']);
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to delete coupon: ' . $e->getMessage());
+        }
+    }
 }

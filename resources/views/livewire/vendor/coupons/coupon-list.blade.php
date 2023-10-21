@@ -104,11 +104,8 @@
                                                     class="ri-pencil-fill align-bottom me-2 text-info"></i>
                                                 Edit</a>
                                         </li>
-                                        <li><a class="dropdown-item" href="{{ route('vendor.coupons.show', $coupon?->id) }}" data-id="{{ $coupon?->id }}">
-                                            <i class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                            View</a></li>
-                                        <li>
-                                            <a class="dropdown-item remove-item-btn" role="button" wire:click="confirmDelete('{{ $coupon?->id }}')">
+                                            <a class="dropdown-item remove-item-btn" role="button"
+                                                wire:click="confirmDelete('{{ $coupon?->id }}')">
                                                 <i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i>
                                                 Delete
                                             </a>

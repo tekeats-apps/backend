@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Vendor;
 
-use Illuminate\Http\Request;
 use App\Models\Vendor\Coupon;
 use App\Enums\Vendor\CouponType;
-use App\Enums\Vendor\CouponOption;
 use App\Http\Controllers\Controller;
 use App\Enums\Vendor\CouponAmountType;
 use App\Http\Requests\Vendor\CouponRequest;
@@ -50,7 +48,6 @@ class CouponController extends Controller
     {
         try {
             $couponTypes = CouponType::cases();
-
             $couponAmountTypes = CouponAmountType::cases();
             $coupon = Coupon::findOrFail($id);
             return view('vendor.modules.coupons.edit', compact('coupon', 'couponTypes', 'couponAmountTypes'));
