@@ -72,10 +72,10 @@
                                 {{ $coupon?->coupon_code }}
                             </td>
                             <td>
-                                {{ $coupon?->type }}
+                                {{ $coupon?->type?->value }}
                             </td>
                             <td>
-                                {{ $coupon?->amount_type }}
+                                {{ $coupon?->amount_type?->value }}
                             </td>
                             <td>
                                 {{ $coupon?->amount }}
@@ -84,7 +84,7 @@
                                 {{ $coupon?->expiry_date }}
                             </td>
                             <td>
-                                @if ($coupon?->active)
+                                @if ($coupon?->active?->value)
                                     <span class="text-success">
                                         <i class="ri-checkbox-circle-line fs-17 align-middle"></i> Active</span>
                                 @else
@@ -113,10 +113,10 @@
                                         <li>
                                             <a class="dropdown-item status-change-btn" role="button"
                                                 wire:click="toggleStatus({{ $coupon?->id }})"
-                                                data-status="{{ $coupon?->active }}">
+                                                data-status="{{ $coupon?->active?->value }}">
                                                 <i
-                                                    class="{{ $coupon?->active ? 'ri-arrow-down-fill text-danger' : 'ri-arrow-up-fill text-success' }} align-bottom me-2"></i>
-                                                {{ $coupon?->active ? 'Deactivate' : 'Activate' }}
+                                                    class="{{ $coupon?->active?->value ? 'ri-arrow-down-fill text-danger' : 'ri-arrow-up-fill text-success' }} align-bottom me-2"></i>
+                                                {{ $coupon?->active?->value ? 'Deactivate' : 'Activate' }}
                                             </a>
                                         </li>
                                     </ul>

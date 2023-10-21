@@ -3,11 +3,11 @@
 namespace App\Models\Vendor;
 
 use App\Enums\Vendor\CouponActive;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Enums\Vendor\CouponType;
 use App\Enums\Vendor\CouponOption;
 use App\Enums\Vendor\CouponAmountType;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -41,6 +41,7 @@ class Coupon extends Model
         'coupon_option' => CouponOption::class,
         'type' => CouponType::class,
         'amount_type' => CouponAmountType::class,
+        'active' => CouponActive::class
     ];
 
     public function couponCode(): Attribute

@@ -28,10 +28,10 @@ class CouponList extends Component
     {
         try {
             $coupon = Coupon::findOrFail($id);
-            $coupon->active = !$coupon->active;
+            $coupon->active = !$coupon->active->value;
             $coupon->update();
 
-            $message = $coupon->active ? 'Active' : 'Inactive';
+            $message = $coupon->active->value ? 'Active' : 'Inactive';
             $this->dispatchBrowserEvent('alert', ['type' => 'success', 'message' => 'Status updated to ' . $message]);
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to update coupon status: ' . $e->getMessage());
