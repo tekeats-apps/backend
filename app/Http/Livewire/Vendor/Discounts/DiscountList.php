@@ -31,7 +31,7 @@ class DiscountList extends Component
             $discount->active = !$discount->active->value;
             $discount->update();
 
-            $message = $discount->active ? 'Active' : 'Inactive';
+            $message = $discount->active->value ? 'Active' : 'Inactive';
             $this->dispatchBrowserEvent('alert', ['type' => 'success', 'message' => 'Status updated to ' . $message]);
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to update discount status: ' . $e->getMessage());

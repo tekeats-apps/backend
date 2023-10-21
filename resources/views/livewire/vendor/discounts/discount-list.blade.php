@@ -70,7 +70,7 @@
                                 {{ $discount?->title }}
                             </td>
                             <td>
-                                {{ $discount?->type->value }}
+                                {{ $discount?->type?->value }}
                             </td>
                             <td>
                                 {{ $discount?->amount }}

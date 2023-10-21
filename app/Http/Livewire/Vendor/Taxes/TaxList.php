@@ -31,7 +31,7 @@ class TaxList extends Component
             $tax->active = !$tax->active->value;
             $tax->update();
 
-            $message = $tax->active ? 'Active' : 'Inactive';
+            $message = $tax->active->value ? 'Active' : 'Inactive';
             $this->dispatchBrowserEvent('alert', ['type' => 'success', 'message' => 'Status updated to ' . $message]);
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to update tax status: ' . $e->getMessage());

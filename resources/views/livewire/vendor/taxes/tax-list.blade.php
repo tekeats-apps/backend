@@ -70,7 +70,7 @@
                                 {{ $tax?->title }}
                             </td>
                             <td>
-                                {{ $tax?->type }}
+                                {{ $tax?->type?->value }}
                             </td>
                             <td>
                                 {{ $tax?->amount }}
