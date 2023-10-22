@@ -37,7 +37,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Title</label>
                                             <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                                name="title" value="{{ $discount?->title }}" placeholder="Enter tax title"
+                                                name="title" value="{{ $discount?->title }}" placeholder="Enter discount title"
                                                 required>
                                             @error('title')
                                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -90,11 +90,11 @@
                                             <label for="plugin_type" class="form-label">Type</label>
                                             <select class="form-select @error('type') is-invalid @enderror" name="type"
                                                 id="plugin_type" required>
-                                                <option value="">Select Tax Type</option>
+                                                <option value="">Select Discount Type</option>
                                                 @isset($discountTypes)
                                                     @foreach ($discountTypes as $discountType)
-                                                        <option value="{{ $discountType }}" @selected($discountType == $discount?->type?->value)>
-                                                            {{ ucfirst($discountType) }}</option>
+                                                        <option value="{{ $discountType?->value }}" @selected($discountType?->value == $discount?->type?->value)>
+                                                            {{ ucfirst($discountType?->value) }}</option>
                                                     @endforeach
                                                 @endisset
                                             </select>

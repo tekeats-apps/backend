@@ -37,8 +37,8 @@
                                         <div class="mb-3">
                                             <label class="form-label">Title</label>
                                             <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                                name="title" value="{{ old('title') }}" placeholder="Enter tax title"
-                                                required>
+                                                name="title" value="{{ old('title') }}"
+                                                placeholder="Enter discount title" required>
                                             @error('title')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -93,7 +93,8 @@
                                                 <option value="">Select Discount Type</option>
                                                 @isset($discountTypes)
                                                     @foreach ($discountTypes as $discountType)
-                                                        <option value="{{ $discountType }}">{{ ucfirst($discountType) }}</option>
+                                                        <option value="{{ $discountType?->value }}">
+                                                            {{ ucfirst($discountType?->value) }}</option>
                                                     @endforeach
                                                 @endisset
                                             </select>
