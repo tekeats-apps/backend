@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\V1\Vendor;
+namespace App\Http\Controllers\API\V1\Vendor\Customer;
 
 use Exception;
 use App\Traits\ApiResponse;
@@ -15,10 +15,19 @@ use App\Http\Requests\Vendor\Customers\ProfileUpdateRequest;
 use App\Http\Requests\Vendor\Customers\PasswordUpdateRequest;
 use App\Http\Requests\Vendor\Customers\API\RegisterCustomerRequest;
 
+/**
+ * @tags Customer
+ */
+
 class CustomerController extends Controller
 {
     use ApiResponse, TenantImageUploadTrait;
 
+    /**
+     * Register
+     *
+     * 🚀 This endpoint allows new customers to create an account and join our awesome platform. You'll receive a token to access other cool features!
+     */
     public function register(RegisterCustomerRequest $request)
     {
         $data = [];
@@ -36,7 +45,11 @@ class CustomerController extends Controller
             return $this->exceptionResponse($e, "Something went wrong!");
         }
     }
-
+    /**
+     * Login
+     *
+     * 🗝️ Use this endpoint to log in and gain access to your account. You'll get a token you can use to do even more awesome things!
+     */
     public function login(LoginRequest $request)
     {
         $data = [];
@@ -63,7 +76,13 @@ class CustomerController extends Controller
             return $this->exceptionResponse($e, "Login failed.");
         }
     }
-
+    /**
+     * View Profile
+     *
+     * @authenticated
+     *
+     * 📚 Fetch all the important stuff about you! This is where you can get to know your account better.
+     */
     public function getProfile(Request $request)
     {
         try {
@@ -75,7 +94,13 @@ class CustomerController extends Controller
         }
     }
 
-
+    /**
+     * Update Profile
+     *
+     * @authenticated
+     *
+     * 👤 Spice up your account! Use this endpoint to update your profile details like your name, email, and even your profile picture.
+     */
     public function updateProfile(ProfileUpdateRequest $request)
     {
         try {
@@ -106,7 +131,13 @@ class CustomerController extends Controller
             return $this->exceptionResponse($e, "Profile update failed.");
         }
     }
-
+    /**
+     * Change Password
+     *
+     * @authenticated
+     *
+     * 🔒➡️🔓 Feeling like your password isn't strong enough or just want a change? Use this to make that switch!
+     */
     public function updatePassword(PasswordUpdateRequest $request)
     {
         try {
@@ -127,7 +158,13 @@ class CustomerController extends Controller
         }
     }
 
-
+    /**
+     * Log Out
+     *
+     * @authenticated
+     *
+     * ✌️ Time to say goodbye? Use this endpoint to log out from your account securely. Come back soon!
+     */
     public function logout(Request $request)
     {
         try {

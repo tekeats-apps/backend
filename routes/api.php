@@ -6,7 +6,7 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use App\Http\Controllers\API\V1\Vendor\SettingController;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\API\V1\Vendor\Customer\AddressController;
-use App\Http\Controllers\API\V1\Vendor\Customer\CustomerController as ApiCustomerController;
+use App\Http\Controllers\API\V1\Vendor\Customer\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +26,7 @@ Route::middleware([
 ])->group(function () {
 
     // Customer Authentication Routes
-    Route::controller(ApiCustomerController::class)
+    Route::controller(CustomerController::class)
         ->prefix('customer')
         ->group(function () {
             Route::post('/register', 'register');
@@ -34,7 +34,7 @@ Route::middleware([
         });
 
     Route::middleware(['auth:customers'])->group(function () {
-        Route::controller(ApiCustomerController::class)
+        Route::controller(CustomerController::class)
             ->prefix('customer')
             ->group(function () {
                 Route::get('/get-profile', 'getProfile');

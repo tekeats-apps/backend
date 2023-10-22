@@ -8,6 +8,9 @@ use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Vendor\Customers\API\Address\StoreAddressRequest;
 
+/**
+ * @tags Customer
+ */
 class AddressController extends Controller
 {
     use ApiResponse;

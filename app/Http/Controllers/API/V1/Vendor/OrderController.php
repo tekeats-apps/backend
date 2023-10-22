@@ -12,6 +12,9 @@ use App\Http\Requests\Vendor\Orders\PlaceOrderRequest;
 use App\Services\Tenant\Order\Directors\OrderDirector;
 use App\Http\Requests\Vendor\Orders\GetDeliveryChargesRequest;
 
+/**
+ * @tags Order
+ */
 class OrderController extends Controller
 {
     use ApiResponse;
@@ -24,6 +27,11 @@ class OrderController extends Controller
         $this->deliveryChargeService = $deliveryChargeService;
     }
 
+    /**
+     * Calculate Delivery Charges
+     *
+     * 💵🚚 Curious about the delivery charges? Use this endpoint to find out exactly how much it'll cost to get your yummy food delivered right to your doorstep. Just provide your address ID and let us handle the rest!
+     */
     public function calculateDeliveryCharges(GetDeliveryChargesRequest $request)
     {
         $data = $request->validated();
@@ -32,7 +40,11 @@ class OrderController extends Controller
         $delivery = $this->deliveryChargeService->calculateDeliveryCharge($address_id);
         return $this->successResponse($delivery, "Delivery charge calculated successfully!");
     }
-
+    /**
+     * Place Order
+     *
+     * 🛒🍔 Ready to chow down? Use this endpoint to securely place your order. Just fill in the required details and you'll receive an order ID as confirmation. Let's make your mealtime amazing!
+     */
     public function placeOrder(PlaceOrderRequest $request)
     {
         $data = [];

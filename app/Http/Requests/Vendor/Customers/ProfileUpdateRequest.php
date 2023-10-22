@@ -22,12 +22,12 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => 'sometimes|required|string|max:255',
-            'last_name' => 'sometimes|required|string|max:255',
-            'phone_number' => 'sometimes|required',
-            'avatar' => 'sometimes|image|max:1024', // allowing images up to 2MB
-            'birthday' => 'sometimes|date',
-            'gender' => 'sometimes|in:male,female,other', // allowing only specific values for gender
+            'first_name' => 'nullable|required|string|max:255',
+            'last_name' => 'nullable|required|string|max:255',
+            'phone_number' => 'nullable|required',
+            'avatar' => 'nullable|image|max:1024|mimes:png,jpg', // allowing images up to 2MB
+            'birthday' => 'nullable|date',
+            'gender' => 'nullable|in:male,female,other', // allowing only specific values for gender
         ];
     }
 
