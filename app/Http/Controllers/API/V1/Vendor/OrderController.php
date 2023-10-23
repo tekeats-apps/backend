@@ -35,10 +35,12 @@ class OrderController extends Controller
     public function calculateDeliveryCharges(GetDeliveryChargesRequest $request)
     {
         $data = $request->validated();
-        // dd($data);
         $address_id = (int) $data['address_id'];
         $delivery = $this->deliveryChargeService->calculateDeliveryCharge($address_id);
-        return $this->successResponse($delivery, "Delivery charge calculated successfully!");
+        if (!$delivery->delivery_avaiable) {
+            return $this->errorResponse("Oops! It looks like you're outside our delivery zone.", Response::HTTP_BAD_REQUEST);
+        }
+        return $this->successResponse($delivery, "Delivery charges calculated successfully!");
     }
     /**
      * Place Order

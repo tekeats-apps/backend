@@ -32,17 +32,23 @@ class DeliveryChargeService
             $this->generalSettings->longitude
         );
 
+        // First, check if delivery is available in the given area
+        if ($distance >= $this->deliverySettings->distance_based_radius) {
+            $delivery->delivery_avaiable = false;
+            return $delivery;
+        }
+
+        $delivery->delivery_avaiable = true;
+
         // Check for free delivery first
         if ($this->deliverySettings->free_delivery) {
             if ($this->deliverySettings->free_delivery_charge_type === DeliveryTypes::FLAT) {
-                $delivery->delivery_avaiable = true;
                 $delivery->is_free_delivery = true;
                 $delivery->delivery_charges = 0.00;
                 return $delivery;
             }
             if ($this->deliverySettings->free_delivery_charge_type === DeliveryTypes::DISTANCE) {
                 if ($distance <= $this->deliverySettings->free_delivery_radius) {
-                    $delivery->delivery_avaiable = true;
                     $delivery->is_free_delivery = true;
                     $delivery->delivery_charges = 0.00;
                     return $delivery;
@@ -52,18 +58,12 @@ class DeliveryChargeService
 
         // Next, apply regular delivery charges
         if ($this->deliverySettings->delivery_charge_type === DeliveryTypes::FLAT) {
-            $delivery->delivery_avaiable = true;
             $delivery->delivery_charges = (float) $this->deliverySettings->delivery_charges;
-            return $delivery;
         }
 
         if ($this->deliverySettings->delivery_charge_type === DeliveryTypes::DISTANCE) {
-            if ($distance <= $this->deliverySettings->distance_based_radius) {
-                $delivery->delivery_avaiable = true;
-                $delivery->delivery_charges = (float) $this->deliverySettings->delivery_charges;
-                return $delivery;
-            }
-            // $delivery->delivery_charges = $this->calculateDistanceBasedCharge($distance); Later on it will be used for range based charges
+            $charges = number_format($this->deliverySettings->delivery_charges * $distance, 2, '.', '');
+            $delivery->delivery_charges = (float) ($charges);
         }
 
         return $delivery;
@@ -91,6 +91,13 @@ class DeliveryChargeService
             $earthRadius = $earthRadiusMeters;
         }
         $distance = $earthRadius * $c;
+
+        // Convert the distance to the specified unit if it's not in kilometers
+        if ($this->deliverySettings->distance_unit === DistanceUnit::MILES) {
+            $distance /= 1.60934; // Convert from kilometers to miles
+        } elseif ($this->deliverySettings->distance_unit === DistanceUnit::METERS) {
+            $distance *= 1000; // Convert from kilometers to meters
+        }
 
         return $distance;
     }
