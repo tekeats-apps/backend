@@ -53,7 +53,11 @@ class OrderBuilder implements OrderBuilderInterface
 
     public function createOrder(): self
     {
-        $order = $this->orderService->placeOrder($this->validatedData, $this->customer);
+        $order = $this->orderService->placeOrder(
+            $this->validatedData,
+            $this->customer,
+            $this->deliveryCharge
+        );
         $this->order = $order;
         return $this;
     }

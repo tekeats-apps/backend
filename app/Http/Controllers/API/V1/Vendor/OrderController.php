@@ -58,7 +58,7 @@ class OrderController extends Controller
         } catch (DeliveryUnavailableException $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
         } catch (Exception $e) {
-            return $this->errorResponse("Oops! Something went wrong.", Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->errorResponse("Oops! Something went wrong. ".$e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         return $this->successResponse($order, "Order successfully placed!", Response::HTTP_CREATED);
     }

@@ -54,6 +54,11 @@ class Order extends Model
         return $this->hasMany(OrderTransaction::class);
     }
 
+    public function charges()
+    {
+        return $this->hasMany(OrderCharge::class);
+    }
+
     protected static function boot()
     {
         parent::boot();

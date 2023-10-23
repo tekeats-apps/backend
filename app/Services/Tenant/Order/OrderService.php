@@ -9,21 +9,24 @@ use App\Exceptions\CustomerNotFoundException;
 use App\Strategies\Tenant\Order\PricingStrategy;
 use App\Repositories\Tenant\Order\OrderRepository;
 use App\Repositories\Tenant\Order\OrderItemRepository;
+use App\Repositories\Tenant\Order\OrderChargeRepository;
 
 class OrderService
 {
     protected $orderRepository;
     protected $orderItemRepository;
     protected $pricingStrategy;
+    protected $orderChargeRepository;
 
-    public function __construct(OrderRepository $orderRepository, OrderItemRepository $orderItemRepository, PricingStrategy $pricingStrategy)
+    public function __construct(OrderRepository $orderRepository, OrderItemRepository $orderItemRepository, PricingStrategy $pricingStrategy, OrderChargeRepository $orderChargeRepository)
     {
         $this->orderRepository = $orderRepository;
         $this->orderItemRepository = $orderItemRepository;
         $this->pricingStrategy = $pricingStrategy;
+        $this->orderChargeRepository = $orderChargeRepository;
     }
 
-    public function placeOrder(array $data, Customer $customer)
+    public function placeOrder(array $data, Customer $customer, object $deliveryCharge = null)
     {
 
         try {
@@ -53,6 +56,18 @@ class OrderService
 
             foreach ($modifiedItems as $item) {
                 $this->orderItemRepository->create($item + ['order_id' => $order->id]);
+            }
+
+            // Add logic to insert delivery charge into OrderCharge table
+            if ($deliveryCharge && $data['order_type'] === 'delivery') {
+                $orderChargeData = [
+                    'order_id' => $order->id,
+                    'type' => 'delivery',
+                    'amount' => $deliveryCharge->delivery_charges,
+                ];
+
+                // Assuming you have an OrderCharge model and repository
+                $this->orderChargeRepository->create($orderChargeData);
             }
 
             return $order;
