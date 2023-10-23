@@ -16,7 +16,7 @@ use App\Http\Requests\Vendor\Customers\PasswordUpdateRequest;
 use App\Http\Requests\Vendor\Customers\API\RegisterCustomerRequest;
 
 /**
- * @tags Customer
+ * @tags Customer, Auth
  */
 
 class CustomerController extends Controller
