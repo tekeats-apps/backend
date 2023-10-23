@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\API\V1\Vendor;
 
+use Exception;
 use App\Traits\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Services\Tenant\Order\OrderService;
 use Symfony\Component\HttpFoundation\Response;
+use App\Exceptions\DeliveryUnavailableException;
 use App\Services\Tenant\Order\Builders\OrderBuilder;
 use App\Services\Tenant\Order\DeliveryChargeService;
 use App\Http\Requests\Vendor\Orders\PlaceOrderRequest;
@@ -49,10 +51,15 @@ class OrderController extends Controller
      */
     public function placeOrder(PlaceOrderRequest $request)
     {
-        $data = [];
-        $director = new OrderDirector();
-        $order = $director->placeOrder(new OrderBuilder($this->orderService), $request->validated(), $request->user());
-        $data['order_id'] = $order->order_id;
-        return $this->successResponse($data, "Order successfully placed!", Response::HTTP_CREATED);
+        $validated = $request->validated();
+        try {
+            $director = new OrderDirector();
+            $order = $director->placeOrder(new OrderBuilder($this->orderService, $this->deliveryChargeService), $validated, $request->user());
+        } catch (DeliveryUnavailableException $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
+        } catch (Exception $e) {
+            return $this->errorResponse("Oops! Something went wrong.", Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        return $this->successResponse($order, "Order successfully placed!", Response::HTTP_CREATED);
     }
 }

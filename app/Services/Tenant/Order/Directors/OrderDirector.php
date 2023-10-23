@@ -9,9 +9,17 @@ class OrderDirector
 {
     public function placeOrder(OrderBuilder $builder, array $request, Customer $customer)
     {
-        return $builder->setValidatedData($request)
-                       ->setCustomer($customer)
-                       ->createOrder()
-                       ->getOrder();
+        // Set the validated data and customer
+        $builder->setValidatedData($request)
+            ->setCustomer($customer);
+
+        // Check if the order type is 'delivery'
+        if ($request['order_type'] === 'delivery') {
+            $builder->calculateDeliveryCharges($request['address_id']);
+        }
+
+        // Create the order and return it
+        return $builder->createOrder()
+            ->getOrder();
     }
 }

@@ -11,6 +11,8 @@ interface OrderBuilderInterface
 
     public function setCustomer(Customer $customer): self;
 
+    public function calculateDeliveryCharges(int $addressId): self;
+
     public function createOrder(): self;
 
     public function getOrder(): Model;
