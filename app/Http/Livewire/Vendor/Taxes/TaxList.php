@@ -9,7 +9,6 @@ class TaxList extends Component
 {
     public $search;
     public $perPage = 10;
-    // public $active;
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
 
@@ -29,11 +28,11 @@ class TaxList extends Component
     {
         try {
             $tax = Tax::findOrFail($id);
-            $tax->active = !$tax->active;
-            $tax->save();
+            $tax->active = !$tax->active->value;
+            $tax->update();
 
-            $message = $tax->active ? 'Active' : 'Inactive';
-            $this->dispatchBrowserEvent('success', ['message' => 'Status updated to ' . $message]);
+            $message = $tax->active->value ? 'Active' : 'Inactive';
+            $this->dispatchBrowserEvent('alert', ['type' => 'success', 'message' => 'Status updated to ' . $message]);
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to update tax status: ' . $e->getMessage());
         }
@@ -44,7 +43,7 @@ class TaxList extends Component
         // Show the SweetAlert confirmation dialog
         $this->emit('swal:confirm-delete', [
             'title' => 'Are you sure?',
-            'text' => 'You are about to delete the plan subscription. This action cannot be undone.',
+            'text' => 'You are about to delete the tax. This action cannot be undone.',
             'id' => $id,
         ]);
     }
@@ -53,7 +52,7 @@ class TaxList extends Component
     {
         try {
             Tax::findOrFail($id)->delete();
-            $this->dispatchBrowserEvent('success', ['message' => 'Tax deleted successfully!']);
+            $this->dispatchBrowserEvent('alert', ['type' => 'success', 'message' => 'Tax deleted successfully!']);
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to delete tax: ' . $e->getMessage());
         }

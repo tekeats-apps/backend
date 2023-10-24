@@ -1,7 +1,7 @@
 <?php
 
+use App\Enums\Vendor\DiscountActive;
 use Illuminate\Support\Facades\Schema;
-use App\Enums\Vendor\DiscountActiveEnum;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('type');
             $table->decimal('amount');
-            $table->boolean('active')->default(DiscountActiveEnum::IN_ACTIVE());
+            $table->boolean('active')->default(DiscountActive::INACTIVE->value);
             $table->timestamps();
         });
     }

@@ -1,3 +1,5 @@
+@yield('on-top-css')
+
 <!-- Layout config Js -->
 <script src="{{ URL::asset('assets/js/layout.js') }}"></script>
 

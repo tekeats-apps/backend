@@ -70,13 +70,13 @@
                                 {{ $tax?->title }}
                             </td>
                             <td>
-                                {{ $tax?->type }}
+                                {{ $tax?->type?->value }}
                             </td>
                             <td>
                                 {{ $tax?->amount }}
                             </td>
                             <td>
-                                @if ($tax?->active)
+                                @if ($tax?->active?->value)
                                     <span class="text-success">
                                         <i class="ri-checkbox-circle-line fs-17 align-middle"></i> Active</span>
                                 @else
@@ -108,10 +108,10 @@
                                         <li>
                                             <a class="dropdown-item status-change-btn" role="button"
                                                 wire:click="toggleStatus({{ $tax?->id }})"
-                                                data-status="{{ $tax?->active }}">
+                                                data-status="{{ $tax?->active?->value }}">
                                                 <i
-                                                    class="{{ $tax?->active ? 'ri-arrow-down-fill text-danger' : 'ri-arrow-up-fill text-success' }} align-bottom me-2"></i>
-                                                {{ $tax?->active ? 'Deactivate' : 'Activate' }}
+                                                    class="{{ $tax?->active?->value ? 'ri-arrow-down-fill text-danger' : 'ri-arrow-up-fill text-success' }} align-bottom me-2"></i>
+                                                {{ $tax?->active?->value ? 'Deactivate' : 'Activate' }}
                                             </a>
                                         </li>
                                     </ul>

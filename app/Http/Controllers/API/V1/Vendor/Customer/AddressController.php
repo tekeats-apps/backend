@@ -8,10 +8,18 @@ use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Vendor\Customers\API\Address\StoreAddressRequest;
 
+/**
+ * @tags Customer
+ */
 class AddressController extends Controller
 {
     use ApiResponse;
 
+    /**
+     * Store Address
+     *
+     * 🚀 This endpoint allows customers to store address. That will help customer to use while placing Delivery Orders!
+     */
     public function storeAddress(StoreAddressRequest $request)
     {
         // Get the authenticated user's ID

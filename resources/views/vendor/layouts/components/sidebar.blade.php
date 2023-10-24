@@ -65,7 +65,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="">
+                    <a class="nav-link menu-link {{ Route::is('vendor.coupons.list') ? 'active' : '' }}" href="{{ route('vendor.coupons.list') }}">
                         <i class="ri-coupon-line"></i> <span>Copouns</span>
                     </a>
                 </li>
