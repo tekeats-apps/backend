@@ -2,7 +2,6 @@
 
 @push('css')
     @include('plugins.sweetalert2.css')
-    @include('plugins.flatpicker.css')
 @endpush
 
 @section('title', 'Coupons')
@@ -34,26 +33,9 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-lg-12 mb-2 d-flex">
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="radio" name="coupon_option"
-                                                id="option_automatic" value="automatic" checked>
-                                            <label class="form-check-label" for="option_automatic">
-                                                Automatic
-                                            </label>
-                                        </div>
-                                        <div class="form-check ms-3">
-                                            <input class="form-check-input" type="radio" name="coupon_option"
-                                                id="option_manual" value="manual">
-                                            <label class="form-check-label" for="option_manual">
-                                                Manual
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div id="coupon-code" class="col-lg-6 mb-2 d-none">
+                                    <div id="coupon-code" class="col-lg-6 mb-2">
                                         <div class="mb-3">
-                                            <label class="form-label">Coupon Code</label>
+                                            <label class="form-label required">Coupon Code</label>
                                             <input type="text"
                                                 class="form-control @error('coupon_code') is-invalid @enderror"
                                                 name="coupon_code" value="{{ old('coupon_code') }}"
@@ -66,7 +48,7 @@
 
                                     <div class="col-lg-6 mb-2">
                                         <div class="mb-3">
-                                            <label class="form-label">Amount</label>
+                                            <label class="form-label required">Amount</label>
                                             <input type="number" min="0" step="0.01"
                                                 class="form-control @error('amount') is-invalid @enderror" name="amount"
                                                 value="{{ old('amount') }}" placeholder="Enter amount" required>
@@ -78,28 +60,38 @@
 
                                     <div class="col-lg-6 mb-2">
                                         <div class="mb-3">
+                                            <label class="form-label">Start Date</label>
+                                            <input type="date"
+                                                class="form-control @error('start_date') is-invalid @enderror"
+                                                name="start_date" value="{{ old('start_date') }}"
+                                                placeholder="Enter coupon start date">
+                                            @error('start_date')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 mb-2">
+                                        <div class="mb-3">
                                             <label class="form-label">Expiry Date</label>
                                             <input type="date"
                                                 class="form-control @error('expiry_date') is-invalid @enderror"
                                                 name="expiry_date" value="{{ old('expiry_date') }}"
-                                                placeholder="Enter coupon expiry date" required>
+                                                placeholder="Enter coupon expiry date">
                                             @error('expiry_date')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
 
-                                    {{-- <div class="col-lg-6 mb-2">
-                                        <div>
-                                            <label class="form-label">Expiry Date</label>
-                                            <input type="text" class="form-control" name="expiry_date"
-                                                placeholder="Select expiry date" data-provider="flatpickr"
-                                                data-date-format="d M, Y">
-                                            @error('expiry_date')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div> --}}
+                                    <div class="col-lg-12 mb-2">
+                                        <label for="coupon_description" class="form-label">Description</label>
+                                        <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="coupon_description"
+                                            placeholder="Enter coupon description" rows="5">{{ old('description') }}</textarea>
+                                        @error('description')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -124,25 +116,7 @@
                                 <div class="row">
                                     <div class="col-12 mb-2">
                                         <div class="mb-3">
-                                            <label for="plugin_type" class="form-label">Coupon Type</label>
-                                            <select class="form-select @error('type') is-invalid @enderror" name="type"
-                                                id="plugin_type" required>
-                                                <option value="">Select Coupon Type</option>
-                                                @isset($couponTypes)
-                                                    @foreach ($couponTypes as $couponType)
-                                                        <option value="{{ $couponType->value }}">
-                                                            {{ ucfirst($couponType->value) }}</option>
-                                                    @endforeach
-                                                @endisset
-                                            </select>
-                                            @error('type')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-12 mb-2">
-                                        <div class="mb-3">
-                                            <label for="amount_type" class="form-label">Coupon Amount Type</label>
+                                            <label for="amount_type" class="form-label required">Coupon Amount Type</label>
                                             <select class="form-select @error('amount_type') is-invalid @enderror"
                                                 name="amount_type" id="amount_type" required>
                                                 <option value="">Select Coupon Amount Type</option>
@@ -158,16 +132,40 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-12 mb-3">
-                                        <div class="form-check form-switch form-switch-lg form-switch-success">
-                                            <input class="form-check-input @error('active') is-invalid @enderror"
-                                                type="checkbox" name="active" id="active" value="1"
-                                                {{ old('active') }}>
-                                            <label class="form-check-label" for="active">Active</label>
+                                    <div class="col-12 mb-2">
+                                        <div class="mb-3">
+                                            <label class="form-label">Allowed Time <i class="ri ri-information-fill text-info" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top"  data-bs-content="Please input the number of times the coupon can be used, or alternatively, select the 'unlimited' option if you wish to utilize it an unlimited number of times."></i></label>
+                                            <input type="number" min="0" step="0.01"
+                                                class="form-control @error('allowed_time') is-invalid @enderror"
+                                                name="allowed_time" id="allowed_time" value="{{ old('allowed_time') }}"
+                                                placeholder="Enter allowed time">
+                                            @error('allowed_time')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
-                                        @error('active')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    </div>
+                                    <div class="d-lg-flex align-items-center">
+                                        <div class="col-lg-6 mb-3">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="is_unlimited"
+                                                    name="is_unlimited" value="1" />
+                                                <label class="form-check-label" for="is_unlimited">Unlimited ?</label>
+                                            </div>
+                                            @error('is_unlimited')
+                                                <div class="invalid-feedback small">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="col-lg-6 mb-3">
+                                            <div class="form-check form-switch form-switch-lg form-switch-success">
+                                                <input class="form-check-input @error('active') is-invalid @enderror"
+                                                    type="checkbox" name="active" id="active" value="1"
+                                                    {{ old('active') }}>
+                                                <label class="form-check-label" for="active">Active</label>
+                                            </div>
+                                            @error('active')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -181,14 +179,12 @@
 
 @push('script')
     <script src="{{ URL::asset('assets/libs/validation/validate.min.js') }}"></script>
-    @include('plugins.flatpicker.js')
     <script>
         $().ready(function() {
             // validate signup form on keyup and submit
             $("#coupon-form").validate({
                 rules: {
-                    coupon_option: "required",
-                    type: "required",
+                    coupon_code: "required",
                     amount: {
                         required: true,
                         number: true,
@@ -197,10 +193,9 @@
                     amount_type: "required"
                 },
                 messages: {
-                    coupon_option: "Please select a coupon option",
-                    type: "Please select a coupon type.",
+                    coupon_code: "Please enter a coupon code",
                     amount: {
-                        required: "Please enter an amount or percentage.",
+                        required: "Please enter an amount.",
                         number: "The amount or precentage must be a valid number.",
                         min: "The amount or precentage must be 0 or more."
                     },
@@ -208,26 +203,34 @@
                 }
             });
 
+
+            let isUnlimitedIsChecked = $('#is_unlimited').is(':checked');
+            let allowedTime = $('#allowed_time');
+
             /**
-             * check if option automatic is checked then do not
-             * show coupon code field
+             * check on document ready if option "is_unlimited" is
+             * checked then disabled "allowed time" fied.
              */
-            let optionAutomaticIsChecked = $('#option_automatic').is(':checked');
-            if (optionAutomaticIsChecked) {
-                $('#coupon-code').addClass('d-none');
+            if (isUnlimitedIsChecked) {
+                allowedTime.prop("disabled", true);
+                allowedTime.val('');
             } else {
-                $('#coupon-code').removeClass('d-none');
+                allowedTime.prop("disabled", false);
             }
 
-            // on check option "automatic" hide coupon code field
-            $('#option_automatic').change(function() {
-                $('#coupon-code').addClass('d-none');
-                this.value = '';
-            });
+            /**
+             * check if option "is_unlimited" is checked then
+             * disabled "allowed time" fied.
+             */
+            $('#is_unlimited').change(function() {
+                let isChecked = $(this).is(':checked');
 
-            // on check option "manual" show coupon code field
-            $('#option_manual').change(function() {
-                $('#coupon-code').removeClass('d-none');
+                if (isChecked) {
+                    allowedTime.prop("disabled", true);
+                    allowedTime.val('');
+                } else {
+                    allowedTime.prop("disabled", false);
+                }
             });
         });
     </script>

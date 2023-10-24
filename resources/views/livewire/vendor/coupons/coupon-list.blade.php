@@ -24,7 +24,7 @@
                     <div class="search-box">
                         <input type="text" wire:model.debounce.500ms="search" id="search"
                             class="form-control search bg-light border-light"
-                            placeholder="Search for coupon option, code, type, amount, status or something...">
+                            placeholder="Search for coupon code, amount, status or something...">
                         <i class="ri-search-line search-icon"></i>
                     </div>
                 </div>
@@ -51,9 +51,9 @@
                             </div>
                         </th>
                         <th>Coupon Code</th>
-                        <th>Type</th>
                         <th>Amount Type</th>
                         <th>Amount</th>
+                        <th>Allowed Time</th>
                         <th>Expiry Date</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -72,16 +72,20 @@
                                 {{ $coupon?->coupon_code }}
                             </td>
                             <td>
-                                {{ $coupon?->type?->value }}
-                            </td>
-                            <td>
                                 {{ $coupon?->amount_type?->value }}
                             </td>
                             <td>
                                 {{ $coupon?->amount }}
                             </td>
                             <td>
-                                {{ $coupon?->expiry_date }}
+                                {{ $coupon?->allowed_time ?? 'Unlimited' }}
+                            </td>
+                            <td>
+                                @if ($coupon?->expiry_date)
+                                    {{ $coupon?->expiry_date }}
+                                @else
+                                    <span class="text-muted user-select-none">N/A</span>
+                                @endif
                             </td>
                             <td>
                                 @if ($coupon?->active?->value)
@@ -104,11 +108,11 @@
                                                     class="ri-pencil-fill align-bottom me-2 text-info"></i>
                                                 Edit</a>
                                         </li>
-                                            <a class="dropdown-item remove-item-btn" role="button"
-                                                wire:click="confirmDelete('{{ $coupon?->id }}')">
-                                                <i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i>
-                                                Delete
-                                            </a>
+                                        <a class="dropdown-item remove-item-btn" role="button"
+                                            wire:click="confirmDelete('{{ $coupon?->id }}')">
+                                            <i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i>
+                                            Delete
+                                        </a>
                                         </li>
                                         <li>
                                             <a class="dropdown-item status-change-btn" role="button"

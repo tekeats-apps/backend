@@ -2,19 +2,18 @@
 
 namespace App\Models\Vendor;
 
-use App\Enums\Vendor\CouponActive;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
-use App\Enums\Vendor\CouponType;
-use App\Enums\Vendor\CouponOption;
+use App\Enums\Vendor\CouponActive;
 use App\Enums\Vendor\CouponAmountType;
+use App\Enums\Vendor\CouponIsUnlimited;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Coupon extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
 
     /**
      * The attributes that are mass assignable.
@@ -22,13 +21,15 @@ class Coupon extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'vendor_id',
-        'coupon_option',
+        'uuid',
         'coupon_code',
-        'type',
         'amount_type',
         'amount',
+        'start_date',
         'expiry_date',
+        'description',
+        'allowed_time',
+        'is_unlimited',
         'active'
     ];
 
@@ -38,17 +39,21 @@ class Coupon extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'coupon_option' => CouponOption::class,
-        'type' => CouponType::class,
         'amount_type' => CouponAmountType::class,
+        'is_unlimited' => CouponIsUnlimited::class,
         'active' => CouponActive::class
     ];
 
-    public function couponCode(): Attribute
+    public function uniqueIds()
+    {
+        return ['uuid'];
+    }
+
+    public function startDate(): Attribute
     {
         return Attribute::make(
-            set: fn ($value) => $value = $this->coupon_option->value == CouponOption::AUTOMATIC->value
-                ? Str::random(8)
+            get: fn ($value) => $value
+                ? Carbon::parse($value)->format('d M, Y')
                 : $value
         );
     }
@@ -66,12 +71,11 @@ class Coupon extends Model
     {
         if (!empty($search)) {
             $query->where(function ($subQuery) use ($search) {
-                $subQuery->where('coupon_option', 'like', '%' . $search . '%')
-                    ->orWhere('coupon_code', 'like', '%' . $search . '%')
-                    ->orWhere('type', 'like', '%' . $search . '%')
+                $subQuery->where('coupon_code', 'like', '%' . $search . '%')
                     ->orWhere('amount_type', 'like', '%' . $search . '%')
                     ->orWhere('amount', 'like', '%' . $search . '%')
-                    ->orWhere('expiry_date', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%')
+                    ->orWhere('allowed_time', 'like', '%' . $search . '%')
                     ->status($search);
             });
         }

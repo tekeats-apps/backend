@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Vendor;
 
+use App\Enums\Vendor\CouponActive;
 use App\Models\Vendor\Coupon;
-use App\Enums\Vendor\CouponType;
 use App\Http\Controllers\Controller;
 use App\Enums\Vendor\CouponAmountType;
+use App\Enums\Vendor\CouponIsUnlimited;
 use App\Http\Requests\Vendor\CouponRequest;
 
 class CouponController extends Controller
@@ -23,9 +24,8 @@ class CouponController extends Controller
      */
     public function create()
     {
-        $couponTypes = CouponType::cases();
         $couponAmountTypes = CouponAmountType::cases();
-        return view('vendor.modules.coupons.create', compact('couponTypes', 'couponAmountTypes'));
+        return view('vendor.modules.coupons.create', compact('couponAmountTypes'));
     }
 
     /**
@@ -34,11 +34,33 @@ class CouponController extends Controller
     public function store(CouponRequest $request)
     {
         try {
-            Coupon::create(array_merge($request->validated(), ['vendor_id' => 'ef345c96-0d9d-4847-88c2-d8b168f61a25']));
+            $coupon = $this->validateCoupon($request->validated());
+            Coupon::create($coupon);
             return redirect()->route('vendor.coupons.list')->with('success', 'Coupon created successfully!');
         } catch (\Exception $e) {
             return redirect()->route('vendor.coupons.list')->with('error', 'Failed to create coupon: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Validate 'is_unlimited' & 'active' fields
+     * before create or update.
+     */
+    private function validateCoupon($request)
+    {
+        $coupon = $request;
+        if (isset($request['is_unlimited'])) {
+            $coupon = array_merge($coupon, ['is_unlimited' => CouponIsUnlimited::ACTIVE->value, 'allowed_time' => null]);
+        } else {
+            $coupon = array_merge($coupon, ['is_unlimited' => CouponIsUnlimited::INACTIVE->value]);
+        }
+        if (isset($request['active'])) {
+            $coupon = array_merge($coupon, ['active' => CouponActive::ACTIVE->value]);
+        } else {
+            $coupon = array_merge($coupon, ['active' => CouponActive::INACTIVE->value]);
+        }
+
+        return $coupon;
     }
 
     /**
@@ -47,10 +69,9 @@ class CouponController extends Controller
     public function edit(string $id)
     {
         try {
-            $couponTypes = CouponType::cases();
             $couponAmountTypes = CouponAmountType::cases();
             $coupon = Coupon::findOrFail($id);
-            return view('vendor.modules.coupons.edit', compact('coupon', 'couponTypes', 'couponAmountTypes'));
+            return view('vendor.modules.coupons.edit', compact('coupon', 'couponAmountTypes'));
         } catch (\Exception $e) {
             return redirect()->route('vendor.coupons.list')->with('error', 'Failed to find coupon: ' . $e->getMessage());
         }
@@ -62,7 +83,8 @@ class CouponController extends Controller
     public function update(CouponRequest $request, string $id)
     {
         try {
-            Coupon::findOrFail($id)->update($request->validated());
+            $coupon = $this->validateCoupon($request->validated());
+            Coupon::findOrFail($id)->update($coupon);
             return redirect()->route('vendor.coupons.list')->with('success', 'Coupon updated successfully!');
         } catch (\Exception $e) {
             return redirect()->route('vendor.coupons.list')->with('error', 'Failed to update coupon: ' . $e->getMessage());
