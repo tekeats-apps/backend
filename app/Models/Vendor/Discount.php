@@ -2,9 +2,9 @@
 
 namespace App\Models\Vendor;
 
+use App\Enums\Vendor\DiscountType;
+use App\Enums\Vendor\DiscountActive;
 use Illuminate\Database\Eloquent\Model;
-use App\Enums\Vendor\DiscountActiveEnum;
-use App\Enums\Vendor\DiscountTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Discount extends Model
@@ -14,7 +14,8 @@ class Discount extends Model
     protected $fillable = ['title', 'description', 'type', 'amount', 'active'];
 
     protected $casts = [
-        'type' => DiscountTypeEnum::class
+        'type' => DiscountType::class,
+        'active' => DiscountActive::class
     ];
 
     public function scopeGetList($query, $search, $sortField, $sortDirection)
@@ -24,10 +25,23 @@ class Discount extends Model
                 $subQuery->where('title', 'like', '%' . $search . '%')
                     ->orWhere('description', 'like', '%' . $search . '%')
                     ->orWhere('type', 'like', '%' . $search . '%')
-                    ->orWhere('amount', 'like', '%' . $search . '%');
+                    ->orWhere('amount', 'like', '%' . $search . '%')
+                    ->status($search);
             });
         }
 
         return $query->orderBy($sortField, $sortDirection);
+    }
+
+    // exact match searching for status
+    public function scopeStatus($query, $keyword)
+    {
+        if ($keyword == 'active' || $keyword == 'Active' || $keyword == 'ACTIVE') {
+            return $query->orWhere('active', DiscountActive::ACTIVE->value);
+        }
+
+        if ($keyword == 'inactive' || $keyword == 'Inactive' || $keyword == 'INACTIVE') {
+            return $query->orWhere('active', DiscountActive::INACTIVE->value);
+        }
     }
 }

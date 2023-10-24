@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Vendor;
 
-use Illuminate\Validation\Rule;
-use App\Enums\Vendor\DiscountTypeEnum;
+use App\Enums\Vendor\DiscountType;
+use Illuminate\Validation\Rules\Enum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DiscountRequest extends FormRequest
@@ -28,7 +28,7 @@ class DiscountRequest extends FormRequest
                 return [
                     'title' => ['required', 'string', 'max:191', 'unique:discounts,title'],
                     'description' => ['nullable', 'string', 'max:20000'],
-                    'type' => ['required', Rule::in(DiscountTypeEnum::values())],
+                    'type' => ['required', new Enum(DiscountType::class)],
                     'amount' => ['required', 'numeric', 'between:0,99999999.99'],
                     'active' => ['nullable']
                 ];
@@ -36,7 +36,7 @@ class DiscountRequest extends FormRequest
                 return [
                     'title' => ['required', 'string', 'max:191', 'unique:discounts,title,' . $this->id],
                     'description' => ['nullable', 'string', 'max:20000'],
-                    'type' => ['required', Rule::in(DiscountTypeEnum::values())],
+                    'type' => ['required', new Enum(DiscountType::class)],
                     'amount' => ['required', 'numeric', 'between:0,99999999.99'],
                     'active' => ['nullable']
                 ];

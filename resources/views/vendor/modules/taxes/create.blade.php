@@ -93,7 +93,7 @@
                                                 <option value="">Select Tax Type</option>
                                                 @isset($taxTypes)
                                                     @foreach ($taxTypes as $taxType)
-                                                        <option value="{{ $taxType }}">{{ ucfirst($taxType) }}</option>
+                                                        <option value="{{ $taxType?->value }}">{{ ucfirst($taxType?->value) }}</option>
                                                     @endforeach
                                                 @endisset
                                             </select>

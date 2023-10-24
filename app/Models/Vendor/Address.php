@@ -28,6 +28,11 @@ class Address extends Model
         'default',
     ];
 
+    protected $casts = [
+        'lat' => 'float',
+        'lng' => 'float',
+    ];
+
 
     public function scopeStoreForCustomer($query, $data, $customerId)
     {

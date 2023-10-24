@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Vendor;
 
-use App\Enums\Vendor\Tax\TypeEnum;
+use App\Enums\Vendor\TaxType;
+use Illuminate\Validation\Rules\Enum;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class TaxRequest extends FormRequest
 {
@@ -28,16 +28,15 @@ class TaxRequest extends FormRequest
                 return [
                     'title' => ['required', 'string', 'max:191', 'unique:taxes,title'],
                     'description' => ['nullable', 'string', 'max:20000'],
-                    'type' => ['required', Rule::in(TypeEnum::values())],
+                    'type' => ['required', new Enum(TaxType::class)],
                     'amount' => ['required', 'numeric', 'between:0,99999999.99'],
                     'active' => ['nullable']
                 ];
             case 'PUT':
-                // dd($this->active);
                 return [
                     'title' => ['required', 'string', 'max:191', 'unique:taxes,title,' . $this->id],
                     'description' => ['nullable', 'string', 'max:20000'],
-                    'type' => ['required', Rule::in(TypeEnum::values())],
+                    'type' => ['required', new Enum(TaxType::class)],
                     'amount' => ['required', 'numeric', 'between:0,99999999.99'],
                     'active' => ['nullable']
                 ];

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Vendor;
 
-use App\Enums\Vendor\Tax\TypeEnum;
 use App\Models\Vendor\Tax;
+use App\Enums\Vendor\TaxType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Vendor\TaxRequest;
 
@@ -22,7 +22,7 @@ class TaxController extends Controller
      */
     public function create()
     {
-        $taxTypes = TypeEnum::values();
+        $taxTypes = TaxType::cases();
         return view('vendor.modules.taxes.create', compact('taxTypes'));
     }
 
@@ -58,7 +58,7 @@ class TaxController extends Controller
     public function edit(string $id)
     {
         try {
-            $taxTypes = TypeEnum::values();
+            $taxTypes = TaxType::cases();
             $tax = Tax::findOrFail($id);
             return view('vendor.modules.taxes.edit', compact('tax', 'taxTypes'));
         } catch (\Exception $e) {
