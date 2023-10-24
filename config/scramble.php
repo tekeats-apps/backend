@@ -24,7 +24,11 @@ return [
         /*
          * Description rendered on the home page of the API documentation (`/docs/api`).
          */
-        'description' => '',
+        'description' => 'Welcome to Tekeats, the ultimate SaaS-based restaurant management platform designed to revolutionize the way you run your restaurant business. Our suite of versatile apps caters to every need, be it table reservations 📅, menu management 🍜, or staff scheduling 👥.
+
+        Our platform is designed to be the one-stop solution for restaurants, cafes, and other food establishments. With features ranging from inventory management 📦 to customer loyalty programs ❤️, Tekeats takes care of all the nitty-gritty details so you can focus on what you do best: serving delicious food and providing stellar customer service.
+
+        From single-location eateries to multi-branch franchises, Tekeats scales effortlessly, providing you with the tools you need to manage your business efficiently. Get started with us and take your restaurant to the next level!',
     ],
 
     /*

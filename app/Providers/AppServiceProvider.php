@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Schema;
 use App\Observers\Tenant\OrderObserver;
 use Illuminate\Support\ServiceProvider;
 use App\Observers\PlanSubscriptionObserver;
+use Dedoc\Scramble\Support\Generator\OpenApi;
+use Dedoc\Scramble\Support\Generator\SecurityScheme;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -36,6 +38,11 @@ class AppServiceProvider extends ServiceProvider
         PlanSubscription::observe(PlanSubscriptionObserver::class);
         Scramble::routes(function (Route $route) {
             return Str::startsWith($route->uri, 'api/');
+        });
+        Scramble::extendOpenApi(function (OpenApi $openApi) {
+            $openApi->secure(
+                SecurityScheme::http('bearer', 'JWT')
+            );
         });
     }
 }
