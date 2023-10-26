@@ -4,6 +4,7 @@ namespace App\Models\Vendor;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
@@ -27,6 +28,11 @@ class Category extends Model
     public function subcategories()
     {
         return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    public function discounts(): BelongsToMany
+    {
+        return $this->belongsToMany(Discount::class);
     }
 
     protected function getImageAttribute($value)
