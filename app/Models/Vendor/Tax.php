@@ -2,10 +2,11 @@
 
 namespace App\Models\Vendor;
 
-use App\Enums\Vendor\TaxActive;
 use App\Enums\Vendor\TaxType;
+use App\Enums\Vendor\TaxActive;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Tax extends Model
 {
@@ -53,5 +54,15 @@ class Tax extends Model
         if ($keyword == 'inactive' || $keyword == 'Inactive' || $keyword == 'INACTIVE') {
             return $query->orWhere('active', TaxActive::INACTIVE->value);
         }
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class);
     }
 }

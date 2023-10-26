@@ -35,6 +35,11 @@ class Category extends Model
         return $this->belongsToMany(Discount::class);
     }
 
+    public function taxes(): BelongsToMany
+    {
+        return $this->belongsToMany(Tax::class);
+    }
+
     protected function getImageAttribute($value)
     {
 

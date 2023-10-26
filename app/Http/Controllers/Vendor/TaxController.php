@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Vendor;
 
 use App\Models\Vendor\Tax;
 use App\Enums\Vendor\TaxType;
+use App\Models\Vendor\Product;
+use App\Models\Vendor\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Vendor\TaxRequest;
 
@@ -23,7 +25,9 @@ class TaxController extends Controller
     public function create()
     {
         $taxTypes = TaxType::cases();
-        return view('vendor.modules.taxes.create', compact('taxTypes'));
+        $categories = Category::all();
+        $products = Product::all();
+        return view('vendor.modules.taxes.create', compact('taxTypes', 'categories', 'products'));
     }
 
     /**
@@ -59,8 +63,10 @@ class TaxController extends Controller
     {
         try {
             $taxTypes = TaxType::cases();
-            $tax = Tax::findOrFail($id);
-            return view('vendor.modules.taxes.edit', compact('tax', 'taxTypes'));
+            $tax = Tax::with(['categories', 'products'])->findOrFail($id);
+            $categories = Category::all();
+            $products = Product::all();
+            return view('vendor.modules.taxes.edit', compact('tax', 'taxTypes', 'categories', 'products'));
         } catch (\Exception $e) {
             return redirect()->route('vendor.taxes.list')->with('error', 'Failed to find tax: ' . $e->getMessage());
         }

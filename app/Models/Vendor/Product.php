@@ -46,9 +46,14 @@ class Product extends Model
     }
 
     public function discounts(): BelongsToMany
-{
-    return $this->belongsToMany(Discount::class);
-}
+    {
+        return $this->belongsToMany(Discount::class);
+    }
+
+    public function taxes(): BelongsToMany
+    {
+        return $this->belongsToMany(Tax::class);
+    }
 
     public function findExtraByName($name)
     {

@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Vendor\Tax;
 use App\Models\Vendor\Discount;
+use App\Observers\Vendor\TaxObserver;
 use Illuminate\Auth\Events\Registered;
 use App\Events\Tenant\OrderPlacedEvent;
 use App\Observers\Vendor\DiscountObserver;
@@ -27,7 +29,8 @@ class EventServiceProvider extends ServiceProvider
     ];
 
     protected $observers = [
-        Discount::class => DiscountObserver::class
+        Discount::class => DiscountObserver::class,
+        Tax::class => TaxObserver::class
     ];
 
     /**
