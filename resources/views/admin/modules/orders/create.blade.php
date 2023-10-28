@@ -57,7 +57,7 @@
                                             name="domain" id="domain" placeholder="Enter subdomain name"
                                             value="{{ old('domain') ? old('domain') : '' }}"
                                             aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                        <span class="input-group-text" id="basic-addon2">.{{ request()->getHost() }}</span>
+                                        <span class="input-group-text" id="basic-addon2">.{{ env('TENANT_DOMAIN') }}</span>
                                     </div>
                                     @error('domain')
                                         <div class="invalid-feedback">{{ $message }}</div>
