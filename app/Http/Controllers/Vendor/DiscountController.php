@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Vendor;
 use App\Enums\Vendor\DiscountType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Vendor\DiscountRequest;
+use App\Models\Vendor\Category;
 use App\Models\Vendor\Discount;
+use App\Models\Vendor\Product;
 
 class DiscountController extends Controller
 {
@@ -23,7 +25,9 @@ class DiscountController extends Controller
     public function create()
     {
         $discountTypes = DiscountType::cases();
-        return view('vendor.modules.discounts.create', compact('discountTypes'));
+        $categories = Category::all();
+        $products = Product::all();
+        return view('vendor.modules.discounts.create', compact('discountTypes', 'categories', 'products'));
     }
 
     /**
@@ -59,8 +63,10 @@ class DiscountController extends Controller
     {
         try {
             $discountTypes = DiscountType::cases();
-            $discount = Discount::findOrFail($id);
-            return view('vendor.modules.discounts.edit', compact('discount', 'discountTypes'));
+            $categories = Category::all();
+            $products = Product::all();
+            $discount = Discount::with(['categories', 'products'])->findOrFail($id);
+            return view('vendor.modules.discounts.edit', compact('discount', 'discountTypes', 'categories', 'products'));
         } catch (\Exception $e) {
             return redirect()->route('vendor.discounts.list')->with('error', 'Failed to find discount: ' . $e->getMessage());
         }

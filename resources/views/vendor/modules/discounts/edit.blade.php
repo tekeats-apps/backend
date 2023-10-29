@@ -1,5 +1,8 @@
 @extends('vendor.layouts.main')
 
+@section('on-top-css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" type="text/css" />
+@endsection
 @push('css')
     @include('plugins.sweetalert2.css')
 @endpush
@@ -68,13 +71,7 @@
                         </div>
                     </div>
                 </div>
-
-
-                <div class="text-end mb-3">
-                    <button type="submit" class="btn btn-success w-sm">Submit</button>
-                </div>
             </div>
-
 
             <div class="col-lg-4">
                 <div class="row">
@@ -121,12 +118,56 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Apply Discount On</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <h6 class="fw-semibold">Categories</h6>
+                                        <select class="js-example-basic-multiple" name="categories[]" multiple="multiple">
+                                            @isset($categories)
+                                                @foreach ($categories as $key => $category)
+                                                    <option value="{{ $category?->id }}" @selected($discount?->categories->contains('id', $category?->id))>{{ $category?->name }}</option>
+                                                @endforeach
+                                            @endisset
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <h6 class="fw-semibold">Products</h6>
+                                        <select class="js-example-basic-multiple" name="products[]" multiple="multiple">
+                                            @isset($products)
+                                                @foreach ($products as $key => $product)
+                                                <option value="{{ $product?->id }}" @selected($discount->products->contains('id', $product->id))>{{ $product?->name }}</option>
+                                                @endforeach
+                                            @endisset
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="text-end mb-3">
+                    <button type="submit" class="btn btn-success w-sm">Submit</button>
+                </div>
+            </div>
         </div>
     </form>
 @endsection
 
 @push('script')
     <script src="{{ URL::asset('assets/libs/validation/validate.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{ URL::asset('assets/js/pages/select2.init.js') }}"></script>
     <script>
         $().ready(function() {
             // validate signup form on keyup and submit
