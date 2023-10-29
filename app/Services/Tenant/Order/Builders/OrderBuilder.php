@@ -16,7 +16,7 @@ class OrderBuilder implements OrderBuilderInterface
 
     private array $validatedData = [];
     private object $customer;
-    private object $deliveryCharge;
+    private ?object $deliveryCharge;
     private Model $order;
     protected $orderService;
     protected $deliveryChargeService;
@@ -43,6 +43,7 @@ class OrderBuilder implements OrderBuilderInterface
 
     public function calculateDeliveryCharges(int $address_id): self
     {
+
         $delivery = $this->deliveryChargeService->calculateDeliveryCharge($address_id);
         if (!$delivery->delivery_avaiable) {
             throw new DeliveryUnavailableException("Delivery not available for this zone.");
@@ -56,7 +57,7 @@ class OrderBuilder implements OrderBuilderInterface
         $order = $this->orderService->placeOrder(
             $this->validatedData,
             $this->customer,
-            $this->deliveryCharge
+            $this->deliveryCharge ?? null
         );
         $this->order = $order;
         return $this;

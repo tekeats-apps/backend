@@ -73,7 +73,7 @@
                                     <label class="form-check-label" for="responsivetableCheck"></label>
                                 </div>
                             </th>
-                            <th class="sort text-uppercase" scope="col">#</th>
+                            <th class="sort text-uppercase" scope="col">Order ID</th>
                             <th class="sort text-uppercase" scope="col" wire:click="sortBy('customer_name')">Customer
                                 Name</th>
                             <th class="sort text-uppercase" scope="col">Customer Email</th>
@@ -94,7 +94,7 @@
                                             <label class="form-check-label" for="responsivetableCheck01"></label>
                                         </div>
                                     </th>
-                                    <td><a href="#" class="fw-semibold">#{{ $order->invoice_no }}</a></td>
+                                    <td><a href="#" class="fw-semibold">{{ strtoupper($order->order_id) }}</a></td>
                                     <td>
                                         <div class="d-flex gap-2 align-items-center">
                                             <div class="flex-shrink-0">
@@ -102,25 +102,26 @@
                                                     alt="" class="avatar-xs rounded-circle" />
                                             </div>
                                             <div class="flex-grow-1">
-                                                {{ $order->customer_name }}
+                                                {{ $order->customer->full_name }}
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{{ $order->email }}</td>
-                                    @if ($order->payment_status == 'paid')
-                                        <td class="text-success"><i
-                                                class="ri-checkbox-circle-line fs-17 align-middle"></i>
-                                            {{ ucfirst($order->payment_status) }}</td>
-                                    @elseif ($order->payment_status == 'unpaid')
+                                    <td>{{ $order->customer->email }}</td>
+                                    @if ($order->payment_status == \App\Enums\Vendor\Orders\PaymentStatus::PAID)
+                                        <td class="text-success"><i class="ri-checkbox-circle-line fs-17 align-middle"></i>
+                                            {{ ucfirst($order->payment_status->value) }}
+                                        </td>
+                                    @elseif ($order->payment_status == \App\Enums\Vendor\Orders\PaymentStatus::UNPAID)
                                         <td class="text-warning"><i class="ri-refresh-line fs-17 align-middle"></i>
-                                            {{ ucfirst($order->payment_status) }}</td>
+                                            {{ ucfirst($order->payment_status->value) }}
+                                        </td>
                                     @else
                                         <td class="text-danger"><i class="ri-close-circle-line fs-17 align-middle"></i>
-                                            {{ ucfirst($order->payment_status) }}</td>
+                                            {{ ucfirst($order->payment_status->value) }}
+                                        </td>
                                     @endif
-
                                     <td class="text-success"><i class="ri-checkbox-circle-line fs-17 align-middle"></i>
-                                        {{ ucfirst($order->status) }}</td>
+                                        {{ ucfirst($order->status->value) }}</td>
                                     <td>{{ $order->created_at }}</td>
                                     <td>
                                         <button class="btn btn-soft-secondary btn-sm dropdown" type="button"

@@ -2,8 +2,12 @@
 
 namespace App\Models\Vendor;
 
+use App\Enums\Vendor\Orders\OrderPaymentMethod;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\Vendor\Orders\OrderStatus;
+use App\Enums\Vendor\Orders\PaymentStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
@@ -17,6 +21,7 @@ class Order extends Model
         'address_id',
         'status',
         'payment_method',
+        'payment_status',
         'order_type',
         'coupon_code',
         'notes',
@@ -27,6 +32,12 @@ class Order extends Model
 
     protected $dates = [
         'delivered_at',
+    ];
+
+    protected $casts = [
+        'status' => OrderStatus::class,
+        'payment_method' => OrderPaymentMethod::class,
+        'payment_status' => PaymentStatus::class
     ];
 
     public function customer()
@@ -66,5 +77,32 @@ class Order extends Model
         static::creating(function ($order) {
             $order->order_id = 'ORD-' . strtoupper(Str::random(10));
         });
+    }
+
+    public function scopeGetOrdersList($query, $search, $status, $paymentStatus, $startDate, $endDate, $sortField, $sortDirection)
+    {
+        $query = $query->with('customer');
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('customer_name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%')
+                    ->orWhere('invoice_no', 'like', '%' . $search . '%')
+                    ->orWhere('payment_status', 'like', '%' . $search . '%');
+            });
+        }
+        if (!empty($startDate)) {
+            $startDate = Carbon::parse($startDate);
+            $endDate = Carbon::parse($endDate ?? $startDate)->endOfDay();
+            $query->whereBetween('created_at', [$startDate, $endDate]);
+        }
+
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+        if (!empty($paymentStatus)) {
+            $query->where('payment_status', $paymentStatus);
+        }
+
+        return $query->orderBy($sortField, $sortDirection);
     }
 }
