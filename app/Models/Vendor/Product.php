@@ -45,16 +45,6 @@ class Product extends Model
         return $this->belongsToMany(Variant::class);
     }
 
-    public function discounts(): BelongsToMany
-    {
-        return $this->belongsToMany(Discount::class);
-    }
-
-    public function taxes(): BelongsToMany
-    {
-        return $this->belongsToMany(Tax::class);
-    }
-
     public function findExtraByName($name)
     {
         return $this->extras()->where('name', $name)->first();
@@ -68,13 +58,13 @@ class Product extends Model
     public function scopeGetProductExtras($query, $productId, $sortField = 'id', $sortDirection = 'desc')
     {
         $product = $query->findOrFail($productId);
-        return $product->extras()->orderBy($sortField, $sortDirection);;
+        return $product->extras()->orderBy($sortField, $sortDirection);
     }
 
     public function scopeGetProductVariants($query, $productId, $sortField = 'id', $sortDirection = 'desc')
     {
         $product = $query->findOrFail($productId);
-        return $product->variants()->orderBy($sortField, $sortDirection);;
+        return $product->variants()->orderBy($sortField, $sortDirection);
     }
 
     protected function getImageAttribute($value)

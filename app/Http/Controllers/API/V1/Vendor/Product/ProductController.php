@@ -31,8 +31,6 @@ class ProductController extends Controller
 
             $products = Product::with([
                 'category:id,name,image',
-                'discounts:id,type,amount,active',
-                'taxes:id,type,amount,active',
                 'tags:id,name'
             ])
                 ->list()
