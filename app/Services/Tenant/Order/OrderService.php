@@ -4,7 +4,9 @@ namespace App\Services\Tenant\Order;
 
 use Exception;
 use App\Models\Vendor\Customer;
+use App\Enums\Vendor\Orders\OrderType;
 use App\Factories\Tenant\OrderFactory;
+use App\Enums\Vendor\Orders\PaymentStatus;
 use App\Exceptions\CustomerNotFoundException;
 use App\Strategies\Tenant\Order\PricingStrategy;
 use App\Repositories\Tenant\Order\OrderRepository;
@@ -28,7 +30,6 @@ class OrderService
 
     public function placeOrder(array $data, Customer $customer, object $deliveryCharge = null)
     {
-
         try {
             if (!$customer) {
                 throw new CustomerNotFoundException("Customer not found");
@@ -47,7 +48,7 @@ class OrderService
 
                 $modifiedItems[] = $item;
             }
-
+            $orderData['payment_status'] = PaymentStatus::UNPAID;
             $orderData['subtotal_price'] = $orderSubtotal;
             $orderData['total_price'] = $this->pricingStrategy->calculateOrderTotal($orderSubtotal);
 
@@ -59,10 +60,10 @@ class OrderService
             }
 
             // Add logic to insert delivery charge into OrderCharge table
-            if ($deliveryCharge && $data['order_type'] === 'delivery') {
+            if ($deliveryCharge && $data['order_type'] === OrderType::DELIVERY->value) {
                 $orderChargeData = [
                     'order_id' => $order->id,
-                    'type' => 'delivery',
+                    'type' => OrderType::DELIVERY->value,
                     'amount' => $deliveryCharge->delivery_charges,
                 ];
 

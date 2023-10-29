@@ -107,20 +107,21 @@
                                         </div>
                                     </td>
                                     <td>{{ $order->customer->email }}</td>
-                                    @if ($order->payment_status == 'paid')
-                                        <td class="text-success"><i
-                                                class="ri-checkbox-circle-line fs-17 align-middle"></i>
-                                            {{ ucfirst($order->payment_status) }}</td>
-                                    @elseif ($order->payment_status == 'unpaid')
+                                    @if ($order->payment_status == \App\Enums\Vendor\Orders\PaymentStatus::PAID)
+                                        <td class="text-success"><i class="ri-checkbox-circle-line fs-17 align-middle"></i>
+                                            {{ ucfirst($order->payment_status->value) }}
+                                        </td>
+                                    @elseif ($order->payment_status == \App\Enums\Vendor\Orders\PaymentStatus::UNPAID)
                                         <td class="text-warning"><i class="ri-refresh-line fs-17 align-middle"></i>
-                                            {{ ucfirst($order->payment_status) }}</td>
+                                            {{ ucfirst($order->payment_status->value) }}
+                                        </td>
                                     @else
                                         <td class="text-danger"><i class="ri-close-circle-line fs-17 align-middle"></i>
-                                            {{ ucfirst($order->payment_status) }}</td>
+                                            {{ ucfirst($order->payment_status->value) }}
+                                        </td>
                                     @endif
-
                                     <td class="text-success"><i class="ri-checkbox-circle-line fs-17 align-middle"></i>
-                                        {{ ucfirst($order->status) }}</td>
+                                        {{ ucfirst($order->status->value) }}</td>
                                     <td>{{ $order->created_at }}</td>
                                     <td>
                                         <button class="btn btn-soft-secondary btn-sm dropdown" type="button"

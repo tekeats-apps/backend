@@ -2,9 +2,12 @@
 
 namespace App\Models\Vendor;
 
+use App\Enums\Vendor\Orders\OrderPaymentMethod;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\Vendor\Orders\OrderStatus;
+use App\Enums\Vendor\Orders\PaymentStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
@@ -18,6 +21,7 @@ class Order extends Model
         'address_id',
         'status',
         'payment_method',
+        'payment_status',
         'order_type',
         'coupon_code',
         'notes',
@@ -28,6 +32,12 @@ class Order extends Model
 
     protected $dates = [
         'delivered_at',
+    ];
+
+    protected $casts = [
+        'status' => OrderStatus::class,
+        'payment_method' => OrderPaymentMethod::class,
+        'payment_status' => PaymentStatus::class
     ];
 
     public function customer()
