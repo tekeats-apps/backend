@@ -2,6 +2,7 @@
 
 namespace App\Models\Vendor;
 
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -66,5 +67,32 @@ class Order extends Model
         static::creating(function ($order) {
             $order->order_id = 'ORD-' . strtoupper(Str::random(10));
         });
+    }
+
+    public function scopeGetOrdersList($query, $search, $status, $paymentStatus, $startDate, $endDate, $sortField, $sortDirection)
+    {
+        $query = $query->with('customer');
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('customer_name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%')
+                    ->orWhere('invoice_no', 'like', '%' . $search . '%')
+                    ->orWhere('payment_status', 'like', '%' . $search . '%');
+            });
+        }
+        if (!empty($startDate)) {
+            $startDate = Carbon::parse($startDate);
+            $endDate = Carbon::parse($endDate ?? $startDate)->endOfDay();
+            $query->whereBetween('created_at', [$startDate, $endDate]);
+        }
+
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+        if (!empty($paymentStatus)) {
+            $query->where('payment_status', $paymentStatus);
+        }
+
+        return $query->orderBy($sortField, $sortDirection);
     }
 }

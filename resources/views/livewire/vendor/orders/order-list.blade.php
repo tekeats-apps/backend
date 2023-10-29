@@ -73,7 +73,7 @@
                                     <label class="form-check-label" for="responsivetableCheck"></label>
                                 </div>
                             </th>
-                            <th class="sort text-uppercase" scope="col">#</th>
+                            <th class="sort text-uppercase" scope="col">Order ID</th>
                             <th class="sort text-uppercase" scope="col" wire:click="sortBy('customer_name')">Customer
                                 Name</th>
                             <th class="sort text-uppercase" scope="col">Customer Email</th>
@@ -94,7 +94,7 @@
                                             <label class="form-check-label" for="responsivetableCheck01"></label>
                                         </div>
                                     </th>
-                                    <td><a href="#" class="fw-semibold">#{{ $order->invoice_no }}</a></td>
+                                    <td><a href="#" class="fw-semibold">{{ strtoupper($order->order_id) }}</a></td>
                                     <td>
                                         <div class="d-flex gap-2 align-items-center">
                                             <div class="flex-shrink-0">
@@ -102,11 +102,11 @@
                                                     alt="" class="avatar-xs rounded-circle" />
                                             </div>
                                             <div class="flex-grow-1">
-                                                {{ $order->customer_name }}
+                                                {{ $order->customer->full_name }}
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{{ $order->email }}</td>
+                                    <td>{{ $order->customer->email }}</td>
                                     @if ($order->payment_status == 'paid')
                                         <td class="text-success"><i
                                                 class="ri-checkbox-circle-line fs-17 align-middle"></i>
