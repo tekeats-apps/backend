@@ -5,7 +5,9 @@ use App\Http\Controllers\API\V1\Vendor\OrderController;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use App\Http\Controllers\API\V1\Vendor\SettingController;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use App\Http\Controllers\API\V1\Vendor\Product\ProductController;
 use App\Http\Controllers\API\V1\Vendor\Customer\AddressController;
+use App\Http\Controllers\API\V1\Vendor\Product\CategoryController;
 use App\Http\Controllers\API\V1\Vendor\Customer\CustomerController;
 
 /*
@@ -59,8 +61,16 @@ Route::middleware([
                 Route::get('/get-restaurant-settings', 'getSettings');
             });
 
-
-
+        Route::controller(CategoryController::class)
+            ->prefix('category')
+            ->group(function () {
+                Route::get('/list', 'getList');
+            });
+            Route::controller(ProductController::class)
+            ->prefix('product')
+            ->group(function () {
+                Route::get('/list', 'getList');
+            });
 
         Route::controller(OrderController::class)
             ->prefix('orders')

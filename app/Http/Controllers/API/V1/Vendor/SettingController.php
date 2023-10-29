@@ -8,10 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Settings\GeneralSettings;
 use App\Settings\DeliverySettings;
-use App\Models\Vendor\OrderSetting;
 use App\Http\Controllers\Controller;
-use App\Models\Vendor\RestaurantInfo;
-use App\Models\Vendor\LocalizationSetting;
 
 /**
  * @tags Settings

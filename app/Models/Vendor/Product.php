@@ -99,7 +99,7 @@ class Product extends Model
         return $product;
     }
 
-    public function scopeList($query, $search = '', $sortField = 'id', $sortDirection = 'desc')
+    public function scopeList($query, $search = '', $sortField = 'id', $sortDirection = 'desc', $status = 1)
     {
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
