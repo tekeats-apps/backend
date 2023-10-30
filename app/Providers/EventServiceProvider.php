@@ -7,7 +7,6 @@ use App\Models\Vendor\Discount;
 use App\Observers\Vendor\TaxObserver;
 use Illuminate\Auth\Events\Registered;
 use App\Events\Tenant\OrderPlacedEvent;
-use App\Observers\Vendor\DiscountObserver;
 use App\Listeners\Tenant\SendNotificationListener;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -26,11 +25,6 @@ class EventServiceProvider extends ServiceProvider
         OrderPlacedEvent::class => [
             SendNotificationListener::class,
         ],
-    ];
-
-    protected $observers = [
-        Discount::class => DiscountObserver::class,
-        Tax::class => TaxObserver::class
     ];
 
     /**

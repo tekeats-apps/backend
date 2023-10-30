@@ -30,16 +30,6 @@ class Category extends Model
         return $this->hasMany(Category::class, 'parent_id');
     }
 
-    public function discounts(): BelongsToMany
-    {
-        return $this->belongsToMany(Discount::class);
-    }
-
-    public function taxes(): BelongsToMany
-    {
-        return $this->belongsToMany(Tax::class);
-    }
-
     protected function getImageAttribute($value)
     {
 
