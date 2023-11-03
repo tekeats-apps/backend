@@ -16,7 +16,7 @@ class CategorySeeder extends Seeder
         $categoriesData = json_decode(file_get_contents(database_path('seeds/categories.json')), true);
 
         foreach ($categoriesData['categories'] as $categoryData) {
-            $category = Category::create([
+            Category::create([
                 'name' => $categoryData['name'],
                 'slug' => $categoryData['slug'],
                 'position' => $categoryData['position'],
@@ -24,13 +24,6 @@ class CategorySeeder extends Seeder
                 'description' => $categoryData['description'],
                 'status' => $categoryData['status'],
             ]);
-
-            foreach ($categoryData['subcategories'] as $subcategoryData) {
-                $category->subcategories()->create([
-                    'name' => $subcategoryData['name'],
-                    'slug' => $subcategoryData['slug'],
-                ]);
-            }
         }
     }
 }

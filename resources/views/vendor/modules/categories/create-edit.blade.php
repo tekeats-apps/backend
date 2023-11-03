@@ -68,6 +68,18 @@
                                     @enderror
                                 </div>
                             </div>
+                              <div class="col-lg-6 mb-2">
+                                <div class="mb-3">
+                                    <label class="form-label">Discount (%)</label>
+                                    <input type="number" min="0" class="form-control @error('discount') is-invalid @enderror"
+                                        name="discount" oninput="validity.valid||(value='');"
+                                        value="{{ old('discount', isset($subcategory) ? $subcategory->discount : '') }}"
+                                        placeholder="Enter discount value in %">
+                                    @error('discount')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="col-lg-12 mb-2">
                                 <label for="description-field" class="form-label">Description</label>
                                 <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description-field"
@@ -117,6 +129,17 @@
                                 <label class="form-check-label" for="SwitchCheck11">Featured</label>
                             </div>
                             @error('featured')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check form-switch form-switch-lg form-switch-info">
+                                <input class="form-check-input @error('discount_enabled') is-invalid @enderror"
+                                    type="checkbox" name="discount_enabled" id="SwitchCheck11" value="1"
+                                    {{ old('discount_enabled', isset($subcategory) && $subcategory->discount_enabled ? 'checked' : '') }}>
+                                <label class="form-check-label" for="SwitchCheck11">Discount</label>
+                            </div>
+                            @error('discount_enabled')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>

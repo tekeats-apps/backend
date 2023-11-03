@@ -23,9 +23,9 @@ class ProductController extends Controller
 
     public function create()
     {
-        $subCategories = Category::getAllActiveSubCategories()->pluck('name', 'id');
+        $categories = Category::getAllActiveCategories()->pluck('name', 'id');
         $tags = Tag::getActiveTags()->pluck('name', 'id');
-        return view('vendor.modules.products.create-edit', compact('subCategories', 'tags'));
+        return view('vendor.modules.products.create-edit', compact('categories', 'tags'));
     }
 
     public function store(CreateProductRequest $request)

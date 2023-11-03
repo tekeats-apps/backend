@@ -46,8 +46,8 @@
                                             <select class="form-control @error('category_id') is-invalid @enderror"
                                                 name="category_id" data-choices id="category-id-field">
                                                 <option value="">Select Product Category</option>
-                                                @isset($subCategories)
-                                                    @foreach ($subCategories as $key => $category)
+                                                @isset($categories)
+                                                    @foreach ($categories as $key => $category)
                                                         <option value="{{ $key }}"
                                                             {{ old('category_id', isset($product) ? $product->category_id : '') == $key ? 'selected' : '' }}>
                                                             {{ $category }}

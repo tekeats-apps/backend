@@ -42,6 +42,8 @@ class UpdateCategory extends FormRequest
             'position' => 'nullable|numeric',
             'description' => 'nullable',
             'featured' => 'nullable|numeric',
+            'discount' => 'nullable|numeric',
+            'discount_enabled' => 'nullable|numeric',
             'status' => 'nullable|numeric',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:1024'
         ];

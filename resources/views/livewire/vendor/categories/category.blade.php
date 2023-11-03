@@ -42,7 +42,6 @@
                         </th>
                         <th>SR No.</th>
                         <th>Name</th>
-                        <th>Subcategories</th>
                         <th>Featured</th>
                         <th>Position</th>
                         <th>Status</th>
@@ -71,10 +70,6 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td> <a href="{{ route('vendor.categories.subcategories.list', $category->id) }}" role="button"> <span
-                                            class="badge badge-soft-primary" style="    font-size: 17px;">
-                                            <i class="ri-external-link-line"></i></span></a></td>
-
                                 <td><span class="badge badge-soft-{{ $category->featured ? 'info' : 'danger' }}">
                                         {{ $category->featured ? 'Yes 🔥' : 'No ❌' }}</span></td>
                                 <td><span class="badge badge-soft-primary">

@@ -18,7 +18,7 @@ return new class extends Migration
         Schema::create(config('subby.tables.plan_subscriptions'), function (Blueprint $table) {
             $table->increments('id');
             $table->string('tag');
-            $table->morphs('subscriber');
+            $table->uuidMorphs('subscriber');
             $table->unsignedInteger('plan_id')->nullable();
             $table->string('name')->nullable();
             $table->string('description')->nullable();
@@ -47,6 +47,7 @@ return new class extends Migration
     }
 
     /**
+     *
      * Reverse the migrations.
      *
      * @return void

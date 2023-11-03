@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire\Admin\Plans;
 
-use App\Models\PlanSubscription;
 use Livewire\Component;
+use App\Models\Admin\Plan;
 
 class SubscriptionList extends Component
 {
@@ -21,7 +21,7 @@ class SubscriptionList extends Component
 
     protected function getPlanSubscriptions()
     {
-        return PlanSubscription::getList($this->search, $this->sortField, $this->sortDirection)->paginate($this->perPage);
+        return Plan::getList($this->search, $this->sortField, $this->sortDirection)->paginate($this->perPage);
     }
 
     public function confirmDelete($id)
@@ -37,7 +37,7 @@ class SubscriptionList extends Component
     public function destroy($uuid)
     {
         try {
-            PlanSubscription::findOrFail($uuid)->delete();
+            Plan::findOrFail($uuid)->delete();
             $this->dispatchBrowserEvent('success', ['message' => 'Plan subscription deleted successfully!']);
         } catch (\Exception $e) {
             $this->dispatchBrowserEvent('error', ['message' => 'Failed to delete plan subscription: ' . $e->getMessage()]);
