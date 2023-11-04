@@ -59,10 +59,10 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $subCategories = Category::getAllActiveSubCategories()->pluck('name', 'id');
+        $categories = Category::getAllActiveCategories()->pluck('name', 'id');
         $tags = Tag::getActiveTags()->pluck('name', 'id');
         $product = Product::findOrFail($id);
-        return view('vendor.modules.products.create-edit', compact('product', 'subCategories', 'tags'));
+        return view('vendor.modules.products.create-edit', compact('product', 'categories', 'tags'));
     }
 
     public function update(UpdateProductRequest $request, Product $product)

@@ -25,21 +25,10 @@ class CategoryController extends Controller
         return view('vendor.modules.categories.create-edit', compact('positions', 'usedPositions'));
     }
 
-    public function subcategoryCreate($categoryId)
-    {
-        $usedPositions = Category::getSubcategoriesUsedPositions();
-        $positions = range(1, Category::MAX_POSITION);
-        return view('vendor.modules.categories.subcategories.create-edit', compact('positions', 'usedPositions', 'categoryId'));
-    }
-
-    public function getSubcaegories(Category $category)
-    {
-        return view('vendor.modules.categories.subcategories.index', compact('category'));
-    }
-
     public function store(CreateCategory $request)
     {
         $data = $request->validated();
+
         try {
             $category = Category::storeCategory($data);
 
@@ -79,19 +68,6 @@ class CategoryController extends Controller
         $usedPositions = Category::pluck('position')->toArray();
         $positions = range(1, Category::MAX_POSITION);
         return view('vendor.modules.categories.create-edit', compact('category', 'positions', 'usedPositions'));
-    }
-
-    public function subcategoryEdit($category, $subcategory)
-    {
-        $subcategory = Category::where(['parent_id' =>  $category, 'id' => $subcategory])->first();
-        if (!$subcategory instanceof Category) {
-            abort(404);
-        }
-        $mainCategories = Category::list()->pluck('name', 'id');
-        $usedPositions = Category::pluck('position')->toArray();
-        $positions = range(1, Category::MAX_POSITION);
-        $categoryId = $category;
-        return view('vendor.modules.categories.subcategories.create-edit', compact('subcategory', 'mainCategories', 'positions', 'usedPositions', 'categoryId'));
     }
 
     public function update(UpdateCategory $request, Category $category)

@@ -30,6 +30,8 @@ class CreateProductRequest extends FormRequest
             'featured' => 'boolean',
             'extras' => 'boolean',
             'is_variants_enabled' => 'boolean',
+            'discount' => 'nullable|numeric',
+            'discount_enabled' => 'boolean',
             'is_product_timing_enabled' => 'boolean',
             'category_id' => 'required|exists:categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',

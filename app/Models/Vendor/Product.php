@@ -19,6 +19,7 @@ class Product extends Model
         'featured', 'is_extras_enabled', 'is_variants_enabled', 'is_product_timing_enabled',
         'category_id', 'image', 'product_tags', 'slug', 'seo_title', 'seo_description', 'seo_keywords', 'discount_enabled', 'discount'
     ];
+    protected $appends = ['discounted_price'];
 
     public function category()
     {
@@ -115,6 +116,17 @@ class Product extends Model
 
         return $product;
     }
+
+    public function getDiscountedPriceAttribute()
+    {
+        if ($this->discount_enabled) {
+            $discountedPrice = $this->price - ($this->price * ($this->discount / 100));
+            return (float)$discountedPrice;
+        }
+
+        return (float)$this->price;
+    }
+
 
     protected function getProductTags($validatedData)
     {
