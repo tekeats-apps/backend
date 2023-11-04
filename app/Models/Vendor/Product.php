@@ -76,7 +76,6 @@ class Product extends Model
             $path = Product::IMAGE_PATH . '/' . $value;
             $image = tenant_asset($path);
         }
-
         return $image;
     }
     public function scopeCreateProduct($query, array $validatedData)
@@ -119,12 +118,19 @@ class Product extends Model
 
     public function getDiscountedPriceAttribute()
     {
-        if ($this->discount_enabled) {
-            $discountedPrice = $this->price - ($this->price * ($this->discount / 100));
-            return (float)$discountedPrice;
+        $discountedPrice = $this->price;
+        if ($this->category && $this->category->discount_enabled) {
+            $discountedPrice = $this->applyDiscount($discountedPrice, $this->category->discount);
+        } elseif ($this->discount_enabled) {
+            $discountedPrice = $this->applyDiscount($discountedPrice, $this->discount);
         }
 
-        return (float)$this->price;
+        return (float) $discountedPrice;
+    }
+
+    protected function applyDiscount($price, $discount)
+    {
+        return $price - ($price * ($discount / 100));
     }
 
 
