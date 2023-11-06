@@ -24,6 +24,7 @@ class PricingStrategy implements PricingStrategyMethods
     protected function getProductPrice(int $productId): float
     {
         $product = Product::find($productId);
+
         $price = $product->discounted_price;
         return $price;
     }
