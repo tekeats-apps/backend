@@ -118,6 +118,7 @@ class Product extends Model
 
     public function getDiscountedPriceAttribute()
     {
+
         $discountedPrice = $this->price;
         if ($this->category && $this->category->discount_enabled) {
             $discountedPrice = $this->applyDiscount($discountedPrice, $this->category->discount);
