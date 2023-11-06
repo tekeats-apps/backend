@@ -30,6 +30,8 @@ class UpdateProductRequest extends FormRequest
             'status' => 'required|boolean',
             'featured' => 'nullable|boolean',
             'extras' => 'nullable|boolean',
+            'discount' => 'nullable|numeric',
+            'discount_enabled' => 'boolean',
             'is_variants_enabled' => 'nullable|boolean',
             'is_product_timing_enabled' => 'nullable|boolean',
             'category_id' => 'required|exists:categories,id',

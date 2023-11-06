@@ -76,6 +76,21 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-12 mb-3">
+                                <label for="plan_id" class="form-label">Choose Plan</label>
+                                <select class="form-select @error('plan_id') is-invalid @enderror" name="plan_id"
+                                    id="plan_id" required>
+                                    <option value="">Select Plan</option>
+                                    @isset($plans)
+                                        @foreach ($plans as $key => $plan)
+                                            <option value="{{ $key }}">{{ $plan }}</option>
+                                        @endforeach
+                                    @endisset
+                                </select>
+                                @error('payment_status')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-12 mb-3">
                                 <label for="payment_status" class="form-label">Payment Status</label>
                                 <select class="form-select @error('payment_status') is-invalid @enderror"
                                     name="payment_status" id="payment_status" required>

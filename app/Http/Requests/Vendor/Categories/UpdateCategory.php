@@ -27,21 +27,13 @@ class UpdateCategory extends FormRequest
             'name' => [
                 'required',
                 Rule::unique('categories', 'name')
-                    ->where(function ($query) use ($categoryId) {
-                        if ($this->input('parent_id')) {
-                            // Check uniqueness for the same parent_id
-                            $query->where('parent_id', $this->input('parent_id'));
-                        } else {
-                            // Check uniqueness for the category ID
-                            $query->where('id', $categoryId);
-                        }
-                    })
                     ->ignore($categoryId)
             ],
-            'parent_id' => 'nullable|integer',
             'position' => 'nullable|numeric',
             'description' => 'nullable',
             'featured' => 'nullable|numeric',
+            'discount' => 'nullable|numeric',
+            'discount_enabled' => 'nullable|numeric',
             'status' => 'nullable|numeric',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:1024'
         ];

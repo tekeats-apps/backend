@@ -46,8 +46,8 @@
                                             <select class="form-control @error('category_id') is-invalid @enderror"
                                                 name="category_id" data-choices id="category-id-field">
                                                 <option value="">Select Product Category</option>
-                                                @isset($subCategories)
-                                                    @foreach ($subCategories as $key => $category)
+                                                @isset($categories)
+                                                    @foreach ($categories as $key => $category)
                                                         <option value="{{ $key }}"
                                                             {{ old('category_id', isset($product) ? $product->category_id : '') == $key ? 'selected' : '' }}>
                                                             {{ $category }}
@@ -72,18 +72,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 mb-2">
-                                        <div class="mb-3">
-                                            <label class="form-label">Product Price</label>
-                                            <input type="number" min="0" step="0.01"
-                                                class="form-control @error('price') is-invalid @enderror" name="price"
-                                                value="{{ old('price', isset($product) ? $product->price : '') }}"
-                                                placeholder="Enter product price" required>
-                                            @error('price')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
+
                                     <div class="col-lg-6 mb-2">
                                         <div class="mb-3">
                                             <label class="form-label">Prepration Time</label>
@@ -116,6 +105,31 @@
                                                 @endisset
                                             </select>
                                             @error('product_tags')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-2">
+                                        <div class="mb-3">
+                                            <label class="form-label">Product Price</label>
+                                            <input type="number" min="0" step="0.01"
+                                                class="form-control @error('price') is-invalid @enderror" name="price"
+                                                value="{{ old('price', isset($product) ? $product->price : '') }}"
+                                                placeholder="Enter product price" required>
+                                            @error('price')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-2">
+                                        <div class="mb-3">
+                                            <label class="form-label">Discount (%)</label>
+                                            <input type="number" min="0"
+                                                class="form-control @error('discount') is-invalid @enderror" name="discount"
+                                                oninput="validity.valid||(value='');"
+                                                value="{{ old('discount', isset($product) ? $product->discount : '') }}"
+                                                placeholder="Enter discount value in %">
+                                            @error('discount')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -156,8 +170,8 @@
                                         <div class="mb-3">
                                             <label class="form-label">SEO Keywords</label>
                                             <select class="form-control @error('seo_keywords') is-invalid @enderror"
-                                                name="seo_keywords[]" data-choices data-choices-text-unique-true data-choices-removeItem multiple
-                                                id="seo-keywords-field">
+                                                name="seo_keywords[]" data-choices data-choices-text-unique-true
+                                                data-choices-removeItem multiple id="seo-keywords-field">
                                                 <option value="">Select/Create Keywords</option>
                                             </select>
                                             @error('seo_keywords')
@@ -169,7 +183,7 @@
                                     <div class="col-lg-12 mb-2">
                                         <label for="seo-description-field" class="form-label">SEO Description</label>
                                         <textarea class="form-control @error('seo_description') is-invalid @enderror" name="seo_description"
-                                            id="seo-description-field" rows="5">{{ old('seo_description', isset($product) ? $product->seo_description : '') }}</textarea>
+                                            id="seo-description-field" r dd($product->discounted_price);ows="5">{{ old('seo_description', isset($product) ? $product->seo_description : '') }}</textarea>
                                         @error('seo_description')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -246,6 +260,19 @@
                                                 Variants</label>
                                         </div>
                                         @error('is_variants_enabled')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-check form-switch form-switch-lg form-switch-success">
+                                            <input
+                                                class="form-check-input @error('discount_enabled') is-invalid @enderror"
+                                                type="checkbox" name="discount_enabled" id="SwitchCheck11"
+                                                value="1"
+                                                {{ old('discount_enabled', isset($product) && $product->discount_enabled ? 'checked' : '') }}>
+                                            <label class="form-check-label" for="SwitchCheck11">Enable Discount</label>
+                                        </div>
+                                        @error('discount_enabled')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>

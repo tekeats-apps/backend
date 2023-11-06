@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Order;
 use App\Models\Tenant;
+use App\Models\Admin\Plan;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CreateOrder;
@@ -17,7 +18,8 @@ class OrderController extends Controller
 
     public function create()
     {
-        return view('admin.modules.orders.create');
+        $plans = Plan::getList()->pluck('name', 'id');
+        return view('admin.modules.orders.create', compact('plans'));
     }
 
     public function store(CreateOrder $request)
@@ -27,8 +29,18 @@ class OrderController extends Controller
         try {
             $order = Order::createNewOrder($data);
             $data['order_id'] = $order->id;
-
+            $plan = Plan::find($data['plan_id']);
             $tenant = Tenant::registerRestaurant($data);
+            if ($tenant) {
+                $tenant->newSubscription(
+                    'main',
+                    $plan,
+                    null,
+                    null,
+                    null,
+                    'free'
+                );
+            }
             Tenant::registerTenantUser($tenant, $data, 'admin');
 
             return redirect()->route('admin.order.list')->with('success', 'Order created successfully!');

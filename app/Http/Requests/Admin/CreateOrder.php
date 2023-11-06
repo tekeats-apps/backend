@@ -32,6 +32,7 @@ class CreateOrder extends FormRequest
                     }
                 },
             ],
+            'plan_id' => 'required|exists:plans,id',
             'email' => 'required|email',
             'login_password' => 'required|min:6',
             'domain' => 'required',

@@ -18,10 +18,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->nullable();
             $table->float('price')->default(0.00);
+            $table->integer('discount')->nullable();
             $table->string('prepration_time')->nullable();
             $table->text('description')->nullable();
 
             $table->boolean('featured')->default(0);
+            $table->boolean('discount_enabled')->default(0);
             $table->boolean('is_extras_enabled')->default(0);
             $table->boolean('is_variants_enabled')->default(0);
             $table->boolean('is_product_timing_enabled')->default(0);

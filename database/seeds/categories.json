@@ -6,21 +6,7 @@
             "position": 1,
             "featured": true,
             "description": "Delicious rice dish with meat and spices",
-            "status": true,
-            "subcategories": [
-                {
-                    "name": "Chicken Biryani",
-                    "slug": "chicken-biryani"
-                },
-                {
-                    "name": "Beef Biryani",
-                    "slug": "beef-biryani"
-                },
-                {
-                    "name": "Mutton Biryani",
-                    "slug": "mutton-biryani"
-                }
-            ]
+            "status": true
         },
         {
             "name": "Karahi",
@@ -28,21 +14,7 @@
             "position": 2,
             "featured": true,
             "description": "Spicy and flavorful meat dish",
-            "status": true,
-            "subcategories": [
-                {
-                    "name": "Chicken Karahi",
-                    "slug": "chicken-karahi"
-                },
-                {
-                    "name": "Mutton Karahi",
-                    "slug": "mutton-karahi"
-                },
-                {
-                    "name": "Beef Karahi",
-                    "slug": "beef-karahi"
-                }
-            ]
+            "status": true
         },
         {
             "name": "Seekh Kabab",
@@ -50,17 +22,7 @@
             "position": 3,
             "featured": true,
             "description": "Tender and juicy grilled meat skewers",
-            "status": true,
-            "subcategories": [
-                {
-                    "name": "Chicken Seekh Kabab",
-                    "slug": "chicken-seekh-kabab"
-                },
-                {
-                    "name": "Beef Seekh Kabab",
-                    "slug": "beef-seekh-kabab"
-                }
-            ]
+            "status": true
         },
         {
             "name": "Nihari",
@@ -68,17 +30,7 @@
             "position": 4,
             "featured": true,
             "description": "Slow-cooked meat stew with rich flavors",
-            "status": true,
-            "subcategories": [
-                {
-                    "name": "Beef Nihari",
-                    "slug": "beef-nihari"
-                },
-                {
-                    "name": "Mutton Nihari",
-                    "slug": "mutton-nihari"
-                }
-            ]
+            "status": true
         },
         {
             "name": "Pakoras",
@@ -86,17 +38,7 @@
             "position": 5,
             "featured": true,
             "description": "Deep-fried fritters with various fillings",
-            "status": true,
-            "subcategories": [
-                {
-                    "name": "Onion Pakoras",
-                    "slug": "onion-pakoras"
-                },
-                {
-                    "name": "Vegetable Pakoras",
-                    "slug": "vegetable-pakoras"
-                }
-            ]
+            "status": true
         },
         {
             "name": "Haleem",
@@ -104,17 +46,7 @@
             "position": 6,
             "featured": true,
             "description": "Rich and hearty meat and lentil stew",
-            "status": true,
-            "subcategories": [
-                {
-                    "name": "Chicken Haleem",
-                    "slug": "chicken-haleem"
-                },
-                {
-                    "name": "Beef Haleem",
-                    "slug": "beef-haleem"
-                }
-            ]
+            "status": true
         },
         {
             "name": "Samosa",
@@ -122,17 +54,7 @@
             "position": 7,
             "featured": true,
             "description": "Crispy fried pastry filled with savory stuffing",
-            "status": true,
-            "subcategories": [
-                {
-                    "name": "Vegetable Samosa",
-                    "slug": "vegetable-samosa"
-                },
-                {
-                    "name": "Chicken Samosa",
-                    "slug": "chicken-samosa"
-                }
-            ]
+            "status": true
         },
         {
             "name": "Chapli Kabab",
@@ -140,17 +62,7 @@
             "position": 8,
             "featured": true,
             "description": "Spiced and flattened meat patties",
-            "status": true,
-            "subcategories": [
-                {
-                    "name": "Beef Chapli Kabab",
-                    "slug": "beef-chapli-kabab"
-                },
-                {
-                    "name": "Chicken Chapli Kabab",
-                    "slug": "chicken-chapli-kabab"
-                }
-            ]
+            "status": true
         },
         {
             "name": "Paya",
@@ -158,17 +70,7 @@
             "position": 9,
             "featured": true,
             "description": "Slow-cooked trotters in aromatic gravy",
-            "status": true,
-            "subcategories": [
-                {
-                    "name": "Beef Paya",
-                    "slug": "beef-paya"
-                },
-                {
-                    "name": "Mutton Paya",
-                    "slug": "mutton-paya"
-                }
-            ]
+            "status": true
         },
         {
             "name": "Samosa Chaat",
@@ -176,17 +78,7 @@
             "position": 10,
             "featured": true,
             "description": "Samosa served with flavorful toppings and chutneys",
-            "status": true,
-            "subcategories": [
-                {
-                    "name": "Aloo Samosa Chaat",
-                    "slug": "aloo-samosa-chaat"
-                },
-                {
-                    "name": "Chana Samosa Chaat",
-                    "slug": "chana-samosa-chaat"
-                }
-            ]
+            "status": true
         }
     ]
 }

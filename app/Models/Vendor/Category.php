@@ -23,6 +23,8 @@ class Category extends Model
         'description',
         'image',
         'status',
+        'discount_enabled',
+        'discount'
     ];
 
     public function subcategories()
@@ -44,7 +46,6 @@ class Category extends Model
 
     public function scopeList($query, $search = '', $sortField = 'id', $sortDirection = 'desc')
     {
-        $query->whereNull('parent_id');
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', '%' . $search . '%')
@@ -58,35 +59,13 @@ class Category extends Model
         }
         return $query->orderBy($sortField, $sortDirection);
     }
-    public function scopeGetSubCategorieslist($query, $parentId, $search, $sortField, $sortDirection, $status)
+    public function scopeGetAllActiveCategories($query, $sortField = 'id', $sortDirection = 'desc', $status = 1)
     {
-        $query->where('parent_id', $parentId);
-        if (!empty($search)) {
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('description', 'like', '%' . $search . '%')
-                    ->orWhere('slug', 'like', '%' . $search . '%');
-            });
-        }
-
-        if (!empty($status)) {
-            $query->where('status', $status);
-        }
-        return $query->orderBy($sortField, $sortDirection);
-    }
-    public function scopeGetAllActiveSubCategories($query, $sortField = 'id', $sortDirection = 'desc', $status = 1)
-    {
-        $query->whereNotNull('parent_id');
-
         if (!empty($status)) {
             $query->where('status', $status);
         }
 
         return $query->orderBy($sortField, $sortDirection);
-    }
-    public function scopeGetSubcategoriesUsedPositions($query)
-    {
-        return $query->whereNotNull('parent_id')->pluck('position')->toArray();
     }
     public function scopeStoreCategory($query, $data)
     {
@@ -96,6 +75,8 @@ class Category extends Model
             'slug' => Str::slug($data['name']),
             'position' => isset($data['position']) ? $data['position'] : 0,
             'description' => isset($data['description']) ? $data['description'] : null,
+            'discount_enabled' => isset($data['discount_enabled']) ? $data['discount_enabled'] : 0,
+            'discount' => isset($data['discount']) ? $data['discount'] : 0,
             'featured' => isset($data['featured']) ? $data['featured'] : 0,
             'status' => isset($data['status']) ? $data['status'] : 0
         ]);

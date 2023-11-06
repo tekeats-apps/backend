@@ -1,6 +1,6 @@
 @extends('admin.layouts.main')
 @section('title')
-    Plan Subscriptions
+    Subscription Plans
 @endsection
 @section('on-top-css')
     <!--select2 cdn-->
@@ -10,7 +10,7 @@
     {{-- Breadcrumbs Component --}}
     @component('admin.layouts.components.breadcrumb')
         @slot('li_1')
-            Plan Subscriptions
+            Subscription Plans
         @endslot
         @slot('title')
             Create Plan
@@ -32,83 +32,118 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="mb-3">
-                                    <label class="form-label required">Plan Name</label>
+                                    <label class="form-label required">Tag</label>
+                                    <input type="text" class="form-control @error('tag') is-invalid @enderror"
+                                        name="tag" value="{{ old('tag') ?? '' }}" id="tag"
+                                        placeholder="Enter plan tag e.g basic, pro" required>
+                                    @error('tag')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label class="form-label required">Name</label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror"
                                         name="name" value="{{ old('name') ?? '' }}" id="name"
-                                        placeholder="Enter plan name" required>
+                                        placeholder="Enter plan name e.g Basic Plan" required>
                                     @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="mb-3">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-control @error('description') is-invalid @enderror" name="description"
+                                        placeholder="Enter plan description" id="description">{{ old('description') ?? '' }}</textarea>
+                                    @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
 
                             <div class="col-lg-6 mb-3">
-                                <label for="duration" class="form-label required">Duration</label>
-                                <select class="form-select @error('duration') is-invalid @enderror" name="duration"
-                                    id="duration" required>
-                                    <option value="">Select Duration Type</option>
-                                    <option value="Yearly">Yearly</option>
-                                    <option value="Monthly">Monthly</option>
+                                <label for="invoice_interval" class="form-label required">Invoice Interval</label>
+                                <select class="form-select @error('invoice_interval') is-invalid @enderror"
+                                    name="invoice_interval" id="invoice_interval" required>
+                                    <option value="">Select Interval</option>
+                                    <option value="year">Year</option>
+                                    <option value="month">Month</option>
                                 </select>
-                                @error('duration')
+                                @error('invoice_interval')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label class="form-label required">Invoice Period</label>
+                                    <input type="number" min="0"
+                                        class="form-control @error('invoice_period') is-invalid @enderror"
+                                        name="invoice_period" value="{{ old('invoice_period') ?? '' }}" id="invoice_period"
+                                        placeholder="Enter invoice period e.g 1" required>
+                                    @error('invoice_period')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
 
+                            <div class="col-lg-6 mb-3">
+                                <label for="trial_interval" class="form-label">Trail Interval</label>
+                                <select class="form-select @error('trial_interval') is-invalid @enderror"
+                                    name="trial_interval" id="trial_interval" required>
+                                    <option value="">Select Trail Interval</option>
+                                    <option value="day">Day</option>
+                                    <option value="month">Month</option>
+                                </select>
+                                @error('trial_interval')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Trail Period</label>
+                                    <input type="number" min="0"
+                                        class="form-control @error('trial_period') is-invalid @enderror" name="trial_period"
+                                        value="{{ old('trial_period') ?? '' }}" id="trial_period"
+                                        placeholder="Enter invoice period e.g 7" required>
+                                    @error('trial_period')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <label for="grace_interval" class="form-label">Grace Interval</label>
+                                <select class="form-select @error('grace_interval') is-invalid @enderror"
+                                    name="grace_interval" id="grace_interval" required>
+                                    <option value="">Select Trail Interval</option>
+                                    <option value="day">Day</option>
+                                    <option value="month">Month</option>
+                                </select>
+                                @error('grace_interval')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Grace Period</label>
+                                    <input type="number" min="0"
+                                        class="form-control @error('grace_period') is-invalid @enderror"
+                                        name="grace_period" value="{{ old('grace_period') ?? '' }}" id="grace_period"
+                                        placeholder="Enter grace period e.g 7" required>
+                                    @error('grace_period')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label required">Price</label>
                                     <input type="number" class="form-control @error('price') is-invalid @enderror"
-                                        name="price" value="{{ old('price') ?? '' }}" id="price"
+                                        name="price" min="0" step="0.01" value="{{ old('price') ?? '' }}" id="price"
                                         placeholder="Enter price" required>
                                     @error('price')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Discount</label>
-                                    <input type="number" class="form-control @error('discount') is-invalid @enderror"
-                                        name="discount" value="{{ old('discount') ?? '' }}" id="discount"
-                                        placeholder="Enter discount" />
-                                    @error('discount')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Trial Period</label>
-                                    <input type="text"
-                                        class="form-control @error('trial_period_days') is-invalid @enderror"
-                                        name="trial_period_days" value="{{ old('trial_period_days') ?? '' }}"
-                                        id="trial_period_days" placeholder="Enter trial period days" />
-                                    @error('trial_period_days')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <label for="duration" class="form-label">Features</label>
-                                <select class="select-multiple" name="features[]" multiple="multiple">
-                                    @isset($planFeatures)
-                                        @foreach ($planFeatures as $planFeature)
-                                            <option value="{{ $planFeature?->id }}">{{ $planFeature?->feature_name }}</option>
-                                        @endforeach
-                                    @endisset
-                                </select>
-                            </div>
-
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label class="form-label required">Description</label>
-                                    <textarea class="form-control @error('description') is-invalid @enderror" name="description"
-                                        placeholder="Enter plan description" id="description">{{ old('description') ?? '' }}</textarea>
-                                    @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

@@ -13,18 +13,17 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->integer('position')->default(0);
+            $table->integer('position')->nullable();
             $table->boolean('featured')->default(false);
+            $table->integer('discount')->nullable();
             $table->text('description')->nullable();
             $table->string('image')->nullable();
+            $table->boolean('discount_enabled')->default(0);
             $table->boolean('status')->default(true);
             $table->softDeletes();
             $table->timestamps();
-
-            $table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 

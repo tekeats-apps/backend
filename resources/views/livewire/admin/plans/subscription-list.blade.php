@@ -59,10 +59,12 @@
                                     {{ $planSubscription?->name }}
                                 </td>
                                 <td>
-                                    {{ $planSubscription?->duration }}
+
+                                    <span class="badge badge-soft-success">
+                                        {{ $planSubscription?->invoice_period }} {{ strtoupper($planSubscription?->invoice_interval) }}</span>
                                 </td>
                                 <td>
-                                    {{ $planSubscription?->price }}
+                                    {{ $planSubscription?->price }} {{ $planSubscription?->currency }}
                                 </td>
                                 <td>
                                     <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
@@ -71,15 +73,20 @@
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
-                                            <a class="dropdown-item" href="{{ route('admin.plans.subscriptions.edit', $planSubscription?->id) }}" data-id="{{ $planSubscription?->id }}">
+                                            <a class="dropdown-item"
+                                                href="{{ route('admin.plans.subscriptions.edit', $planSubscription?->id) }}"
+                                                data-id="{{ $planSubscription?->id }}">
                                                 <i class="ri-edit-fill align-bottom me-2 text-muted"></i>
                                                 Edit</a>
                                         </li>
-                                        <li><a class="dropdown-item" href="{{ route('admin.plans.subscriptions.show', $planSubscription?->id) }}" data-id="{{ $planSubscription?->id }}">
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('admin.plans.subscriptions.show', $planSubscription?->id) }}"
+                                                data-id="{{ $planSubscription?->id }}">
                                                 <i class="ri-eye-fill align-bottom me-2 text-muted"></i>
                                                 View</a></li>
                                         <li>
-                                            <a class="dropdown-item" wire:click="confirmDelete('{{ $planSubscription?->id }}')"
+                                            <a class="dropdown-item"
+                                                wire:click="confirmDelete('{{ $planSubscription?->id }}')"
                                                 href="javascript:void(0);" data-id="">
                                                 <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
                                                 Delete</a>

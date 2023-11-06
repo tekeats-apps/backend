@@ -17,8 +17,9 @@ class Product extends Model
     protected $fillable = [
         'name', 'description', 'price', 'prepration_time', 'status',
         'featured', 'is_extras_enabled', 'is_variants_enabled', 'is_product_timing_enabled',
-        'category_id', 'image', 'product_tags', 'slug', 'seo_title', 'seo_description', 'seo_keywords'
+        'category_id', 'image', 'product_tags', 'slug', 'seo_title', 'seo_description', 'seo_keywords', 'discount_enabled', 'discount'
     ];
+    protected $appends = ['discounted_price'];
 
     public function category()
     {
@@ -75,7 +76,6 @@ class Product extends Model
             $path = Product::IMAGE_PATH . '/' . $value;
             $image = tenant_asset($path);
         }
-
         return $image;
     }
     public function scopeCreateProduct($query, array $validatedData)
@@ -115,6 +115,25 @@ class Product extends Model
 
         return $product;
     }
+
+    public function getDiscountedPriceAttribute()
+    {
+
+        $discountedPrice = $this->price;
+        if ($this->category && $this->category->discount_enabled) {
+            $discountedPrice = $this->applyDiscount($discountedPrice, $this->category->discount);
+        } elseif ($this->discount_enabled) {
+            $discountedPrice = $this->applyDiscount($discountedPrice, $this->discount);
+        }
+
+        return (float) $discountedPrice;
+    }
+
+    protected function applyDiscount($price, $discount)
+    {
+        return $price - ($price * ($discount / 100));
+    }
+
 
     protected function getProductTags($validatedData)
     {

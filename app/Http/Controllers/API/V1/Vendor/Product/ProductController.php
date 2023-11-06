@@ -30,7 +30,6 @@ class ProductController extends Controller
         try {
 
             $products = Product::with([
-                'category:id,name,image',
                 'tags:id,name'
             ])
                 ->list()

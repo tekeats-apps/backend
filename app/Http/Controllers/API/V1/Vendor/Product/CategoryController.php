@@ -24,7 +24,7 @@ class CategoryController extends Controller
     public function getList()
     {
         try {
-            $categories = Category::getAllActiveSubCategories()->get();
+            $categories = Category::getAllActiveCategories()->get();
             return $this->successResponse($categories, "Categories fetched successfully.", Response::HTTP_OK);
         } catch (Exception $e) {
             return $this->exceptionResponse($e, "Failed to fetch categories.");
