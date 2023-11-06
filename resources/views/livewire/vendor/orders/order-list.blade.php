@@ -77,6 +77,8 @@
                             <th class="sort text-uppercase" scope="col" wire:click="sortBy('customer_name')">Customer
                                 Name</th>
                             <th class="sort text-uppercase" scope="col">Customer Email</th>
+                            <th class="sort text-uppercase" scope="col">Subtotal</th>
+                            <th class="sort text-uppercase" scope="col">Total Amount</th>
                             <th class="sort text-uppercase" scope="col">Payment Status</th>
                             <th class="sort text-uppercase" scope="col">Status</th>
                             <th class="sort text-uppercase" scope="col" wire:click="sortBy('created_at')">Date</th>
@@ -107,6 +109,8 @@
                                         </div>
                                     </td>
                                     <td>{{ $order->customer->email }}</td>
+                                    <td><strong>${{ $order->subtotal_price }}</strong></td>
+                                    <td> <strong>${{ $order->total_price }}</strong> </td>
                                     @if ($order->payment_status == \App\Enums\Vendor\Orders\PaymentStatus::PAID)
                                         <td class="text-success"><i class="ri-checkbox-circle-line fs-17 align-middle"></i>
                                             {{ ucfirst($order->payment_status->value) }}

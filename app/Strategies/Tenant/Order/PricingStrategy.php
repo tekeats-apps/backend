@@ -24,7 +24,7 @@ class PricingStrategy implements PricingStrategyMethods
     protected function getProductPrice(int $productId): float
     {
         $product = Product::find($productId);
-        $price = $product->price;
+        $price = $product->discounted_price;
         return $price;
     }
 
@@ -64,10 +64,9 @@ class PricingStrategy implements PricingStrategyMethods
                 $extrasPrice += $this->getExtraPrice($extraId);
             }
         }
-
+        $price = $this->calculateItemPrice($item['product_id']);
         $total = $subtotal + $extrasPrice;
-
-        return ['subtotal' => $subtotal, 'total' => $total];
+        return ['price' => $price, 'subtotal' => $subtotal, 'total' => $total];
     }
 
     /**

@@ -41,6 +41,7 @@ class OrderService
             foreach ($orderData['items'] as $item) {
                 $itemPrices = $this->pricingStrategy->calculateItemSubtotalAndTotal($item);
 
+                $item['price'] = $itemPrices['price'];
                 $item['subtotal'] = $itemPrices['subtotal'];
                 $item['total'] = $itemPrices['total'];
 
