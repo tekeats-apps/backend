@@ -18,7 +18,7 @@
                     </div>
                 </div>
 
-
+                {{--
                 <div class="row">
                     <div class="col-xl-3 col-md-6">
                         <!-- card -->
@@ -140,29 +140,31 @@
                             </div><!-- end card body -->
                         </div><!-- end card -->
                     </div><!-- end col -->
-                </div> <!-- end row-->
+                </div> <!-- end row--> --}}
 
                 <div class="row">
                     <div class="col-xl-4">
                         <div class="card">
                             <div class="card-body p-0">
-                                <div class="alert alert-warning border-0 rounded-top rounded-0 m-0 d-flex align-items-center"
-                                    role="alert">
-                                    <i data-feather="alert-triangle" class="text-warning me-2 icon-sm"></i>
-                                    <div class="flex-grow-1 text-truncate">
-                                        Your free trial expired in <b>17</b> days.
+                                @if ($subscription['free_trail'])
+                                    <div class="alert alert-warning border-0 rounded-top rounded-0 m-0 d-flex align-items-center"
+                                        role="alert">
+                                        <i data-feather="alert-triangle" class="text-warning me-2 icon-sm"></i>
+                                        <div class="flex-grow-1 text-truncate">
+                                            Your free trial will expire in <b>{{ $subscription['trial_period'] }}</b>
+                                            {{ $subscription['trial_interval'] }}.
+                                        </div>
+                                        <div class="flex-shrink-0">
+                                            <a href="pages-pricing"
+                                                class="text-reset text-decoration-underline"><b>Upgrade</b></a>
+                                        </div>
                                     </div>
-                                    <div class="flex-shrink-0">
-                                        <a href="pages-pricing"
-                                            class="text-reset text-decoration-underline"><b>Upgrade</b></a>
-                                    </div>
-                                </div>
-
+                                @endif
                                 <div class="row align-items-end">
                                     <div class="col-sm-8">
                                         <div class="p-3">
-                                            <p class="fs-16 lh-base">Upgrade your plan from a <span class="fw-semibold">Free
-                                                    trial</span>, to ‘Premium Plan’ <i class="mdi mdi-arrow-right"></i></p>
+                                            <p class="fs-16 lh-base">Upgrade your plan from <span class="fw-semibold">Free
+                                                    trial</span> Other Plan <i class="mdi mdi-arrow-right"></i></p>
                                             <div class="mt-3">
                                                 <a href="pages-pricing" class="btn btn-success">Upgrade Account!</a>
                                             </div>
@@ -178,59 +180,6 @@
                             </div> <!-- end card-body-->
                         </div>
                     </div> <!-- end col-->
-                    <div class="col-xxl-4 col-xl-6">
-                        <div class="card card-height-100">
-                            <div class="card-header align-items-center d-flex">
-                                <h4 class="card-title mb-0 flex-grow-1">Live Users By Country</h4>
-                                <div class="flex-shrink-0">
-                                    <button type="button" class="btn btn-soft-primary btn-sm">
-                                        Export Report
-                                    </button>
-                                </div>
-                            </div><!-- end card header -->
-
-                            <!-- card body -->
-                            <div class="card-body">
-
-                                <div id="users-by-country" data-colors='["--vz-light"]' style="height: 252px"></div>
-
-                                <div class="table-responsive table-card mt-3">
-                                    <table class="table table-borderless table-sm table-centered align-middle table-nowrap mb-1">
-                                        <thead class="text-muted border-dashed border border-start-0 border-end-0 bg-soft-light">
-                                            <tr>
-                                                <th>Duration (Secs)</th>
-                                                <th style="width: 30%;">Sessions</th>
-                                                <th style="width: 30%;">Views</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="border-0">
-                                            <tr>
-                                                <td>0-30</td>
-                                                <td>2,250</td>
-                                                <td>4,250</td>
-                                            </tr>
-                                            <tr>
-                                                <td>31-60</td>
-                                                <td>1,501</td>
-                                                <td>2,050</td>
-                                            </tr>
-                                            <tr>
-                                                <td>61-120</td>
-                                                <td>750</td>
-                                                <td>1,600</td>
-                                            </tr>
-                                            <tr>
-                                                <td>121-240</td>
-                                                <td>540</td>
-                                                <td>1,040</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!-- end card body -->
-                        </div><!-- end card -->
-                    </div><!-- end col -->
                 </div>
             </div>
 
