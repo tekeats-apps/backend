@@ -99,10 +99,6 @@
                                     <td><a href="#" class="fw-semibold">{{ strtoupper($order->order_id) }}</a></td>
                                     <td>
                                         <div class="d-flex gap-2 align-items-center">
-                                            <div class="flex-shrink-0">
-                                                <img src="{{ URL::asset('assets/images/users/avatar-3.jpg') }}"
-                                                    alt="" class="avatar-xs rounded-circle" />
-                                            </div>
                                             <div class="flex-grow-1">
                                                 {{ $order->customer->full_name }}
                                             </div>
@@ -133,10 +129,9 @@
                                             <i class="ri-more-fill align-middle"></i>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><button class="dropdown-item" href="javascript:void(0);"
-                                                    onclick="ViewInvoice(this);" data-id="` + raw.invoice_no + `"><i
+                                            <li><a class="dropdown-item" href="{{ route('vendor.order.detail', $order->id) }}"><i
                                                         class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                    View</button></li>
+                                                    View</a></li>
                                         </ul>
                                     </td>
                                 </tr>

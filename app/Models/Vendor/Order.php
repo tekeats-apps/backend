@@ -79,6 +79,20 @@ class Order extends Model
         });
     }
 
+    public function getStatusTextAttribute()
+    {
+        return match ($this->status) {
+            OrderStatus::PENDING => 'Pending',
+            OrderStatus::PREPARING => 'Preparing',
+            OrderStatus::ASSIGNED_TO_DRIVER => 'Assigned to Driver',
+            OrderStatus::RIDER_PICKED_UP => 'Rider Picked Up',
+            OrderStatus::COMPLETED => 'Completed',
+            OrderStatus::RETURNED => 'Returned',
+            OrderStatus::CANCELLED => 'Cancelled',
+            default => 'Unknown Status',
+        };
+    }
+
     public function scopeGetOrdersList($query, $search, $status, $paymentStatus, $startDate, $endDate, $sortField, $sortDirection)
     {
         $query = $query->with('customer');

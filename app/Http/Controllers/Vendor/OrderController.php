@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Vendor;
 
-use App\Http\Controllers\Controller;
+use App\Models\Vendor\Order;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
@@ -12,8 +13,8 @@ class OrderController extends Controller
         return view('vendor.modules.orders.index');
     }
 
-    public function create()
+    public function detail($order_id)
     {
-        return view('vendor.modules.orders.create');
+        return view('vendor.modules.orders.detail', compact('order_id'));
     }
 }

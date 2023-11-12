@@ -24,4 +24,9 @@ class OrderItem extends Model
     protected $casts = [
         'extras' => 'array',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

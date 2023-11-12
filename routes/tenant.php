@@ -173,6 +173,7 @@ Route::middleware([
                 ->as('vendor.order.')
                 ->group(function () {
                     Route::get('/',  'index')->name('list');
+                    Route::get('/detail/{id}',  'detail')->name('detail');
                 });
 
             // Coupon Routes Group
