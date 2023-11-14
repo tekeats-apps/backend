@@ -137,22 +137,6 @@
                             <h6 class="mb-0">{{ $order->payment_method }}</h6>
                         </div>
                     </div>
-                    {{-- <div class="d-flex align-items-center mb-2">
-                        <div class="flex-shrink-0">
-                            <p class="text-muted mb-0">Card Holder Name:</p>
-                        </div>
-                        <div class="flex-grow-1 ms-2">
-                            <h6 class="mb-0">Joseph Parker</h6>
-                        </div>
-                    </div> --}}
-                    {{-- <div class="d-flex align-items-center mb-2">
-                        <div class="flex-shrink-0">
-                            <p class="text-muted mb-0">Card Number:</p>
-                        </div>
-                        <div class="flex-grow-1 ms-2">
-                            <h6 class="mb-0">xxxx xxxx xxxx 2456</h6>
-                        </div>
-                    </div> --}}
                 </div>
             </div>
 
