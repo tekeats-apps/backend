@@ -123,7 +123,6 @@
             `;
                     break;
 
-                case 'rider_picked_up':
                 case 'delivered':
                     modalContent = `
                 <h4>Mark as Delivered</h4>
@@ -131,6 +130,17 @@
                 <div class="hstack gap-2 justify-content-center">
                     <button class="btn btn-link" data-bs-dismiss="modal">Cancel</button>
                     <button class="btn btn-soft-success" onclick="updateOrderStatus('delivered')">Mark as Delivered</button>
+                </div>
+            `;
+                    break;
+
+                case 'cancelled':
+                    modalContent = `
+                <h4>Mark as Cancelled</h4>
+                <p>Has the order been cancelled?</p>
+                <div class="hstack gap-2 justify-content-center">
+                    <button class="btn btn-link" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-soft-danger" onclick="updateOrderStatus('cancelled')">Mark as Cancelled</button>
                 </div>
             `;
                     break;
