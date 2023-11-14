@@ -48,10 +48,9 @@ Route::middleware([
                     ->prefix('address')
                     ->group(function () {
                         Route::post('/store', 'storeAddress');
-                        // Route::get('/list', 'getAddresses');
-                        // Route::get('/edit/{id}', 'editAdress');
-                        // Route::put('/update/{id}', 'updateAdress');
-                        // Route::delete('/delete/{id}', 'destroyAdress');
+                        Route::get('/list', 'getCustomerAddresses');
+                        Route::put('/update/{id}', 'updateAddress');
+                        Route::delete('/delete/{id}', 'deleteAddress');
                     });
             });
 

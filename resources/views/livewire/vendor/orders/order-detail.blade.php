@@ -142,7 +142,7 @@
 
             @livewire('vendor.orders.order-status-updater', ['order' => $order])
 
-            @if ($order->order_type === App\Enums\Vendor\Orders\OrderType::DELIVERY)
+            @if ($order->order_type == App\Enums\Vendor\Orders\OrderType::DELIVERY)
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex">
@@ -164,7 +164,7 @@
                 </div><!--end card-->
             @endif
 
-            @if ($order->order_type === App\Enums\Vendor\Orders\OrderType::DELIVERY)
+            @if ($order->order_type == App\Enums\Vendor\Orders\OrderType::DELIVERY)
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0"><i class="ri-map-pin-line align-middle me-1 text-muted"></i>
