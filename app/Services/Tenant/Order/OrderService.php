@@ -6,6 +6,8 @@ use Exception;
 use App\Models\Vendor\Customer;
 use App\Enums\Vendor\Orders\OrderType;
 use App\Factories\Tenant\OrderFactory;
+use App\Enums\Vendor\Orders\OrderStatus;
+use App\Models\Vendor\OrderStatusHistory;
 use App\Enums\Vendor\Orders\PaymentStatus;
 use App\Exceptions\CustomerNotFoundException;
 use App\Strategies\Tenant\Order\PricingStrategy;
@@ -56,6 +58,8 @@ class OrderService
             // Business logic for placing an order
             $order = $this->orderRepository->create($orderData);
 
+            $this->createOrderStatusHistory($order, OrderStatus::PENDING);
+
             foreach ($modifiedItems as $item) {
                 $this->orderItemRepository->create($item + ['order_id' => $order->id]);
             }
@@ -76,5 +80,14 @@ class OrderService
         } catch (Exception $e) {
             throw $e;
         }
+    }
+
+    // New method to record order status history
+    protected function createOrderStatusHistory($order, $status)
+    {
+        OrderStatusHistory::create([
+            'order_id' => $order->id,
+            'status' => $status,
+        ]);
     }
 }

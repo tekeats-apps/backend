@@ -2,12 +2,13 @@
 
 namespace App\Models\Vendor;
 
-use App\Enums\Vendor\Orders\OrderPaymentMethod;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use App\Enums\Vendor\Orders\OrderType;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\Vendor\Orders\OrderStatus;
 use App\Enums\Vendor\Orders\PaymentStatus;
+use App\Enums\Vendor\Orders\OrderPaymentMethod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
@@ -36,6 +37,7 @@ class Order extends Model
 
     protected $casts = [
         'status' => OrderStatus::class,
+        'order_type' => OrderType::class,
         'payment_method' => OrderPaymentMethod::class,
         'payment_status' => PaymentStatus::class
     ];
@@ -84,7 +86,7 @@ class Order extends Model
         return match ($this->status) {
             OrderStatus::PENDING => 'Pending',
             OrderStatus::ACCEPTED => 'Accepted',
-            OrderStatus::READY => 'Ready for Pickup',
+            OrderStatus::READY => 'Order is Ready',
             OrderStatus::ASSIGNED_TO_DRIVER => 'Assigned to Driver',
             OrderStatus::RIDER_PICKED_UP => 'Rider Picked Up',
             OrderStatus::DELIVERED => 'Delivered',

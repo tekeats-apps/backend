@@ -115,20 +115,28 @@
                     </ul>
                 </div>
             </div>
-            <div class="card">
+            @if ($order->order_type == App\Enums\Vendor\Orders\OrderType::DELIVERY)
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0"><i class="ri-map-pin-line align-middle me-1 text-muted"></i>
+                            Delivery
+                            Address</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled vstack gap-2 fs-13 mb-0">
+                            <li class="fs-14"><strong>Address: </strong> {{ $order->address->address_line1 }}</li>
+                            <li class="fs-14"><strong>City: </strong>{{ $order->address->city }}</li>
+                            <li class="fs-14"><strong>Country: </strong>{{ $order->address->country }}</li>
+                        </ul>
+                    </div>
+                </div><!--end card-->
+            @endif
+            {{-- <div class="card">
                 <div class="card-header">
                     <h5 class="card-title mb-0"><i class="ri-secure-payment-line align-bottom me-1 text-muted"></i>
                         Payment Details</h5>
                 </div>
                 <div class="card-body">
-                    {{-- <div class="d-flex align-items-center mb-2">
-                        <div class="flex-shrink-0">
-                            <p class="text-muted mb-0">Transactions:</p>
-                        </div>
-                        <div class="flex-grow-1 ms-2">
-                            <h6 class="mb-0">#VLZ124561278124</h6>
-                        </div>
-                    </div> --}}
                     <div class="d-flex align-items-center mb-2">
                         <div class="flex-shrink-0">
                             <p class="text-muted mb-0">Payment Method:</p>
@@ -138,11 +146,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             @livewire('vendor.orders.order-status-updater', ['order' => $order])
 
-            @if ($order->order_type == App\Enums\Vendor\Orders\OrderType::DELIVERY)
+            {{-- @if ($order->order_type == App\Enums\Vendor\Orders\OrderType::DELIVERY)
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex">
@@ -161,27 +169,10 @@
                             <p class="text-muted mb-0">Phone Number : +122939239329</p>
                         </div>
                     </div>
-                </div><!--end card-->
-            @endif
+                </div>
+            @endif --}}
 
-            @if ($order->order_type == App\Enums\Vendor\Orders\OrderType::DELIVERY)
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0"><i class="ri-map-pin-line align-middle me-1 text-muted"></i>
-                            Delivery
-                            Address</h5>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled vstack gap-2 fs-13 mb-0">
-                            <li class="fw-medium fs-14">Joseph Parker</li>
-                            <li>+(256) 245451 451</li>
-                            <li>2186 Joyce Street Rocky Mount</li>
-                            <li>California - 24567</li>
-                            <li>United States</li>
-                        </ul>
-                    </div>
-                </div><!--end card-->
-            @endif
+
 
         </div><!--end col-->
     </div><!--end row-->
