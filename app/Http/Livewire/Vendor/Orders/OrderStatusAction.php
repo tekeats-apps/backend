@@ -3,24 +3,17 @@
 namespace App\Http\Livewire\Vendor\Orders;
 
 use Livewire\Component;
-use App\Models\Vendor\OrderStatusHistory;
+use App\Models\Vendor\OrderStatusHistory as OrderStatus;
 
-class OrderStatusUpdater extends Component
+class OrderStatusAction extends Component
 {
     public $order;
     public $status;
-    public $orderStatusHistory;
 
     public function mount($order)
     {
         $this->order = $order;
         $this->status = $order->status;
-        $this->getOrderHistory();
-    }
-
-    public function render()
-    {
-        return view('livewire.vendor.orders.order-status-updater');
     }
 
     public function updateOrderStatus($newStatus)
@@ -30,17 +23,16 @@ class OrderStatusUpdater extends Component
             $this->order->status = $newStatus;
             $this->order->save();
 
-            // Create a new OrderStatusHistory record
-            OrderStatusHistory::create([
+            // Create a new OrderStatus record
+            OrderStatus::create([
                 'order_id' => $this->order->id,
                 'status' => $newStatus,
             ]);
-            $this->getOrderHistory();
         }
     }
 
-    protected function getOrderHistory()
+    public function render()
     {
-        $this->orderStatusHistory = OrderStatusHistory::ofOrder($this->order->id)->get();
+        return view('livewire.vendor.orders.order-status-action');
     }
 }

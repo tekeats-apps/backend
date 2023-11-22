@@ -33,6 +33,7 @@ class Order extends Model
 
     protected $dates = [
         'delivered_at',
+        'created_at'
     ];
 
     protected $casts = [
@@ -95,6 +96,56 @@ class Order extends Model
             default => 'Unknown Status',
         };
     }
+
+    public function getOrderTypeTextAttribute()
+    {
+        return match ($this->order_type) {
+            OrderType::DINE_IN => 'Dine In',
+            OrderType::TAKE_AWAY => 'Take Away',
+            OrderType::DELIVERY => 'Delivery',
+            default => 'Unknown Type',
+        };
+    }
+
+    public function getPaymentMethodTextAttribute()
+    {
+        return match ($this->payment_method) {
+            OrderPaymentMethod::CARD => 'Card',
+            OrderPaymentMethod::CASH => 'Cash',
+            default => 'Unknown Type',
+        };
+    }
+
+    public function canBeAccepted()
+    {
+        return $this->status == OrderStatus::PENDING;
+    }
+
+    public function canBeCancelled()
+    {
+        return in_array($this->status, [OrderStatus::PENDING, OrderStatus::ACCEPTED]);
+    }
+
+    public function canBeMarkedAsReady()
+    {
+        return $this->status == OrderStatus::ACCEPTED;
+    }
+
+    public function canBeAssignedToDriver()
+    {
+        return $this->status == OrderStatus::READY && $this->order_type == OrderType::DELIVERY;
+    }
+
+    public function canBeMarkedAsDelivered()
+    {
+        return $this->status == OrderStatus::READY && $this->order_type != OrderType::DELIVERY;
+    }
+
+    public function canBePickedUpByRider()
+    {
+        return $this->status == OrderStatus::ASSIGNED_TO_DRIVER && $this->order_type == OrderType::DELIVERY;
+    }
+
 
     public function statusHistory()
     {
