@@ -28,6 +28,8 @@ class OrderStatusAction extends Component
                 'order_id' => $this->order->id,
                 'status' => $newStatus,
             ]);
+            // Dispatch Livewire event to refresh OrderStatusHistory component
+            $this->emit('orderStatusUpdated');
         }
     }
 

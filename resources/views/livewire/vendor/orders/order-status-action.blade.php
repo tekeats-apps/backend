@@ -2,36 +2,69 @@
     <div class="flex-shrink-0 mt-2 mt-sm-0">
         @if ($order->canBeAccepted())
             <!-- Display Accept button -->
-            <button onclick="showModal('{{ \App\Enums\Vendor\Orders\OrderStatus::PENDING }}')"
-                class="btn btn-soft-success btn-sm mt-2 mt-sm-0"><i
-                    class="ri-check-double-fill align-middle me-1"></i>Accept Order</button>
+            <button type="button" class="btn btn-success btn-load"
+                onclick="showModal('{{ \App\Enums\Vendor\Orders\OrderStatus::PENDING }}')">
+                <span class="d-flex align-items-center">
+                    <i class="ri-check-double-fill align-middle me-1"></i>
+                    <span class="flex-grow-1 ms-2">
+                        Accept
+                        Order
+                    </span>
+                </span>
+            </button>
         @endif
 
         @if ($order->canBeMarkedAsReady())
             <!-- Display Mark as Ready button -->
-            <button onclick="showModal('{{ \App\Enums\Vendor\Orders\OrderStatus::ACCEPTED }}')"
-                class="btn btn-soft-primary btn-sm">Mark as Ready</button>
+            <button type="button" class="btn btn-primary btn-load"
+                onclick="showModal('{{ \App\Enums\Vendor\Orders\OrderStatus::ACCEPTED }}')">
+                <span class="d-flex align-items-center">
+                    <i class="ri-check-double-fill align-middle me-1"></i>
+                    <span class="flex-grow-1 ms-2">
+                        Mark as Ready
+                    </span>
+                </span>
+            </button>
         @endif
 
         @if ($order->canBeAssignedToDriver())
             <!-- Display Assign to Driver button -->
-            <button onclick="showModal('{{ \App\Enums\Vendor\Orders\OrderStatus::ASSIGNED_TO_DRIVER }}')"
-                class="btn btn-soft-warning btn-sm mt-2 mt-sm-0"><i class="ri-truck-line align-middle me-1"></i> Assign to
-                Driver</button>
+            <button type="button" class="btn btn-warning btn-load"
+                onclick="showModal('{{ \App\Enums\Vendor\Orders\OrderStatus::ASSIGNED_TO_DRIVER }}')">
+                <span class="d-flex align-items-center">
+                    <i class="ri-check-double-fill align-middle me-1"></i>
+                    <span class="flex-grow-1 ms-2">
+                        Assign to
+                        Driver
+                    </span>
+                </span>
+            </button>
         @endif
 
         @if ($order->canBeMarkedAsDelivered())
             <!-- Display Mark as Delivered button -->
-            <button onclick="showModal('{{ \App\Enums\Vendor\Orders\OrderStatus::DELIVERED }}')"
-                class="btn btn-soft-success btn-sm mt-2 mt-sm-0"><i class="ri-check-double-fill align-middle me-1"></i>
-                Mark as Delivered</button>
+            <button type="button" class="btn btn-success btn-load"
+                onclick="showModal('{{ \App\Enums\Vendor\Orders\OrderStatus::DELIVERED }}')">
+                <span class="d-flex align-items-center">
+                    <i class="ri-check-double-fill align-middle me-1"></i>
+                    <span class="flex-grow-1 ms-2">
+                        Mark as Delivered
+                    </span>
+                </span>
+            </button>
         @endif
 
         @if ($order->canBeCancelled())
             <!-- Display Cancel button -->
-            <button onclick="showModal('{{ \App\Enums\Vendor\Orders\OrderStatus::CANCELLED }}')"
-                class="btn btn-soft-danger btn-sm mt-2 mt-sm-0"><i
-                    class="mdi mdi-archive-remove-outline align-middle me-1"></i> Cancel Order</button>
+            <button type="button" class="btn btn-danger btn-load"
+                onclick="showModal('{{ \App\Enums\Vendor\Orders\OrderStatus::CANCELLED }}')">
+                <span class="d-flex align-items-center">
+                    <i class="mdi mdi-archive-remove-outline align-middle me-1"></i>
+                    <span class="flex-grow-1 ms-2">
+                        Cancel Order
+                    </span>
+                </span>
+            </button>
         @endif
     </div>
     <div class="modal fade" id="statusUpdateModal" tabindex="-1" aria-hidden="true">
@@ -47,16 +80,15 @@
     <script>
         function showModal(status) {
             let modalContent = '';
-
+            // <button class="btn btn-link" data-bs-dismiss="modal">Cancel</button>
             switch (status) {
                 case 'pending':
                     modalContent = `
                 <h4>Accept Order</h4>
                 <p>Are you sure you want to accept this order?</p>
                 <div class="hstack gap-2 justify-content-center">
-                    <button class="btn btn-link" data-bs-dismiss="modal">Cancel</button>
-                    <button class="btn btn-soft-success" onclick="updateOrderStatus('accepted')">Accept Order</button>
-                    <button class="btn btn-soft-danger" onclick="updateOrderStatus('cancelled')">Cancel Order</button>
+                    <button class="btn btn-success" onclick="updateOrderStatus('accepted')">Accept Order</button>
+                    <button class="btn btn-danger" onclick="updateOrderStatus('cancelled')">Cancel Order</button>
                 </div>
             `;
                     break;
@@ -66,9 +98,8 @@
                 <h4>Mark Order as Ready</h4>
                 <p>Is the order ready for pickup?</p>
                 <div class="hstack gap-2 justify-content-center">
-                    <button class="btn btn-link" data-bs-dismiss="modal">Cancel</button>
-                    <button class="btn btn-soft-primary" onclick="updateOrderStatus('ready')">Mark as Ready</button>
-                    <button class="btn btn-soft-danger" onclick="updateOrderStatus('cancelled')">Cancel Order</button>
+                    <button class="btn btn-primary" onclick="updateOrderStatus('ready')">Mark as Ready</button>
+                    <button class="btn btn-danger" onclick="updateOrderStatus('cancelled')">Cancel Order</button>
                 </div>
             `;
                     break;
@@ -78,8 +109,7 @@
                 <h4>Assign to Driver</h4>
                 <p>Assign this order to a driver for delivery?</p>
                 <div class="hstack gap-2 justify-content-center">
-                    <button class="btn btn-link" data-bs-dismiss="modal">Cancel</button>
-                    <button class="btn btn-soft-warning" onclick="updateOrderStatus('assigned_to_driver')">Assign to Driver</button>
+                    <button class="btn btn-warning" onclick="updateOrderStatus('assigned_to_driver')">Assign to Driver</button>
                 </div>Status
             `;
                     break;
@@ -89,8 +119,7 @@
                 <h4>Mark as Delivered</h4>
                 <p>Has the order been delivered?</p>
                 <div class="hstack gap-2 justify-content-center">
-                    <button class="btn btn-link" data-bs-dismiss="modal">Cancel</button>
-                    <button class="btn btn-soft-success" onclick="updateOrderStatus('delivered')">Mark as Delivered</button>
+                    <button class="btn btn-success" onclick="updateOrderStatus('delivered')">Mark as Delivered</button>
                 </div>
             `;
                     break;
@@ -100,8 +129,7 @@
                 <h4>Mark as Cancelled</h4>
                 <p>Has the order been cancelled?</p>
                 <div class="hstack gap-2 justify-content-center">
-                    <button class="btn btn-link" data-bs-dismiss="modal">Cancel</button>
-                    <button class="btn btn-soft-danger" onclick="updateOrderStatus('cancelled')">Mark as Cancelled</button>
+                    <button class="btn btn-danger" onclick="updateOrderStatus('cancelled')">Mark as Cancelled</button>
                 </div>
             `;
                     break;

@@ -1,8 +1,13 @@
 <div>
     <div class="card">
         <div class="card-header">
-            <div class="d-sm-flex align-items-center">
+            <div class="d-flex">
                 <h5 class="card-title flex-grow-1 mb-0">Order Status</h5>
+                <div class="flex-shrink-0">
+                    <div wire:loading class="spinner-grow text-success" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-body">
@@ -42,4 +47,3 @@
         </div>
     </div>
 </div>
-

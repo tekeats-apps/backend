@@ -82,7 +82,7 @@
                             <th class="sort text-uppercase" scope="col">Payment Status</th>
                             <th class="sort text-uppercase" scope="col">Status</th>
                             <th class="sort text-uppercase" scope="col" wire:click="sortBy('created_at')">Date</th>
-                            <th class="text-uppercase" scope="col">Action</th>
+                            <th class="text-uppercase" scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,7 +96,8 @@
                                             <label class="form-check-label" for="responsivetableCheck01"></label>
                                         </div>
                                     </th>
-                                    <td><a href="#" class="fw-semibold">{{ strtoupper($order->order_id) }}</a></td>
+                                    <td><a href="{{ route('vendor.order.detail', $order->id) }}"
+                                            class="fw-semibold">{{ strtoupper($order->order_id) }}</a></td>
                                     <td>
                                         <div class="d-flex gap-2 align-items-center">
                                             <div class="flex-grow-1">
@@ -124,7 +125,7 @@
                                         {{ ucfirst($order->status->value) }}</td>
                                     <td>{{ $order->created_at }}</td>
                                     <td>
-                                        <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
+                                        {{-- <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
                                             data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="ri-more-fill align-middle"></i>
                                         </button>
@@ -132,7 +133,8 @@
                                             <li><a class="dropdown-item" href="{{ route('vendor.order.detail', $order->id) }}"><i
                                                         class="ri-eye-fill align-bottom me-2 text-muted"></i>
                                                     View</a></li>
-                                        </ul>
+                                        </ul> --}}
+                                        @livewire('vendor.orders.order-status-action', ['order' => $order])
                                     </td>
                                 </tr>
                             @endforeach

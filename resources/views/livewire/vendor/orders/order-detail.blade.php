@@ -4,21 +4,10 @@
             <div class="card-header">
                 <div class="d-flex">
                     <h5 class="card-title flex-grow-1 mb-0"> {{ $order->order_id }}</h5>
-                    @php
-                        $statusBadges = [
-                            'pending' => 'bg-primary',
-                            'accepted' => 'bg-success',
-                            'ready' => 'bg-info',
-                            'delivered' => 'bg-warning',
-                            'cancelled' => 'bg-danger',
-                            'dark' => 'bg-dark',
-                            'light' => 'bg-light text-body',
-                        ];
-                    @endphp
                     <div class="flex-shrink-0">
                         {{-- <span style="font-size: 16px"
                             class="badge {{ $statusBadges[$order->status->value] ?? 'bg-secondary' }}">{{ $order->status->name }}</span> --}}
-                            @livewire('vendor.orders.order-status-action', ['order' => $order])
+                        @livewire('vendor.orders.order-status-action', ['order' => $order])
                     </div>
                 </div>
             </div>
@@ -64,9 +53,26 @@
                 <div class="col-xl-6">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title mb-0"><i
-                                    class="ri-secure-payment-line align-bottom me-1 text-muted"></i>
-                                Basic Details</h5>
+                            <div class="d-flex">
+                                <h5 class="card-title flex-grow-1 mb-0"><i
+                                        class="ri-secure-payment-line align-bottom me-1 text-muted"></i>
+                                    Basic Details</h5>
+                                <div class="flex-shrink-0">
+                                    @php
+                                        $statusBadges = [
+                                            'pending' => 'bg-primary',
+                                            'accepted' => 'bg-success',
+                                            'ready' => 'bg-info',
+                                            'delivered' => 'bg-warning',
+                                            'cancelled' => 'bg-danger',
+                                            'dark' => 'bg-dark',
+                                            'light' => 'bg-light text-body',
+                                        ];
+                                    @endphp
+                                    <span style="font-size: 16px"
+                                        class="badge {{ $statusBadges[$order->status->value] ?? 'bg-secondary' }}">{{ $order->status->name }}</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="d-flex align-items-center mb-2">
