@@ -200,9 +200,9 @@
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled vstack gap-2 fs-13 mb-0">
-                            <li class="fs-14"><strong>Address: </strong> {{ $order->address->address_line1 }}</li>
-                            <li class="fs-14"><strong>City: </strong>{{ $order->address->city }}</li>
-                            <li class="fs-14"><strong>Country: </strong>{{ $order->address->country }}</li>
+                            <li class="fs-14"><strong>Address: </strong> {{ $order->address->address_line1 ?? '' }}</li>
+                            <li class="fs-14"><strong>City: </strong>{{ $order->address->city ?? '' }}</li>
+                            <li class="fs-14"><strong>Country: </strong>{{ $order->address->country ?? '' }}</li>
                         </ul>
                     </div>
                 </div><!--end card-->
