@@ -71,6 +71,7 @@ Route::middleware([
             ->prefix('product')
             ->group(function () {
                 Route::get('/list', 'getList');
+                Route::get('/detail/{productId}', 'getProductDetails');
             });
 
         Route::controller(OrderController::class)

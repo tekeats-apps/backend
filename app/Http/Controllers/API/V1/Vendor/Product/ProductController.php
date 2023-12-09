@@ -31,7 +31,7 @@ class ProductController extends Controller
 
             $relations = [
                 'category' => ['categories.id', 'categories.name'],
-                'tags' => ['tags.id', 'tags.name'],
+                // 'tags' => ['tags.id', 'tags.name'],
             ];
             $products = Product::getAllActiveProducts(
                 [
@@ -56,6 +56,47 @@ class ProductController extends Controller
             return $this->successResponse($products, "Products fetched successfully.", Response::HTTP_OK);
         } catch (Exception $e) {
             return $this->exceptionResponse($e, "Failed to fetch products.");
+        }
+    }
+
+    /**
+     * Get Product Details
+     *
+     * Get details of a specific product by ID
+     */
+    public function getProductDetails($productId)
+    {
+        try {
+
+
+            $relations = [
+                'category' => ['categories.id', 'categories.name'],
+                'tags' => ['tags.id', 'tags.name'],
+                'variants' => ['variants.id', 'variants.name', 'variants.price', 'variants.status'],
+                'extras' => ['extras.id', 'extras.name', 'extras.price', 'extras.status'],
+            ];
+            $product = Product::getProductById($productId, [
+                'id',
+                'price',
+                'name',
+                'featured',
+                'category_id',
+                'image',
+                'discount_enabled',
+                'discount',
+                'is_extras_enabled',
+                'is_variants_enabled',
+                'prepration_time'
+            ], $relations)->first();
+
+
+            if (!$product instanceof Product) {
+                return $this->errorResponse("Product not found.", Response::HTTP_NOT_FOUND);
+            }
+
+            return $this->successResponse($product, "Product details fetched successfully.", Response::HTTP_OK);
+        } catch (Exception $e) {
+            return $this->exceptionResponse($e, "Failed to fetch product details.");
         }
     }
 }

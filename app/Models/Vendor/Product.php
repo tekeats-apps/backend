@@ -120,6 +120,18 @@ class Product extends Model
         return $query->select($fields)->orderBy($sortField, $sortDirection);
     }
 
+    public function scopeGetProductById($query, $productId, $fields = ['*'], $relations = [])
+    {
+        $query->where('id', $productId);
+
+        foreach ($relations as $relation => $relationFields) {
+            $query->with([$relation => function ($query) use ($relationFields) {
+                $query->select($relationFields)->where('status', 1);
+            }]);
+        }
+
+        return $query->select($fields);
+    }
 
     public function scopeUpdateProduct($query, $id, array $validatedData)
     {
