@@ -59,13 +59,13 @@ class Category extends Model
         }
         return $query->orderBy($sortField, $sortDirection);
     }
-    public function scopeGetAllActiveCategories($query, $sortField = 'id', $sortDirection = 'desc', $status = 1)
+    public function scopeGetAllActiveCategories($query, $fields = ['*'],$sortField = 'id', $sortDirection = 'desc', $status = 1)
     {
         if (!empty($status)) {
             $query->where('status', $status);
         }
 
-        return $query->orderBy($sortField, $sortDirection);
+        return $query->select($fields)->orderBy($sortField, $sortDirection);
     }
     public function scopeStoreCategory($query, $data)
     {

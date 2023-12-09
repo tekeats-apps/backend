@@ -51,6 +51,8 @@ Route::middleware([
                         Route::get('/list', 'getCustomerAddresses');
                         Route::put('/update/{id}', 'updateAddress');
                         Route::delete('/delete/{id}', 'deleteAddress');
+
+                        Route::put('/set-default/{id}', 'setDefaultAddress');
                     });
             });
 
@@ -69,6 +71,7 @@ Route::middleware([
             ->prefix('product')
             ->group(function () {
                 Route::get('/list', 'getList');
+                Route::get('/detail/{productId}', 'getProductDetails');
             });
 
         Route::controller(OrderController::class)

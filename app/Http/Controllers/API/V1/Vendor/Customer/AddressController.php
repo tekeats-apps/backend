@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\API\V1\Vendor\Customer;
 
 use App\Traits\ApiResponse;
-use App\Models\Vendor\Address;
 use Illuminate\Http\Request;
+use App\Models\Vendor\Address;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Vendor\Customers\API\Address\StoreAddressRequest;
+use App\Http\Requests\Vendor\Customers\API\Address\UpdateAddressRequest;
 
 /**
  * @tags Customer
@@ -33,6 +34,39 @@ class AddressController extends Controller
             return $this->exceptionResponse($e, "Failed to save address.");
         }
     }
+
+    /**
+     * Set Default Address
+     *
+     * 🚀 This endpoint allows customers to set a default address.
+     */
+    public function setDefaultAddress(Request $request, $addressId)
+    {
+        // Get the authenticated user's ID
+        $customerId = $request->user()->id;
+
+        try {
+            $address = Address::find($addressId);
+
+            if (!$address instanceof Address) {
+                return $this->errorResponse("Address not found.", Response::HTTP_BAD_REQUEST);
+            }
+
+            // Check if the address belongs to the authenticated customer
+            if ($address->customer_id !== $customerId) {
+                return $this->errorResponse("Unauthorized to set default for this address.", Response::HTTP_UNAUTHORIZED);
+            }
+
+            // Set the address as default for the customer
+            Address::where('customer_id', $customerId)->update(['is_default' => false]); // Set all addresses as non-default
+            $address->update(['is_default' => true]); // Set the selected address as default
+
+            return $this->successResponse($address, "Default address set successfully.");
+        } catch (\Exception $e) {
+            return $this->exceptionResponse($e, "Failed to set default address.");
+        }
+    }
+
 
     /**
      * Get Customer Addresses
@@ -90,7 +124,11 @@ class AddressController extends Controller
         $customerId = $request->user()->id;
 
         try {
-            $address = Address::findOrFail($addressId);
+            $address = Address::find($addressId);
+
+            if (!$address instanceof Address) {
+                return $this->errorResponse("Address not found.", Response::HTTP_BAD_REQUEST);
+            }
 
             // Check if the address belongs to the authenticated customer
             if ($address->customer_id !== $customerId) {
