@@ -51,6 +51,8 @@ Route::middleware([
                         Route::get('/list', 'getCustomerAddresses');
                         Route::put('/update/{id}', 'updateAddress');
                         Route::delete('/delete/{id}', 'deleteAddress');
+
+                        Route::put('/set-default/{id}', 'setDefaultAddress');
                     });
             });
 

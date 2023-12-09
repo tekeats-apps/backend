@@ -87,7 +87,6 @@ class CustomerController extends Controller
     {
         try {
             $user = $request->user(); // Get the authenticated user.
-
             return $this->successResponse($user, "Profile fetched successfully.", Response::HTTP_OK);
         } catch (\Exception $e) {
             return $this->exceptionResponse($e, "Failed to fetch profile.");

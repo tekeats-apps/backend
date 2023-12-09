@@ -105,6 +105,22 @@ class Product extends Model
         return $query->orderBy($sortField, $sortDirection);
     }
 
+    public function scopeGetAllActiveProducts($query, $fields = ['*'], $sortField = 'id', $sortDirection = 'desc', $status = 1, $relations = [])
+    {
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+
+        foreach ($relations as $relation => $relationFields) {
+            $query->with([$relation => function ($query) use ($relationFields) {
+                $query->select($relationFields);
+            }]);
+        }
+
+        return $query->select($fields)->orderBy($sortField, $sortDirection);
+    }
+
+
     public function scopeUpdateProduct($query, $id, array $validatedData)
     {
         $tagIds = $this->getProductTags($validatedData);
