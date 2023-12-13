@@ -25,7 +25,7 @@ class RegisterCustomerRequest extends FormRequest
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:customers',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:8',
         ];
     }
 
@@ -47,7 +47,6 @@ class RegisterCustomerRequest extends FormRequest
             'password.required' => 'The password field is required.',
             'password.string' => 'The password field must be of type string.',
             'password.min' => 'The password must be at least 8 characters.',
-            'password.confirmed' => 'Password confirmation does not match.',
         ];
     }
 }

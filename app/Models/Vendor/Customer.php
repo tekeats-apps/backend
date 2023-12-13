@@ -5,6 +5,7 @@ namespace App\Models\Vendor;
 use App\Models\Vendor\Address;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -70,7 +71,7 @@ class Customer extends Authenticatable
         $image = Customer::DEFAULT_IMAGE_PATH;
         if ($value) {
             $path = Customer::IMAGE_PATH . '/' . $value;
-            $image = tenant_asset($path);
+            $image = Storage::disk('s3')->url($path);
         }
 
         return $image;

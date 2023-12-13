@@ -11,9 +11,10 @@ use Illuminate\Support\Facades\Hash;
 use App\Traits\TenantImageUploadTrait;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Vendor\Customers\LoginRequest;
-use App\Http\Requests\Vendor\Customers\ProfileUpdateRequest;
 use App\Http\Requests\Vendor\Customers\PasswordUpdateRequest;
+use App\Http\Requests\Vendor\Customers\API\ProfileUpdateRequest;
 use App\Http\Requests\Vendor\Customers\API\RegisterCustomerRequest;
+use App\Http\Requests\Vendor\Customers\API\UpdateProfileImageRequest;
 
 /**
  * @tags Customer, Auth
@@ -102,14 +103,28 @@ class CustomerController extends Controller
      */
     public function updateProfile(ProfileUpdateRequest $request)
     {
+        $validatedData = $request->validated();
         try {
 
             $user = $request->user();
-            $validatedData = $request->validated();
-
             $user->fill($validatedData);
             $user->save();
 
+            return $this->successResponse($user, "Profile updated successfully.", Response::HTTP_OK);
+        } catch (Exception $e) {
+            return $this->exceptionResponse($e, "Profile update failed.");
+        }
+    }
+
+    /**
+     * Update Profile Image
+     */
+    public function updateProfileImage(UpdateProfileImageRequest $request)
+    {
+        $validatedData = $request->validated();
+        try {
+
+            $user = $request->user();
             if (isset($validatedData['avatar']) && !empty($validatedData['avatar'])) {
                 $avatar = $validatedData['avatar'];
                 $module = Customer::IMAGE_PATH; // Assuming 'users' is the module name
@@ -123,11 +138,12 @@ class CustomerController extends Controller
 
                 // Upload the image and get the image URL
                 $this->uploadImage($avatar, $module, $recordId, $tableField, $tableName);
+                $user = $user->fresh();
             }
 
-            return $this->successResponse($user, "Profile updated successfully.", Response::HTTP_OK);
+            return $this->successResponse($user->avatar, "Profile image updated successfully.", Response::HTTP_OK);
         } catch (Exception $e) {
-            return $this->exceptionResponse($e, "Profile update failed.");
+            return $this->exceptionResponse($e, "Profile image update failed.");
         }
     }
     /**
