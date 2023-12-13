@@ -42,6 +42,7 @@ Route::middleware([
                 Route::get('/get-profile', 'getProfile');
                 Route::put('/update-profile', 'updateProfile');
                 Route::post('/update-password', 'updatePassword');
+                Route::post('/update-profile-image', 'updateProfileImage');
                 Route::post('/logout', 'logout');
 
                 Route::controller(AddressController::class)

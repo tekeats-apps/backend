@@ -3,6 +3,7 @@
 namespace App\Models\Vendor;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -74,7 +75,7 @@ class Product extends Model
         $image = 'https://cdn-icons-png.flaticon.com/512/3787/3787263.png';
         if ($value) {
             $path = Product::IMAGE_PATH . '/' . $value;
-            $image = tenant_asset($path);
+            $image = Storage::disk('s3')->url($path);
         }
         return $image;
     }

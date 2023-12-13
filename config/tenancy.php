@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Domain;
 use App\Models\Tenant;
-use App\Tenancy\Bootstrappers\EmailConfigBootstrapper;
 
 return [
     'tenant_model' => Tenant::class,
@@ -31,7 +30,6 @@ return [
         Stancl\Tenancy\Bootstrappers\CacheTenancyBootstrapper::class,
         Stancl\Tenancy\Bootstrappers\FilesystemTenancyBootstrapper::class,
         Stancl\Tenancy\Bootstrappers\QueueTenancyBootstrapper::class,
-        // EmailConfigBootstrapper::class,
         // Stancl\Tenancy\Bootstrappers\RedisTenancyBootstrapper::class, // Note: phpredis is needed
     ],
 
@@ -99,11 +97,11 @@ return [
         /**
          * Each disk listed in the 'disks' array will be suffixed by the suffix_base, followed by the tenant_id.
          */
-        'suffix_base' => 'tenant',
+        'suffix_base' => 'tenants/',
         'disks' => [
             'local',
             'public',
-            // 's3',
+            's3',
         ],
 
         /**
