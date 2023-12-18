@@ -36,11 +36,14 @@ class Order extends Model
         'created_at'
     ];
 
+    protected $appends = ['status_text', 'order_type_text', 'payment_method_text'];
+    protected $guarded = ['id'];
     protected $casts = [
         'status' => OrderStatus::class,
         'order_type' => OrderType::class,
         'payment_method' => OrderPaymentMethod::class,
-        'payment_status' => PaymentStatus::class
+        'payment_status' => PaymentStatus::class,
+        'created_at' => 'datetime:M d, Y H:i',
     ];
 
     public function customer()
@@ -174,6 +177,22 @@ class Order extends Model
         }
         if (!empty($paymentStatus)) {
             $query->where('payment_status', $paymentStatus);
+        }
+
+        return $query->orderBy($sortField, $sortDirection);
+    }
+
+    public function scopeGetCustomerOrders($query, $fields = ['*'], $sortField = 'id', $sortDirection = 'desc', $whereConditions = [], $relations = [])
+    {
+        foreach ($relations as $relation => $relationFields) {
+            $query->with([$relation => function ($query) use ($relationFields) {
+                $query->select($relationFields);
+            }]);
+        }
+
+        $query->select($fields);
+        foreach ($whereConditions as $column => $value) {
+            $query->where($column, $value);
         }
 
         return $query->orderBy($sortField, $sortDirection);

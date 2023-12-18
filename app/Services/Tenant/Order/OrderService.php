@@ -3,6 +3,7 @@
 namespace App\Services\Tenant\Order;
 
 use Exception;
+use App\Models\Vendor\Order;
 use App\Models\Vendor\Customer;
 use App\Enums\Vendor\Orders\OrderType;
 use App\Factories\Tenant\OrderFactory;
@@ -89,5 +90,27 @@ class OrderService
             'order_id' => $order->id,
             'status' => $status,
         ]);
+    }
+
+    public function getCustomerOrders($customer_id, $validatedData)
+    {
+        $limit = (isset($validatedData['limit']) ? $validatedData['limit'] : 10);
+        $where = ['customer_id' => $customer_id];
+        $orders = Order::with(['items' => function ($query) {
+            $query->select('order_id', \DB::raw('count(*) as item_count'))
+                ->groupBy('order_id');
+        }])
+            ->getCustomerOrders([
+                'id',
+                'order_id',
+                'status',
+                'payment_status',
+                'payment_method',
+                'order_type',
+                'total_price',
+                'created_at'
+            ], 'id', 'desc', $where)->paginate($limit);
+
+        return $orders;
     }
 }

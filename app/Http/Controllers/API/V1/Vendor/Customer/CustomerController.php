@@ -7,8 +7,10 @@ use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use App\Models\Vendor\Customer;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Vendor\Customers\API\GetCustomerOrders;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\TenantImageUploadTrait;
+use App\Services\Tenant\Order\OrderService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Vendor\Customers\LoginRequest;
 use App\Http\Requests\Vendor\Customers\PasswordUpdateRequest;
@@ -23,6 +25,13 @@ use App\Http\Requests\Vendor\Customers\API\UpdateProfileImageRequest;
 class CustomerController extends Controller
 {
     use ApiResponse, TenantImageUploadTrait;
+
+    protected $orderService;
+
+    public function __construct(OrderService $orderService)
+    {
+        $this->orderService = $orderService;
+    }
 
     /**
      * Register
@@ -170,6 +179,24 @@ class CustomerController extends Controller
             return $this->successResponse([], "Password updated successfully.", Response::HTTP_OK);
         } catch (Exception $e) {
             return $this->exceptionResponse($e, "Password update failed.");
+        }
+    }
+
+    /**
+     * Get Customer Orders
+     *
+     * 📋🍽️ Fetch all orders placed by the authenticated customer.
+     */
+    public function getCustomerOrders(GetCustomerOrders $request)
+    {
+        $validatedData = $request->validated();
+        try {
+            $customer_id = $request->user()->id; // Get the authenticated user
+            $orders = $this->orderService->getCustomerOrders($customer_id, $validatedData);
+
+            return $this->successResponse($orders, "Customer orders retrieved successfully!");
+        } catch (Exception $e) {
+            return $this->errorResponse("Oops! Something went wrong. " . $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 

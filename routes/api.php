@@ -45,6 +45,8 @@ Route::middleware([
                 Route::post('/update-profile-image', 'updateProfileImage');
                 Route::post('/logout', 'logout');
 
+                Route::get('orders', 'getCustomerOrders');
+
                 Route::controller(AddressController::class)
                     ->prefix('address')
                     ->group(function () {
