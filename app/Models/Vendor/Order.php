@@ -182,6 +182,18 @@ class Order extends Model
         return $query->orderBy($sortField, $sortDirection);
     }
 
+    /**
+     * Scope a query to get order by ID.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int $orderId
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeGetOrderByOrderID($query, $orderId)
+    {
+        return $query->with(['customer', 'address', 'rider', 'items.product.variants', 'items.product.extras'])->where('order_id', $orderId)->first();
+    }
+
     public function scopeGetCustomerOrders($query, $fields = ['*'], $sortField = 'id', $sortDirection = 'desc', $whereConditions = [], $relations = [])
     {
         foreach ($relations as $relation => $relationFields) {

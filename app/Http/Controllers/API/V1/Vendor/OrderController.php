@@ -62,4 +62,21 @@ class OrderController extends Controller
         }
         return $this->successResponse($order, "Order successfully placed!", Response::HTTP_CREATED);
     }
+
+    /**
+     * Get Order Details
+     *
+     * 📋🛍️ Need to know what's in your order? Utilize this endpoint to retrieve comprehensive details about your placed order. Provide the order ID, and we'll furnish you with a breakdown of items, delivery information, and other essential specifics. Let's ensure your order is exactly as you expect!
+     *
+     * */
+    public function getOrderDetails($orderId)
+    {
+        $orderDetails = $this->orderService->getOrderDetailsById($orderId);
+
+        if (!$orderDetails) {
+            return $this->errorResponse("Order not found.", Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->successResponse($orderDetails, "Order details fetched successfully!");
+    }
 }

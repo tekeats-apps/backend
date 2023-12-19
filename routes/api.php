@@ -46,7 +46,6 @@ Route::middleware([
                 Route::post('/logout', 'logout');
 
                 Route::get('orders', 'getCustomerOrders');
-
                 Route::controller(AddressController::class)
                     ->prefix('address')
                     ->group(function () {
@@ -80,8 +79,9 @@ Route::middleware([
         Route::controller(OrderController::class)
             ->prefix('orders')
             ->group(function () {
-                Route::get('calculate-delivery-charges', 'calculateDeliveryCharges');
-                Route::post('place-order', 'placeOrder');
+                Route::get('/order/{orderId}', 'getOrderDetails');
+                Route::get('/calculate-delivery-charges', 'calculateDeliveryCharges');
+                Route::post('/place-order', 'placeOrder');
             });
     });
 });

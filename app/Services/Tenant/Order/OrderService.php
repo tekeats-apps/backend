@@ -92,6 +92,17 @@ class OrderService
         ]);
     }
 
+    /**
+     * Get order details by order ID with items.
+     *
+     * @param int $orderId
+     * @return mixed
+     */
+    public function getOrderDetailsById($orderId)
+    {
+        return Order::GetOrderByOrderID($orderId);
+    }
+
     public function getCustomerOrders($customer_id, $validatedData)
     {
         $limit = (isset($validatedData['limit']) ? $validatedData['limit'] : 10);
