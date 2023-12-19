@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Vendor\Customers\API;
 
+use Illuminate\Validation\Rules\Enum;
+use App\Enums\Vendor\Orders\OrderStatus;
 use Illuminate\Foundation\Http\FormRequest;
 
 class GetCustomerOrders extends FormRequest
@@ -22,6 +24,7 @@ class GetCustomerOrders extends FormRequest
     public function rules(): array
     {
         return [
+            'status' => ['nullable', new Enum(OrderStatus::class)],
             'limit' => 'nullable|integer',
             'page' => 'nullable|integer',
         ];

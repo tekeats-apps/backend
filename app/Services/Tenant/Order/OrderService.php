@@ -107,6 +107,11 @@ class OrderService
     {
         $limit = (isset($validatedData['limit']) ? $validatedData['limit'] : 10);
         $where = ['customer_id' => $customer_id];
+        // Check if 'status' exists in validated data and add it to the where array
+        if (isset($validatedData['status'])) {
+            $where['status'] = $validatedData['status'];
+        }
+
         $orders = Order::with(['items' => function ($query) {
             $query->select('order_id', \DB::raw('count(*) as item_count'))
                 ->groupBy('order_id');
