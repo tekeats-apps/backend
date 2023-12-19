@@ -80,6 +80,7 @@ class ProductController extends Controller
                 'id',
                 'price',
                 'name',
+                'description',
                 'featured',
                 'category_id',
                 'image',
