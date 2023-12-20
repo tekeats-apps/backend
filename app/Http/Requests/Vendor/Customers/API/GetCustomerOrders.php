@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Vendor\Customers\API;
 
-use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rule;
 use App\Enums\Vendor\Orders\OrderStatus;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -23,8 +23,13 @@ class GetCustomerOrders extends FormRequest
      */
     public function rules(): array
     {
+        // Extracting the string values of the enum cases
+        $enumValues = array_map(fn($case) => $case->value, OrderStatus::cases());
         return [
-            'status' => ['nullable', new Enum(OrderStatus::class)],
+            'status' => [
+                'nullable',
+                Rule::in(array_merge(['active'], $enumValues))
+            ],
             'limit' => 'nullable|integer',
             'page' => 'nullable|integer',
         ];

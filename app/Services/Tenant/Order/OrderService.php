@@ -107,9 +107,18 @@ class OrderService
     {
         $limit = (isset($validatedData['limit']) ? $validatedData['limit'] : 10);
         $where = ['customer_id' => $customer_id];
-        // Check if 'status' exists in validated data and add it to the where array
-        if (isset($validatedData['status'])) {
-            $where['status'] = $validatedData['status'];
+        $whereStatus = [];
+
+        // Define the statuses that are considered 'active'
+        $activeStatuses = ['accepted', 'ready', 'assigned_to_driver', 'rider_picked_up'];
+
+        // Check if 'status' is set to 'active' in the request
+        if (isset($validatedData['status']) && $validatedData['status'] == 'active') {
+            // Filter by active statuses
+            $whereStatus['status'] = $activeStatuses;
+        } else if (isset($validatedData['status'])) {
+            // Handle specific status
+            $whereStatus['status'] = $validatedData['status'];
         }
 
         $orders = Order::with(['items' => function ($query) {
@@ -125,7 +134,17 @@ class OrderService
                 'order_type',
                 'total_price',
                 'created_at'
-            ], 'id', 'desc', $where)->paginate($limit);
+            ], 'id', 'desc', $where)
+            ->when(isset($whereStatus['status']), function ($query) use ($whereStatus) {
+                if (is_array($whereStatus['status'])) {
+                    // Use whereIn for multiple statuses
+                    $query->whereIn('status', $whereStatus['status']);
+                } else {
+                    // Use where for a single status
+                    $query->where('status', $whereStatus['status']);
+                }
+            })
+            ->paginate($limit);
 
         return $orders;
     }
