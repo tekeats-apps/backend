@@ -114,15 +114,13 @@ class OrderService
 
         // Check if 'status' is set to 'active' in the request
         if (isset($validatedData['status']) && $validatedData['status'] == 'active') {
-            // Filter by active statuses
             $whereStatus['status'] = $activeStatuses;
         } else if (isset($validatedData['status'])) {
-            // Handle specific status
             $whereStatus['status'] = $validatedData['status'];
         }
 
         $orders = Order::with(['items' => function ($query) {
-            $query->select('order_id', \DB::raw('count(*) as item_count'))
+            $query->select('order_id', \DB::raw('SUM(quantity) as item_count'))
                 ->groupBy('order_id');
         }])
             ->getCustomerOrders([
@@ -137,10 +135,8 @@ class OrderService
             ], 'id', 'desc', $where)
             ->when(isset($whereStatus['status']), function ($query) use ($whereStatus) {
                 if (is_array($whereStatus['status'])) {
-                    // Use whereIn for multiple statuses
                     $query->whereIn('status', $whereStatus['status']);
                 } else {
-                    // Use where for a single status
                     $query->where('status', $whereStatus['status']);
                 }
             })

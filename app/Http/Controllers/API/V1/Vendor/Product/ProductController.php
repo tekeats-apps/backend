@@ -31,7 +31,6 @@ class ProductController extends Controller
 
             $relations = [
                 'category' => ['categories.id', 'categories.name'],
-                // 'tags' => ['tags.id', 'tags.name'],
             ];
             $products = Product::getAllActiveProducts(
                 [
