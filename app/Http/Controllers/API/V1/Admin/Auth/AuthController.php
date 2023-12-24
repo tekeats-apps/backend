@@ -1,60 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\API\V1\Vendor\Customer;
+namespace App\Http\Controllers\API\V1\Admin\Auth;
 
 use Exception;
+use App\Models\User;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
-use App\Models\Vendor\Customer;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\TenantImageUploadTrait;
-use App\Services\Tenant\Order\OrderService;
 use Symfony\Component\HttpFoundation\Response;
-use App\Http\Requests\Vendor\Customers\LoginRequest;
-use App\Http\Requests\Vendor\Customers\API\GetCustomerOrders;
-use App\Http\Requests\Vendor\Customers\PasswordUpdateRequest;
-use App\Http\Requests\Vendor\Customers\API\ProfileUpdateRequest;
-use App\Http\Requests\Vendor\Customers\API\RegisterCustomerRequest;
-use App\Http\Requests\Vendor\Customers\API\UpdateProfileImageRequest;
+use App\Http\Requests\Admin\Api\Auth\LoginRequest;
+use App\Http\Requests\Admin\Api\Auth\ProfileUpdateRequest;
+use App\Http\Requests\Admin\Api\Auth\PasswordUpdateRequest;
+use App\Http\Requests\Admin\Api\Auth\UpdateProfileImageRequest;
 
 /**
- * @tags Customer, Auth
+ * @tags Admin
  */
-
-class CustomerController extends Controller
+class AuthController extends Controller
 {
     use ApiResponse, TenantImageUploadTrait;
-
-    protected $orderService;
-
-    public function __construct(OrderService $orderService)
-    {
-        $this->orderService = $orderService;
-    }
-
-    /**
-     * Register
-     *
-     * 🚀 This endpoint allows new customers to create an account and join our awesome platform. You'll receive a token to access other cool features!
-     */
-    public function register(RegisterCustomerRequest $request)
-    {
-        $data = [];
-        $validatedData = $request->validated();
-        try {
-            $user = Customer::createNew($validatedData['first_name'], $validatedData['last_name'], $validatedData['email'], $validatedData['password']);
-            $token = $user->createToken('Customer-Token')->plainTextToken;
-
-            $data['user'] = $user;
-            $data['tokenType'] = 'Bearer';
-            $data['token'] = $token;
-
-            return $this->successResponse($data, "Your account has been registered successfully.", Response::HTTP_CREATED);
-        } catch (Exception $e) {
-            return $this->exceptionResponse($e, "Something went wrong!");
-        }
-    }
     /**
      * Login
      *
@@ -65,18 +31,21 @@ class CustomerController extends Controller
         $data = [];
         try {
             // Retrieve the user by the provided credentials.
-            $user = Customer::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->first();
 
             // Check if the user exists and the provided password matches the one in the database.
             if (!$user || !Hash::check($request->password, $user->password)) {
                 return $this->errorResponse("The provided credentials are incorrect.", Response::HTTP_UNAUTHORIZED);
             }
 
-            // Delete any previous tokens
-            $user->tokens()->delete();
+            // Check if the user's status is true
+            if ($user->status !== true) {
+                return $this->errorResponse("Your account is inactive. Please contact the administrator.", Response::HTTP_UNAUTHORIZED);
+            }
 
             // Create a new token
-            $token = $user->createToken('Customer-Token')->plainTextToken;
+            $token = $user->createToken('Admin-Token')->plainTextToken;
+            $user = $user->only(['name', 'username', 'email', 'image']);
             $data['user'] = $user;
             $data['tokenType'] = 'Bearer';
             $data['token'] = $token;
@@ -86,6 +55,7 @@ class CustomerController extends Controller
             return $this->exceptionResponse($e, "Login failed.");
         }
     }
+
     /**
      * View Profile
      *
@@ -97,6 +67,7 @@ class CustomerController extends Controller
     {
         try {
             $user = $request->user(); // Get the authenticated user.
+            $user = $user->only(['name', 'username', 'email', 'image', 'role']);
             return $this->successResponse($user, "Profile fetched successfully.", Response::HTTP_OK);
         } catch (\Exception $e) {
             return $this->exceptionResponse($e, "Failed to fetch profile.");
@@ -119,42 +90,13 @@ class CustomerController extends Controller
             $user->fill($validatedData);
             $user->save();
 
+            $user = $user->only(['name', 'username', 'email', 'image', 'role']);
             return $this->successResponse($user, "Profile updated successfully.", Response::HTTP_OK);
         } catch (Exception $e) {
             return $this->exceptionResponse($e, "Profile update failed.");
         }
     }
 
-    /**
-     * Update Profile Image
-     */
-    public function updateProfileImage(UpdateProfileImageRequest $request)
-    {
-        $validatedData = $request->validated();
-        try {
-
-            $user = $request->user();
-            if (isset($validatedData['avatar']) && !empty($validatedData['avatar'])) {
-                $avatar = $validatedData['avatar'];
-                $module = Customer::IMAGE_PATH; // Assuming 'users' is the module name
-                $recordId = $user->id; // Assuming the user's ID is the record ID
-                $tableField = 'avatar';
-                $tableName = 'customers';
-
-                if ($user->avatar) {
-                    $this->delete_image_by_name($module, $user->avatar);
-                }
-
-                // Upload the image and get the image URL
-                $this->uploadImage($avatar, $module, $recordId, $tableField, $tableName);
-                $user = $user->fresh();
-            }
-
-            return $this->successResponse($user->avatar, "Profile image updated successfully.", Response::HTTP_OK);
-        } catch (Exception $e) {
-            return $this->exceptionResponse($e, "Profile image update failed.");
-        }
-    }
     /**
      * Change Password
      *
@@ -183,20 +125,33 @@ class CustomerController extends Controller
     }
 
     /**
-     * Get Customer Orders
-     *
-     * 📋🍽️ Fetch all orders placed by the authenticated customer.
+     * Update Profile Image
      */
-    public function getCustomerOrders(GetCustomerOrders $request)
+    public function updateProfileImage(UpdateProfileImageRequest $request)
     {
         $validatedData = $request->validated();
         try {
-            $customer_id = $request->user()->id; // Get the authenticated user
-            $orders = $this->orderService->getCustomerOrders($customer_id, $validatedData);
 
-            return $this->successResponse($orders, "Customer orders retrieved successfully!");
+            $user = $request->user();
+            if (isset($validatedData['image']) && !empty($validatedData['image'])) {
+                $image = $validatedData['image'];
+                $module = User::IMAGE_PATH;
+                $recordId = $user->id;
+                $tableField = 'image';
+                $tableName = 'users';
+
+                if ($user->image) {
+                    $this->delete_image_by_name($module, $user->image);
+                }
+
+                // Upload the image and get the image URL
+                $this->uploadImage($image, $module, $recordId, $tableField, $tableName);
+                $user = $user->fresh();
+            }
+
+            return $this->successResponse($user->image, "Profile image updated successfully.", Response::HTTP_OK);
         } catch (Exception $e) {
-            return $this->errorResponse("Oops! Something went wrong. " . $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->exceptionResponse($e, "Profile image update failed.");
         }
     }
 

@@ -29,7 +29,7 @@ trait TenantImageUploadTrait
     {
         $fileName = $this->generateFileName($image);
 
-        $path = $image->storeAs($folder, $fileName, 's3');
+        $image->storeAs($folder, $fileName, 's3');
 
         return $fileName;
     }

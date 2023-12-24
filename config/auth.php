@@ -48,6 +48,11 @@ return [
             'driver' => 'session',
             'provider' => 'customer'
         ],
+        'admin-api' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+            'hash' => false
+        ],
         'customers' => [
             'driver' => 'sanctum',
             'provider' => 'customer',
