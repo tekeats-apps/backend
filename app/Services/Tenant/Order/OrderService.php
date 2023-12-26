@@ -110,7 +110,7 @@ class OrderService
         $whereStatus = [];
 
         // Define the statuses that are considered 'active'
-        $activeStatuses = ['accepted', 'ready', 'assigned_to_driver', 'rider_picked_up'];
+        $activeStatuses = ['pending','accepted', 'ready', 'assigned_to_driver', 'rider_picked_up'];
 
         // Check if 'status' is set to 'active' in the request
         if (isset($validatedData['status']) && $validatedData['status'] == 'active') {
