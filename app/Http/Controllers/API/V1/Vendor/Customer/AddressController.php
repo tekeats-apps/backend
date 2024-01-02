@@ -58,8 +58,8 @@ class AddressController extends Controller
             }
 
             // Set the address as default for the customer
-            Address::where('customer_id', $customerId)->update(['is_default' => false]); // Set all addresses as non-default
-            $address->update(['is_default' => true]); // Set the selected address as default
+            Address::where('customer_id', $customerId)->update(['default' => false]); // Set all addresses as non-default
+            $address->update(['default' => true]); // Set the selected address as default
 
             return $this->successResponse($address, "Default address set successfully.");
         } catch (\Exception $e) {
