@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1\Vendor;
 
 use Exception;
 use App\Traits\ApiResponse;
+use App\Models\Vendor\Extra;
 use App\Http\Controllers\Controller;
 use App\Services\Tenant\Order\OrderService;
 use Symfony\Component\HttpFoundation\Response;
@@ -72,6 +73,20 @@ class OrderController extends Controller
     public function getOrderDetails($orderId)
     {
         $orderDetails = $this->orderService->getOrderDetailsById($orderId);
+
+        // Step 2: Process extras for each item
+        foreach ($orderDetails->items as $item) {
+            if (!empty($item->extras)) {
+                // Assuming extras are stored as JSON of IDs: ["1", "2", ...]
+                $extraIds = $item->extras;
+
+                // Fetch additional details about extras if needed
+                $extrasDetails = Extra::whereIn('id', $extraIds)->get();
+
+                // Step 3: Merge the extras details back into the item
+                $item->extrasDetails = $extrasDetails;
+            }
+        }
 
         if (!$orderDetails) {
             return $this->errorResponse("Order not found.", Response::HTTP_NOT_FOUND);

@@ -191,7 +191,7 @@ class Order extends Model
      */
     public function scopeGetOrderByOrderID($query, $orderId)
     {
-        return $query->with(['customer', 'address', 'charges','rider', 'items.product.variants', 'items.product.extras'])->where('order_id', $orderId)->first();
+        return $query->with(['customer', 'address', 'charges','rider', 'items.product:id,name,image', 'items.variant:id,name,price'])->where('order_id', $orderId)->first();
     }
 
     public function scopeGetCustomerOrders($query, $fields = ['*'], $sortField = 'id', $sortDirection = 'desc', $whereConditions = [], $relations = [])
