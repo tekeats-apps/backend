@@ -71,14 +71,24 @@ class PricingStrategy implements PricingStrategyMethods
     }
 
     /**
-     * Calculate the total of the order.
+     * Calculate the total of the order including additional charges.
      *
-     * @param array $items
+     * @param float $subtotal - The subtotal of the order
+     * @param array $additionalCharges - Associative array of additional charge types and amounts
      * @return float
      */
-    public function calculateOrderTotal(float $subtotal): float
+    public function calculateOrderTotal(float $subtotal, array $additionalCharges = []): float
     {
-        // You can expand this method to include any additional calculations like taxes, discounts, etc.
-        return $subtotal;
+        $chargesTotal = $this->calculateAdditionalCharges($additionalCharges);
+        return $subtotal + $chargesTotal;
+    }
+
+    protected function calculateAdditionalCharges(array $charges): float
+    {
+        $totalCharges = 0.00;
+        foreach ($charges as $charge) {
+            $totalCharges += $charge['amount'];
+        }
+        return $totalCharges;
     }
 }

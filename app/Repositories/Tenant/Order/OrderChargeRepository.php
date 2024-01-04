@@ -17,5 +17,16 @@ class OrderChargeRepository
     {
         return $this->orderChargeModel->create($data);
     }
+
+    /**
+     * Insert multiple order charges in bulk.
+     *
+     * @param array $chargesArray Array of order charge data arrays
+     * @return bool True on success, false on failure.
+     */
+    public function createBulk(array $chargesArray): bool
+    {
+        return $this->orderChargeModel->insert($chargesArray);
+    }
 }
 

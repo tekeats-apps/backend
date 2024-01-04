@@ -34,10 +34,12 @@ class OrderService
     public function placeOrder(array $data, Customer $customer, object $deliveryCharge = null)
     {
         try {
+            $additionalCharges = [];
             if (!$customer) {
                 throw new CustomerNotFoundException("Customer not found");
             }
             $orderData = OrderFactory::make($data, $customer);
+
             // Calculate and update each item's subtotal and total
             $orderSubtotal = 0.00;
             $modifiedItems = [];
@@ -52,29 +54,36 @@ class OrderService
 
                 $modifiedItems[] = $item;
             }
+
+            // Add logic to insert delivery charge into OrderCharge table
+            if ($deliveryCharge && $data['order_type'] === OrderType::DELIVERY->value) {
+                $additionalCharges[] = [
+                    'type' => OrderType::DELIVERY->value,
+                    'amount' => $deliveryCharge->delivery_charges,
+                ];
+            }
+
             $orderData['payment_status'] = PaymentStatus::UNPAID;
             $orderData['subtotal_price'] = $orderSubtotal;
-            $orderData['total_price'] = $this->pricingStrategy->calculateOrderTotal($orderSubtotal);
+            $orderData['total_price'] = $this->pricingStrategy->calculateOrderTotal($orderSubtotal, $additionalCharges);
 
             // Business logic for placing an order
             $order = $this->orderRepository->create($orderData);
 
-            $this->createOrderStatusHistory($order, OrderStatus::PENDING);
+            // Add order_id to each additional charge and prepare for bulk insertion
+            foreach ($additionalCharges as &$charge) {
+                $charge['order_id'] = $order->id;
+            }
+            unset($charge);
+
 
             foreach ($modifiedItems as $item) {
                 $this->orderItemRepository->create($item + ['order_id' => $order->id]);
             }
 
-            // Add logic to insert delivery charge into OrderCharge table
-            if ($deliveryCharge && $data['order_type'] === OrderType::DELIVERY->value) {
-                $orderChargeData = [
-                    'order_id' => $order->id,
-                    'type' => OrderType::DELIVERY->value,
-                    'amount' => $deliveryCharge->delivery_charges,
-                ];
-
-                // Assuming you have an OrderCharge model and repository
-                $this->orderChargeRepository->create($orderChargeData);
+            // Insert order charges in bulk
+            if (!empty($additionalCharges)) {
+                $this->addOrderCharges($additionalCharges);
             }
 
             return $order;
@@ -83,13 +92,9 @@ class OrderService
         }
     }
 
-    // New method to record order status history
-    protected function createOrderStatusHistory($order, $status)
+    protected function addOrderCharges(array $additionalCharges)
     {
-        OrderStatusHistory::create([
-            'order_id' => $order->id,
-            'status' => $status,
-        ]);
+        $this->orderChargeRepository->createBulk($additionalCharges);
     }
 
     /**
@@ -110,7 +115,7 @@ class OrderService
         $whereStatus = [];
 
         // Define the statuses that are considered 'active'
-        $activeStatuses = ['pending','accepted', 'ready', 'assigned_to_driver', 'rider_picked_up'];
+        $activeStatuses = ['pending', 'accepted', 'ready', 'assigned_to_driver', 'rider_picked_up'];
 
         // Check if 'status' is set to 'active' in the request
         if (isset($validatedData['status']) && $validatedData['status'] == 'active') {
