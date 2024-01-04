@@ -28,7 +28,7 @@ class CreateProductRequest extends FormRequest
             'prepration_time' => 'nullable|string',
             'status' => 'boolean',
             'featured' => 'boolean',
-            'extras' => 'boolean',
+            'is_extras_enabled' => 'boolean',
             'is_variants_enabled' => 'boolean',
             'discount' => 'nullable|numeric',
             'discount_enabled' => 'boolean',

@@ -240,12 +240,12 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <div class="form-check form-switch form-switch-lg form-switch-success">
-                                            <input class="form-check-input @error('extras') is-invalid @enderror"
-                                                type="checkbox" name="extras" id="extras" value="1"
-                                                {{ old('extras', isset($product) && $product->extras ? 'checked' : '') }}>
-                                            <label class="form-check-label" for="extras">Enable Extras</label>
+                                            <input class="form-check-input @error('is_extras_enabled') is-invalid @enderror"
+                                                type="checkbox" name="is_extras_enabled" id="is_extras_enabled" value="1"
+                                                {{ old('is_extras_enabled', isset($product) && $product->is_extras_enabled ? 'checked' : '') }}>
+                                            <label class="form-check-label" for="is_extras_enabled">Enable Extras</label>
                                         </div>
-                                        @error('extras')
+                                        @error('is_extras_enabled')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -276,7 +276,7 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="col-md-6 mb-3">
+                                    {{-- <div class="col-md-6 mb-3">
                                         <div class="form-check form-switch form-switch-lg form-switch-success">
                                             <input
                                                 class="form-check-input @error('is_product_timing_enabled') is-invalid @enderror"
@@ -289,7 +289,7 @@
                                         @error('is_product_timing_enabled')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-6 mb-3">
                                         <div class="form-check form-switch form-switch-lg form-switch-success">
                                             <input class="form-check-input @error('status') is-invalid @enderror"

@@ -69,6 +69,7 @@ class ProductController extends Controller
     {
         try {
             $validatedData = $request->validated();
+
             // If there is an image, you should store the image and update $validatedData['image'] with the path of the image.
             $product->updateProduct($product->id, $validatedData);
             if ($product) {

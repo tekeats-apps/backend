@@ -7,8 +7,6 @@ use App\Models\Vendor\Order;
 use App\Models\Vendor\Customer;
 use App\Enums\Vendor\Orders\OrderType;
 use App\Factories\Tenant\OrderFactory;
-use App\Enums\Vendor\Orders\OrderStatus;
-use App\Models\Vendor\OrderStatusHistory;
 use App\Enums\Vendor\Orders\PaymentStatus;
 use App\Exceptions\CustomerNotFoundException;
 use App\Strategies\Tenant\Order\PricingStrategy;
@@ -76,10 +74,11 @@ class OrderService
             }
             unset($charge);
 
-
-            foreach ($modifiedItems as $item) {
-                $this->orderItemRepository->create($item + ['order_id' => $order->id]);
+            foreach ($modifiedItems as &$orderItem) {
+                $orderItem['order_id'] = $order->id;
             }
+            unset($orderItem);
+            $this->addOrderItems($modifiedItems);
 
             // Insert order charges in bulk
             if (!empty($additionalCharges)) {
@@ -90,6 +89,11 @@ class OrderService
         } catch (Exception $e) {
             throw $e;
         }
+    }
+
+    protected function addOrderItems(array $items)
+    {
+        $this->orderItemRepository->createBulk($items);
     }
 
     protected function addOrderCharges(array $additionalCharges)

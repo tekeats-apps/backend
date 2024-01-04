@@ -29,7 +29,7 @@ class UpdateProductRequest extends FormRequest
             'prepration_time' => 'nullable|string|max:255',
             'status' => 'required|boolean',
             'featured' => 'nullable|boolean',
-            'extras' => 'nullable|boolean',
+            'is_extras_enabled' => 'nullable|boolean',
             'discount' => 'nullable|numeric',
             'discount_enabled' => 'boolean',
             'is_variants_enabled' => 'nullable|boolean',
