@@ -173,7 +173,7 @@
 
                                                     @foreach ($order->charges as $charge)
                                                         <tr>
-                                                            <td>{{ $charge->type }} :</td>
+                                                            <td>{{ ucfirst($charge->type) }} Charges:</td>
                                                             <td class="text-end">${{ $charge->amount }}</td>
                                                         </tr>
                                                     @endforeach
