@@ -47,7 +47,7 @@ class OrderService
                 $item['price'] = $itemPrices['price'];
                 $item['subtotal'] = $itemPrices['subtotal'];
                 $item['total'] = $itemPrices['total'];
-                $item['extras'] = json_encode($item['extras']);
+                $item['extras'] = isset($iem['extras']) ? json_encode($item['extras']) : null;
 
                 $orderSubtotal += $itemPrices['total'];
 

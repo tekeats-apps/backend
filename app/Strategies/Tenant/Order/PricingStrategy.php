@@ -38,7 +38,7 @@ class PricingStrategy implements PricingStrategyMethods
     protected function getVariantPrice(int $variantId): float
     {
         $variant = Variant::find($variantId);
-        return $variant ? $variant->price : 0;
+        return $variant ? $variant->discounted_price : 0;
     }
 
     /**
@@ -57,6 +57,7 @@ class PricingStrategy implements PricingStrategyMethods
         $basePrice = isset($item['variant_id'])
             ? $this->getVariantPrice($item['variant_id'])
             : $this->calculateItemPrice($item['product_id']);
+
         $subtotal = $basePrice * $item['quantity'];
 
         $extrasPrice = 0.0;
@@ -65,9 +66,9 @@ class PricingStrategy implements PricingStrategyMethods
                 $extrasPrice += $this->getExtraPrice($extraId);
             }
         }
-        $price = $this->calculateItemPrice($item['product_id']);
+        // $price = $this->calculateItemPrice($item['product_id']);
         $total = $subtotal + $extrasPrice;
-        return ['price' => $price, 'subtotal' => $subtotal, 'total' => $total];
+        return ['price' => $basePrice, 'subtotal' => $subtotal, 'total' => $total];
     }
 
     /**

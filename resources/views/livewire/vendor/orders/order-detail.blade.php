@@ -169,10 +169,18 @@
                                                     <td>Discount <span class="text-muted">(VELZON15)</span> : :</td>
                                                     <td class="text-end">-$53.99</td>
                                                 </tr> --}}
-                                                {{-- <tr>
-                                                    <td>Delivery Charge :</td>
-                                                    <td class="text-end">$65.00</td>
-                                                </tr> --}}
+                                                @if ($order->charges)
+
+                                                    @foreach ($order->charges as $charge)
+                                                        <tr>
+                                                            <td>{{ $charge->type }} :</td>
+                                                            <td class="text-end">${{ $charge->amount }}</td>
+                                                        </tr>
+                                                    @endforeach
+
+
+                                                @endif
+
                                                 <tr class="border-top border-top-dashed">
                                                     <th scope="row">Total (USD) :</th>
                                                     <th class="text-end">${{ $order->total_price }}</th>
@@ -200,7 +208,8 @@
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled vstack gap-2 fs-13 mb-0">
-                            <li class="fs-14"><strong>Address: </strong> {{ $order->address->address_line1 ?? '' }}</li>
+                            <li class="fs-14"><strong>Address: </strong> {{ $order->address->address_line1 ?? '' }}
+                            </li>
                             <li class="fs-14"><strong>City: </strong>{{ $order->address->city ?? '' }}</li>
                             <li class="fs-14"><strong>Country: </strong>{{ $order->address->country ?? '' }}</li>
                         </ul>
