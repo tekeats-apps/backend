@@ -63,7 +63,7 @@ class PricingStrategy implements PricingStrategyMethods
         $extrasPrice = 0.0;
         if (isset($item['extras']) && is_array($item['extras'])) {
             foreach ($item['extras'] as $extraId) {
-                $extrasPrice += $this->getExtraPrice($extraId);
+                $extrasPrice += $this->getExtraPrice($extraId) * $item['quantity'];
             }
         }
         // $price = $this->calculateItemPrice($item['product_id']);
