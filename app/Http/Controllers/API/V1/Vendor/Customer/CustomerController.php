@@ -72,9 +72,6 @@ class CustomerController extends Controller
                 return $this->errorResponse("The provided credentials are incorrect.", Response::HTTP_UNAUTHORIZED);
             }
 
-            // Delete any previous tokens
-            $user->tokens()->delete();
-
             // Create a new token
             $token = $user->createToken('Customer-Token')->plainTextToken;
             $data['user'] = $user;
