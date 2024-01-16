@@ -121,6 +121,24 @@ class Product extends Model
         return $query->select($fields)->orderBy($sortField, $sortDirection);
     }
 
+    public function scopeGetProductsByCategory($query, $categoryID, $fields = ['*'], $sortField = 'id', $sortDirection = 'desc', $status = 1, $relations = [])
+    {
+
+        $query->where('category_id', $categoryID);
+
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+
+        foreach ($relations as $relation => $relationFields) {
+            $query->with([$relation => function ($query) use ($relationFields) {
+                $query->select($relationFields);
+            }]);
+        }
+
+        return $query->select($fields)->orderBy($sortField, $sortDirection);
+    }
+
     public function scopeGetProductById($query, $productId, $fields = ['*'], $relations = [])
     {
         $query->where('id', $productId);

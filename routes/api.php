@@ -74,6 +74,7 @@ Route::middleware([
             ->group(function () {
                 Route::get('/list', 'getList');
                 Route::get('/detail/{productId}', 'getProductDetails');
+                Route::get('/category/{categoryId}', 'getProductsByCategory');
             });
 
         Route::controller(OrderController::class)

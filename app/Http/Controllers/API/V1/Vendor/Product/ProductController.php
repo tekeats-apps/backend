@@ -4,17 +4,15 @@ namespace App\Http\Controllers\API\V1\Vendor\Product;
 
 use Exception;
 use App\Traits\ApiResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Vendor\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Vendor\Products\API\GetProducts;
+use App\Http\Requests\Vendor\Products\API\GetProductsBycategory;
 
 /**
  * @tags Products
  */
-
-
 class ProductController extends Controller
 {
     use ApiResponse;
@@ -98,6 +96,54 @@ class ProductController extends Controller
             return $this->successResponse($product, "Product details fetched successfully.", Response::HTTP_OK);
         } catch (Exception $e) {
             return $this->exceptionResponse($e, "Failed to fetch product details.");
+        }
+    }
+
+    /**
+     * Get Products by Category ID
+     *
+     * Get a list of products filtered by a specific category ID
+     *
+     */
+    public function getProductsByCategory(GetProductsBycategory $request, $categoryId)
+    {
+        $valid = $request->validated();
+        $limit = (isset($valid['limit']) ? $valid['limit'] : 10);
+        try {
+            // Define the relations to load with products
+            $relations = [
+                'category' => ['categories.id', 'categories.name'],
+            ];
+
+            // Fetch products filtered by category ID
+            $products = Product::getProductsByCategory(
+                $categoryId,
+                [
+                    'id',
+                    'price',
+                    'name',
+                    'description',
+                    'featured',
+                    'category_id',
+                    'image',
+                    'discount_enabled',
+                    'discount',
+                    'is_extras_enabled',
+                    'is_variants_enabled',
+                    'prepration_time'
+                ],
+                'id',
+                'desc',
+                1,
+                $relations
+            )
+                ->paginate($limit);
+
+            // Return success response with products data
+            return $this->successResponse($products, "Products by category fetched successfully.", Response::HTTP_OK);
+        } catch (Exception $e) {
+            // Handle exceptions and return error response
+            return $this->exceptionResponse($e, "Failed to fetch products by category.");
         }
     }
 }
