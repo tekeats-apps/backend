@@ -24,4 +24,9 @@ class Plan extends PlanModel
     {
         return static::find($planId);
     }
+
+    public function scopeActivePlans($query, $fields = ['id', 'name'])
+    {
+        return $query->where('is_active', true)->select($fields);
+    }
 }
