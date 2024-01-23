@@ -63,7 +63,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
             $user = new StoreUser();
             $user->name = $data['customer_name'];
             $user->email = $data['email'];
-            $user->password = Hash::make($data['login_password']);
+            $user->password = Hash::make($data['password']);
 
             if ($role) {
                 $role = Role::where('name', $role)->first();

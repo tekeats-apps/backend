@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\API\V1\Admin\Tenant;
 
 use Exception;
+use App\Models\Admin\Plan;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Admin\Tenant\TenantService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Admin\Api\Tenants\RegisterTenantRequest;
-use App\Http\Requests\Admin\Api\Tenants\ValidateBusinessRequest;
 use App\Http\Requests\Admin\Api\Tenants\ValidateDomainRequest;
+use App\Http\Requests\Admin\Api\Tenants\ValidateBusinessRequest;
 
 /**
  * @tags Admin
@@ -35,7 +36,6 @@ class TenantController extends Controller
         $data = $request->validated();
 
         try {
-
             // Check if business name is unique
             if (!$this->tenantService->isBusinessNameUnique($data['business_name'])) {
                 return $this->errorResponse("Business name is already taken.", Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -49,9 +49,23 @@ class TenantController extends Controller
             // Register Tenant
             $tenant = $this->tenantService->registerTenant($data);
 
+            if (!$tenant) {
+                throw new Exception("Tenant registration failed.");
+            }
+
+            // Subscribe to plan
+            $plan = Plan::getById($data['plan_id']);
+
+            $subscription = $this->tenantService->subscribeToPlan($tenant, $plan);
+            if (!$subscription) {
+                throw new Exception("Plan subscription failed.");
+            }
+
+            $this->tenantService->registerTenantUser($tenant, $data);
+
             return $this->successResponse($tenant, "Business registered successfully!");
         } catch (Exception $e) {
-            DB::rollback();
+
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

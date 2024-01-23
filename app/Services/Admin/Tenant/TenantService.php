@@ -23,4 +23,21 @@ class TenantService
         $domain = $domain . '.' . env('TENANT_DOMAIN');
         return !Domain::where('domain', $domain)->exists();
     }
+
+    public function subscribeToPlan(Tenant $tenant, $plan)
+    {
+        return $tenant->newSubscription(
+            'main',
+            $plan,
+            $plan->name,
+            $plan->description,
+            null,
+            'free'
+        );
+    }
+
+    public function registerTenantUser(Tenant $tenant, $data, $role = "admin")
+    {
+        return Tenant::registerTenantUser($tenant, $data, $role);
+    }
 }

@@ -19,4 +19,9 @@ class Plan extends PlanModel
 
         return $query->orderBy($sortField, $sortDirection);
     }
+
+    public static function getById($planId)
+    {
+        return static::find($planId);
+    }
 }
