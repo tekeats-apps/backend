@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Services\Admin\Tenant;
+
+use App\Models\Domain;
+use App\Models\Tenant;
+
+class TenantService
+{
+    public function registerTenant(array $data): Tenant
+    {
+        $tenant = Tenant::registerRestaurant($data);
+        return $tenant;
+    }
+
+    public function isBusinessNameUnique($businessName)
+    {
+        return !Tenant::whereJsonContains('data->business_name', $businessName)->exists();
+    }
+
+    public function isDomainUnique($domain)
+    {
+        $domain = $domain . '.' . env('TENANT_DOMAIN');
+        return !Domain::where('domain', $domain)->exists();
+    }
+}

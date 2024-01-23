@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\V1\Admin\Auth\AuthController;
+use App\Http\Controllers\API\V1\Admin\Tenant\TenantController;
 
 Route::prefix('v1/admin')->group(function () {
 
@@ -21,6 +22,14 @@ Route::prefix('v1/admin')->group(function () {
                 Route::post('/update-password', 'updatePassword');
                 Route::post('/update-profile-image', 'updateProfileImage');
                 Route::get('/logout', 'logout');
+            });
+
+        Route::controller(TenantController::class)
+            ->prefix('restaurants')
+            ->group(function () {
+                Route::post('/register', 'registerTenant');
+                Route::post('/validate/business', 'checkBusinessName');
+                Route::post('/validate/business/domain', 'checkDomain');
             });
     });
 });

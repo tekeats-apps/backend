@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('domain', 255)->unique();
             $table->string('tenant_id');
-            $table->enum('status', ['active', 'disabled', 'pending'])->default('active');
+            $table->string('status')->default('active');
             $table->enum('type', ['subdomain', 'custom_domain'])->default('subdomain');
             $table->timestamps();
             $table->foreign('tenant_id')->references('id')->on('tenants')->onUpdate('cascade')->onDelete('cascade');
