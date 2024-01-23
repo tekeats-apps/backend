@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API\V1\Admin\Tenant;
 use Exception;
 use App\Models\Admin\Plan;
 use App\Traits\ApiResponse;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Admin\Tenant\TenantService;
 use Symfony\Component\HttpFoundation\Response;
