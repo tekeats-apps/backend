@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('customer_id');
             $table->string('type');
+            $table->string('label');
             $table->string('address_line1');
             $table->string('address_line2')->nullable();
             $table->string('city');

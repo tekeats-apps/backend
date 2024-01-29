@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1\Vendor\Customer;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use App\Models\Vendor\Address;
+use App\Enums\Tenant\AddressType;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Vendor\Customers\API\Address\StoreAddressRequest;
@@ -26,9 +27,10 @@ class AddressController extends Controller
     {
         // Get the authenticated user's ID
         $customerId = $request->user()->id;
-
+        $data = $request->validated();
+        $data['label'] = $data['type'] === AddressType::OTHER ? $data['label'] : ucfirst($data['type']);
         try {
-            $address = Address::storeForCustomer($request->validated(), $customerId);
+            $address = Address::storeForCustomer($data, $customerId);
             return $this->successResponse($address, "Addresss saved successfully.", Response::HTTP_CREATED);
         } catch (\Exception $e) {
             return $this->exceptionResponse($e, "Failed to save address.");
@@ -95,7 +97,8 @@ class AddressController extends Controller
     {
         // Get the authenticated user's ID
         $customerId = $request->user()->id;
-
+        $data = $request->validated();
+        $data['label'] = $data['type'] === AddressType::OTHER ? $data['label'] : ucfirst($data['type']);
         try {
             $address = Address::findOrFail($addressId);
 
@@ -105,7 +108,7 @@ class AddressController extends Controller
             }
 
             // Update the address with validated data
-            $address->update($request->validated());
+            $address->update($data);
 
             return $this->successResponse($address, "Address updated successfully.");
         } catch (\Exception $e) {
