@@ -36,7 +36,7 @@
                                         @csrf
                                         <div class="mb-3">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                            <input type="email" class="form-control"
                                                 value="{{ old('email', '') }}" id="email" name="email"
                                                 placeholder="Enter email address eg. admin@example.com">
                                             @error('email')
@@ -54,7 +54,7 @@
                                             <label class="form-label" for="password-input">Password</label>
                                             <div class="position-relative auth-pass-inputgroup mb-3">
                                                 <input type="password"
-                                                    class="form-control pe-5 @error('password') is-invalid @enderror"
+                                                    class="form-control pe-5"
                                                     name="password" placeholder="Enter password" id="password-input"
                                                     value="">
                                                 <button
