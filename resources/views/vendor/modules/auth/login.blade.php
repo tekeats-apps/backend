@@ -36,14 +36,14 @@
                                         @csrf
                                         <div class="mb-3">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="email" class="form-control"
+                                            <input type="email" class="form-control @error('email') is-invalid @enderror"
                                                 value="{{ old('email', '') }}" id="email" name="email"
                                                 placeholder="Enter email address eg. admin@example.com">
-                                            {{-- @error('email')
+                                            @error('email')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
-                                            @enderror --}}
+                                            @enderror
                                         </div>
 
                                         <div class="mb-3">
@@ -54,18 +54,18 @@
                                             <label class="form-label" for="password-input">Password</label>
                                             <div class="position-relative auth-pass-inputgroup mb-3">
                                                 <input type="password"
-                                                    class="form-control pe-5"
+                                                    class="form-control pe-5 @error('password') is-invalid @enderror"
                                                     name="password" placeholder="Enter password" id="password-input"
                                                     value="">
                                                 <button
                                                     class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted"
                                                     type="button" id="password-addon"><i
                                                         class="ri-eye-fill align-middle"></i></button>
-                                                {{-- @error('password')
+                                                @error('password')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
-                                                @enderror --}}
+                                                @enderror
                                             </div>
                                         </div>
 
