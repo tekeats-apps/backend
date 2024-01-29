@@ -34,7 +34,6 @@ use App\Http\Controllers\Vendor\UserController as StoreUserController;
 */
 
 Route::middleware([
-    'web',
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
