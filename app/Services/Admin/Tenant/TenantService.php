@@ -40,4 +40,9 @@ class TenantService
     {
         return Tenant::registerTenantUser($tenant, $data, $role);
     }
+
+    public function getTenantsList()
+    {
+        return Tenant::getTenantsList();
+    }
 }

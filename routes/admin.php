@@ -28,6 +28,7 @@ Route::prefix('v1/admin')->group(function () {
         Route::controller(TenantController::class)
             ->prefix('restaurants')
             ->group(function () {
+                Route::get('/list', 'listTenants');
                 Route::post('/register', 'registerTenant');
                 Route::post('/validate/business', 'checkBusinessName');
                 Route::post('/validate/business/domain', 'checkDomain');

@@ -19,10 +19,14 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     public static function getCustomColumns(): array
     {
         return [
-            'id',
-            'order_id'
+            'id'
         ];
     }
+
+    protected $casts = [
+        'created_at' => 'datetime:M d, Y H:i',
+        'updated_at' => 'datetime:M d, Y H:i',
+    ];
 
     public function scopeRegisterRestaurant($query, $data)
     {
@@ -42,18 +46,9 @@ class Tenant extends BaseTenant implements TenantWithDatabase
         return $tenant;
     }
 
-    public function scopeGetRestaurantsList($query, $search, $status, $sortField, $sortDirection)
+    public function scopeGetTenantsList($query, $status = 1, $sortField = 'id', $sortDirection = 'desc')
     {
-        if (!empty($search)) {
-            $query->where(function ($q) use ($search) {
-                $q->where('data->email', 'like', '%' . $search . '%')
-                    ->orWhere('data->status', 'like', '%' . $search . '%')
-                    ->orWhere('data->business_name', 'like', '%' . $search . '%');
-            });
-        }
-        if (!empty($status)) {
-            $query->where('status', $status);
-        }
+        $query->where('status', $status);
         return $query->orderBy($sortField, $sortDirection);
     }
 
@@ -74,10 +69,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
         });
         return $tenant;
     }
-    public function order()
-    {
-        return $this->hasOne(Order::class);
-    }
+
     public function domains()
     {
         return $this->hasMany(Domain::class);

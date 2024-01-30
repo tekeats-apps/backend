@@ -8,6 +8,7 @@ use App\Traits\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Services\Admin\Tenant\TenantService;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\Admin\Api\Tenants\ListTenantsRequest;
 use App\Http\Requests\Admin\Api\Tenants\RegisterTenantRequest;
 use App\Http\Requests\Admin\Api\Tenants\ValidateDomainRequest;
 use App\Http\Requests\Admin\Api\Tenants\ValidateBusinessRequest;
@@ -96,6 +97,25 @@ class TenantController extends Controller
             return $this->successResponse(null, "Domain is unique.");
         } else {
             return $this->errorResponse("Domain is already taken.", Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    /**
+     * List Tenants.
+     *
+     * 📋 Use this endpoint to get a paginated list of tenants.
+     */
+    public function listTenants(ListTenantsRequest $request)
+    {
+        try {
+            $limit = $request->input('limit', 10);
+
+            $tenants = $this->tenantService->getTenantsList()->paginate($limit);
+            $tenants->load('subscriptions');
+
+            return $this->successResponse($tenants, "Tenants listed successfully!");
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
