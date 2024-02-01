@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Vendor\Customer;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CustomerVerificationMail;
 use App\Traits\TenantImageUploadTrait;
 use App\Services\Tenant\Order\OrderService;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,6 +48,8 @@ class CustomerController extends Controller
             $user = Customer::createNew($validatedData['first_name'], $validatedData['last_name'], $validatedData['email'], $validatedData['password']);
             $token = $user->createToken('Customer-Token')->plainTextToken;
 
+            $this->sendVerificationEmail($user);
+
             $data['user'] = $user;
             $data['tokenType'] = 'Bearer';
             $data['token'] = $token;
@@ -53,6 +57,20 @@ class CustomerController extends Controller
             return $this->successResponse($data, "Your account has been registered successfully.", Response::HTTP_CREATED);
         } catch (Exception $e) {
             return $this->exceptionResponse($e, "Something went wrong!");
+        }
+    }
+
+    protected function sendVerificationEmail(Customer $customer)
+    {
+        try {
+            $otpCode = generate_otp_code(5);
+            $customer->otp = $otpCode;
+            $customer->save();
+
+            Mail::to($customer->email)->send(new CustomerVerificationMail($customer));
+        } catch (\Exception $e) {
+            // Log the error or handle it as needed
+            \Log::error('Email sending failed for customer: ' . $customer->id . '. Error: ' . $e->getMessage());
         }
     }
     /**
