@@ -17,9 +17,8 @@
                         <tbody>
                             <tr>
                                 <td style="padding: 40px 0px 0px;">
-                                    <div style="text-align: center"><img
-                                            src="{{ asset('assets/images/logo/brand.svg') }}" alt="Tekeats"
-                                            style="width: 70px;">
+                                    <div style="text-align: center">
+                                        <h1> Tekeats</h1>
                                     </div>
                                     <div style="padding: 20px; background-color: rgb(255, 255, 255);">
                                         <div style="color: rgb(0, 0, 0); text-align: left;">
