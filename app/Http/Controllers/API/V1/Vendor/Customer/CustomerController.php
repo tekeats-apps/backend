@@ -48,7 +48,7 @@ class CustomerController extends Controller
             $user = Customer::createNew($validatedData['first_name'], $validatedData['last_name'], $validatedData['email'], $validatedData['password']);
             $token = $user->createToken('Customer-Token')->plainTextToken;
 
-            $this->sendVerificationEmail($user);
+            $this->sendVerificationEmailAction($user);
 
             $data['user'] = $user;
             $data['tokenType'] = 'Bearer';
@@ -60,17 +60,28 @@ class CustomerController extends Controller
         }
     }
 
-    protected function sendVerificationEmail(Customer $customer)
+    protected function sendVerificationEmailAction(Customer $customer)
     {
-        try {
-            $otpCode = generate_otp_code(5);
-            $customer->otp = $otpCode;
-            $customer->save();
+        $otpCode = generate_otp_code(5);
+        $customer->otp = $otpCode;
+        $customer->save();
 
-            Mail::to($customer->email)->send(new CustomerVerificationMail($customer));
-        } catch (\Exception $e) {
-            // Log the error or handle it as needed
-            \Log::error('Email sending failed for customer: ' . $customer->id . '. Error: ' . $e->getMessage());
+        Mail::to($customer->email)->send(new CustomerVerificationMail($customer));
+    }
+
+    /**
+     * Send Verification Email
+     *
+     * 🗝️ Use this endpoint to send a verification email to customer email address after login.
+     */
+    public function sendVerificationEmail(Request $request)
+    {
+        $customer = $request->user();
+        try {
+            $this->sendVerificationEmailAction($customer);
+            return $this->successResponse([], "Email sent successfully!", Response::HTTP_OK);
+        } catch (Exception $e) {
+            return $this->exceptionResponse($e, "Failed to send Email verification.");
         }
     }
     /**

@@ -33,12 +33,15 @@ Route::middleware([
         ->group(function () {
             Route::post('/register', 'register');
             Route::post('/login', 'login');
+
         });
 
     Route::middleware(['auth:customers'])->group(function () {
         Route::controller(CustomerController::class)
             ->prefix('customer')
             ->group(function () {
+                Route::get('/send-verification-email', 'sendVerificationEmail');
+
                 Route::get('/get-profile', 'getProfile');
                 Route::put('/update-profile', 'updateProfile');
                 Route::post('/update-password', 'updatePassword');
