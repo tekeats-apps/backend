@@ -41,6 +41,7 @@ class Customer extends Authenticatable
         'avatar',
         'birthday',
         'gender',
+        'verified'
     ];
 
     /**
