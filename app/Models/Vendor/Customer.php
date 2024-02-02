@@ -60,10 +60,8 @@ class Customer extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime'
+        'verified' => 'boolean'
     ];
-
-    protected $appends = ['is_email_verified'];
 
     protected function getAvatarAttribute($value)
     {
@@ -75,11 +73,6 @@ class Customer extends Authenticatable
         }
 
         return $image;
-    }
-
-    public function getIsEmailVerifiedAttribute()
-    {
-        return !is_null($this->email_verified_at);
     }
 
     public function scopeList($query, $search, $status, $sortField, $sortDirection)
