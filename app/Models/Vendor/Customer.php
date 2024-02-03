@@ -53,6 +53,7 @@ class Customer extends Authenticatable
         'password',
         'remember_token',
         'updated_at',
+        'otp'
     ];
 
     /**
