@@ -41,6 +41,7 @@ Route::middleware([
             ->prefix('customer')
             ->group(function () {
                 Route::get('/send-verification-email', 'sendVerificationEmail');
+                Route::post('/verify-email', 'verifyEmail');
 
                 Route::get('/get-profile', 'getProfile');
                 Route::put('/update-profile', 'updateProfile');

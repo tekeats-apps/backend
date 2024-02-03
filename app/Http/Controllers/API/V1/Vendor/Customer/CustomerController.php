@@ -14,6 +14,7 @@ use App\Traits\TenantImageUploadTrait;
 use App\Services\Tenant\Order\OrderService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Vendor\Customers\LoginRequest;
+use App\Http\Requests\Vendor\Auth\VerifyEmailRequest;
 use App\Http\Requests\Vendor\Customers\API\GetCustomerOrders;
 use App\Http\Requests\Vendor\Customers\PasswordUpdateRequest;
 use App\Http\Requests\Vendor\Customers\API\ProfileUpdateRequest;
@@ -62,7 +63,7 @@ class CustomerController extends Controller
 
     protected function sendVerificationEmailAction(Customer $customer)
     {
-        $otpCode = generate_otp_code(5);
+        $otpCode = generate_otp_code(4);
         $customer->otp = $otpCode;
         $customer->save();
 
@@ -84,6 +85,37 @@ class CustomerController extends Controller
             return $this->exceptionResponse($e, "Failed to send Email verification.");
         }
     }
+
+    /**
+     * Verify Email Address
+     *
+     * 🗝️ Use this endpoint to verify email by OTP sent to the registered email.
+     */
+    public function verifyEmail(VerifyEmailRequest $request)
+    {
+        $customer = $request->user();
+        $validatedData = $request->validated();
+        try {
+            if ($customer->verified) {
+                return $this->errorResponse("Email is already verified.", Response::HTTP_BAD_REQUEST);
+            }
+            $otpToMatch = $validatedData['otp'];
+            // Check if the provided OTP matches the one stored in the customer's record
+            if ($customer->otp === $otpToMatch) {
+                // Update customer's fields
+                $customer->otp = null;
+                $customer->verified = true;
+                $customer->save();
+
+                return $this->successResponse([], "Email verified successfully!", Response::HTTP_OK);
+            } else {
+                return $this->errorResponse("Invalid OTP, Email verification failed.", Response::HTTP_BAD_REQUEST);
+            }
+        } catch (Exception $e) {
+            return $this->exceptionResponse($e, "Failed to verify email.");
+        }
+    }
+
     /**
      * Login
      *
