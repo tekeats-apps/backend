@@ -2,15 +2,15 @@
 
 namespace App\Models\Vendor;
 
+use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Searchable;
 
     const IMAGE_PATH = 'products';
 
@@ -50,6 +50,14 @@ class Product extends Model
     public function findExtraByName($name)
     {
         return $this->extras()->where('name', $name)->first();
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'name' => '',
+            'categories.name' => '',
+        ];
     }
 
     public function findVariantByName($name)
@@ -165,7 +173,6 @@ class Product extends Model
 
     public function getDiscountedPriceAttribute()
     {
-
         $discountedPrice = $this->price;
         if ($this->category && $this->category->discount_enabled) {
             $discountedPrice = $this->applyDiscount($discountedPrice, $this->category->discount);

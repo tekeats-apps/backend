@@ -9,6 +9,7 @@ use App\Models\Vendor\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Vendor\Products\API\GetProducts;
 use App\Http\Requests\Vendor\Products\API\GetProductsBycategory;
+use App\Http\Requests\Vendor\Products\API\SearchProductsRequest;
 
 /**
  * @tags Products
@@ -65,8 +66,6 @@ class ProductController extends Controller
     public function getProductDetails($productId)
     {
         try {
-
-
             $relations = [
                 'category' => ['categories.id', 'categories.name'],
                 'tags' => ['tags.id', 'tags.name'],
@@ -144,6 +143,40 @@ class ProductController extends Controller
         } catch (Exception $e) {
             // Handle exceptions and return error response
             return $this->exceptionResponse($e, "Failed to fetch products by category.");
+        }
+    }
+
+    /**
+     * Search Products
+     *
+     * Get a list of products filtered by a name, category and tags or products
+     *
+     */
+    public function searchProducts(SearchProductsRequest $request)
+    {
+        $valid = $request->validated();
+        $limit = (isset($valid['limit']) ? $valid['limit'] : 10);
+        try {
+
+            $products = Product::search(trim($request->get('query')) ?? '')
+                ->query(function ($query) {
+                    $query->join('categories', 'products.category_id', 'categories.id')
+                        ->select([
+                            'products.id',
+                            'products.name',
+                            'products.price',
+                            'products.discount_enabled',
+                            'products.discount',
+                            'products.image',
+                            'categories.name as category_name'
+                        ])
+                        ->orderBy('products.id', 'DESC');
+                })
+                ->paginate($limit);
+
+            return $this->successResponse($products, "Products fetched successfully.", Response::HTTP_OK);
+        } catch (Exception $e) {
+            return $this->exceptionResponse($e, "Failed to fetch results.");
         }
     }
 }
