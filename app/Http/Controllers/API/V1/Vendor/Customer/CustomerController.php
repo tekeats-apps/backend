@@ -169,7 +169,7 @@ class CustomerController extends Controller
 
             if (!$user) {
                 $user = Customer::createNewSocialUser($provider, $socialUser);
-            } else {
+            } else if (!$user->social_id) {
                 // If the user already exists, update the user's information with social media data
                 $user->updateSocialUserData($provider, $socialUser);
             }
