@@ -33,7 +33,7 @@ Route::middleware([
         ->group(function () {
             Route::post('/register', 'register');
             Route::post('/login', 'login');
-
+            Route::post('/social/login', 'socialLogin');
         });
 
     Route::middleware(['auth:customers'])->group(function () {

@@ -2,6 +2,7 @@
 
 namespace App\Models\Vendor;
 
+use Illuminate\Support\Str;
 use App\Models\Vendor\Address;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
@@ -41,7 +42,9 @@ class Customer extends Authenticatable
         'avatar',
         'birthday',
         'gender',
-        'verified'
+        'verified',
+        'social_id',
+        'social_provider'
     ];
 
     /**
@@ -53,7 +56,8 @@ class Customer extends Authenticatable
         'password',
         'remember_token',
         'updated_at',
-        'otp'
+        'otp',
+        'social_id',
     ];
 
     /**
@@ -62,7 +66,9 @@ class Customer extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'verified' => 'boolean'
+        'verified' => 'boolean',
+        'created_at' => 'datetime:M d, Y H:i',
+        'updated_at' => 'datetime:M d, Y H:i',
     ];
 
     protected function getAvatarAttribute($value)
@@ -118,6 +124,30 @@ class Customer extends Authenticatable
             'last_name' => $last_name,
             'email' => $email,
             'password' => Hash::make($password),
+        ]);
+    }
+
+    public function scopeCreateNewSocialUser($query, $provider, $data)
+    {
+        $randomPassword = Str::random(10);
+        return $query->create([
+            'social_provider' => $provider,
+            'social_id' => $data['id'],
+            'first_name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($randomPassword),
+            'verified' => true
+        ]);
+    }
+
+    public function updateSocialUserData($provider, $data)
+    {
+        // Update only the fields you want to change
+        $this->update([
+            'social_provider' => $provider,
+            'social_id' => $data['id'],
+            'first_name' => $data['name'],
+            'email' => $data['email'],
         ]);
     }
 

@@ -11,9 +11,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CustomerVerificationMail;
 use App\Traits\TenantImageUploadTrait;
+use Laravel\Socialite\Facades\Socialite;
 use App\Services\Tenant\Order\OrderService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Vendor\Customers\LoginRequest;
+use App\Http\Requests\Vendor\Auth\SocialLoginRequest;
 use App\Http\Requests\Vendor\Auth\VerifyEmailRequest;
 use App\Http\Requests\Vendor\Customers\API\GetCustomerOrders;
 use App\Http\Requests\Vendor\Customers\PasswordUpdateRequest;
@@ -144,6 +146,46 @@ class CustomerController extends Controller
             return $this->exceptionResponse($e, "Login failed.");
         }
     }
+
+    /**
+     * Social Login (Google & Apple)
+     *
+     * @unauthenticated
+     *
+     * 🗝️ Use this endpoint to perform social login and gain access to your account. You'll get a token you can use to do even more awesome things!
+     */
+    public function socialLogin(SocialLoginRequest $request)
+    {
+        $data = [];
+        $validatedData = $request->validated();
+        try {
+            $provider = $validatedData['driver'];
+            $token = $validatedData['access_token'];
+
+            $socialUser = Socialite::driver($provider)->userFromToken($token);
+
+            // Check if the user already exists
+            $user = Customer::where('email', $socialUser->getEmail())->first();
+
+            if (!$user) {
+                $user = Customer::createNewSocialUser($provider, $socialUser);
+            } else {
+                // If the user already exists, update the user's information with social media data
+                $user->updateSocialUserData($provider, $socialUser);
+            }
+
+            // Create a new token
+            $token = $user->createToken('Customer-Token')->plainTextToken;
+            $data['user'] = $user;
+            $data['tokenType'] = 'Bearer';
+            $data['token'] = $token;
+
+            return $this->successResponse($data, "Login successfully.", Response::HTTP_OK);
+        } catch (Exception $e) {
+            return $this->exceptionResponse($e, "Login failed.");
+        }
+    }
+
     /**
      * View Profile
      *
