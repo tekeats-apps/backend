@@ -2,12 +2,11 @@
 
 namespace App\Providers;
 
-use App\Models\Vendor\Tax;
-use App\Models\Vendor\Discount;
-use App\Observers\Vendor\TaxObserver;
 use Illuminate\Auth\Events\Registered;
 use App\Events\Tenant\OrderPlacedEvent;
 use App\Listeners\Tenant\SendNotificationListener;
+use SocialiteProviders\Apple\AppleExtendSocialite;
+use SocialiteProviders\Manager\SocialiteWasCalled;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -24,6 +23,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         OrderPlacedEvent::class => [
             SendNotificationListener::class,
+        ],
+        SocialiteWasCalled::class => [
+            AppleExtendSocialite::class . '@handle',
         ],
     ];
 
