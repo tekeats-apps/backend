@@ -29,6 +29,7 @@ Route::prefix('v1/admin')->group(function () {
             ->prefix('restaurants')
             ->group(function () {
                 Route::get('/list', 'listTenants');
+                Route::get('/details/{tenant}', 'getDetails');
                 Route::post('/register', 'registerTenant');
                 Route::post('/validate/business', 'checkBusinessName');
                 Route::post('/validate/business/domain', 'checkDomain');

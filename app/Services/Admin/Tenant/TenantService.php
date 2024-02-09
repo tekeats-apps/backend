@@ -13,18 +13,18 @@ class TenantService
         return $tenant;
     }
 
-    public function isBusinessNameUnique($businessName)
+    public function isBusinessNameUnique($businessName): bool
     {
         return !Tenant::whereJsonContains('data->business_name', $businessName)->exists();
     }
 
-    public function isDomainUnique($domain)
+    public function isDomainUnique($domain): bool
     {
         $domain = $domain . '.' . env('TENANT_DOMAIN');
         return !Domain::where('domain', $domain)->exists();
     }
 
-    public function subscribeToPlan(Tenant $tenant, $plan)
+    public function subscribeToPlan(Tenant $tenant, $plan): \Illuminate\Database\Eloquent\Model
     {
         return $tenant->newSubscription(
             'main',
@@ -44,5 +44,11 @@ class TenantService
     public function getTenantsList()
     {
         return Tenant::getTenantsList();
+    }
+
+    public function getTenantDetails(Tenant $tenant): Tenant
+    {
+            $tenant->load(['subscriptions:id,subscriber_id,name', 'domains:id,tenant_id,domain,status,type']);
+            return $tenant;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V1\Admin\Tenant;
 
+use App\Models\Tenant;
 use Exception;
 use App\Models\Admin\Plan;
 use App\Traits\ApiResponse;
@@ -20,18 +21,18 @@ use App\Http\Requests\Admin\Api\Tenants\ValidateBusinessRequest;
 class TenantController extends Controller
 {
     use ApiResponse;
-    protected $tenantService;
+    protected TenantService $tenantService;
 
     public function __construct(TenantService $tenantService)
     {
         $this->tenantService = $tenantService;
     }
     /**
-     * Resgister Restaurant
+     * Register Restaurant
      *
      * 🗝️ Use this endpoint to register business on our system to enjoy our apps and services!
      */
-    public function registerTenant(RegisterTenantRequest $request)
+    public function registerTenant(RegisterTenantRequest $request): \Illuminate\Http\JsonResponse
     {
         $data = $request->validated();
 
@@ -75,7 +76,7 @@ class TenantController extends Controller
      *
      * 🔄 Use this endpoint to check the uniqueness of a business name.
      */
-    public function checkBusinessName(ValidateBusinessRequest $request)
+    public function checkBusinessName(ValidateBusinessRequest $request): \Illuminate\Http\JsonResponse
     {
         $data = $request->validated();
         if ($this->tenantService->isBusinessNameUnique($data['business_name'])) {
@@ -90,7 +91,7 @@ class TenantController extends Controller
      *
      * 🔄 Use this endpoint to check the uniqueness of a domain.
      */
-    public function checkDomain(ValidateDomainRequest $request)
+    public function checkDomain(ValidateDomainRequest $request): \Illuminate\Http\JsonResponse
     {
         $data = $request->validated();
         if ($this->tenantService->isDomainUnique($data['domain'])) {
@@ -105,7 +106,7 @@ class TenantController extends Controller
      *
      * 📋 Use this endpoint to get a paginated list of tenants.
      */
-    public function listTenants(ListTenantsRequest $request)
+    public function listTenants(ListTenantsRequest $request): \Illuminate\Http\JsonResponse
     {
         try {
             $limit = $request->input('limit', 10);
@@ -118,4 +119,21 @@ class TenantController extends Controller
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * Business Details.
+     *
+     * 📋 Use this endpoint to get a details of tenants.
+     */
+    public function getDetails(Tenant $tenant): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $tenantDetails = $this->tenantService->getTenantDetails($tenant);
+            return $this->successResponse($tenantDetails, "Business details fetched successfully!");
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }
