@@ -103,7 +103,7 @@ class CustomerController extends Controller
             }
             $otpToMatch = $validatedData['otp'];
             // Check if the provided OTP matches the one stored in the customer's record
-            if ($customer->otp === $otpToMatch) {
+            if ($customer->otp == $otpToMatch) {
                 // Update customer's fields
                 $customer->otp = null;
                 $customer->verified = true;
