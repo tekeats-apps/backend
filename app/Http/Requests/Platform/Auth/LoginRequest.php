@@ -6,9 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
 {
-    public mixed $password;
-    public mixed $email;
-
     /**
      * Determine if the user is authorized to make this request.
      *
