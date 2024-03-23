@@ -27,7 +27,7 @@ class PluginRequest extends FormRequest
                 return [
                     'plugin_type_id' => ['required'],
                     'name' => ['required', 'string', 'max:255'],
-                    'image' => ['nullable', File::types(['png', 'jpg', 'jpeg'])->size(1024 * 2)],
+                    'image' => ['nullable', File::types(['png', 'jpg', 'jpeg'])],
                     'documentation' => ['nullable', File::types('pdf')->size(1024 * 2)],
                     'video' => ['nullable', 'url'],
                     'version' => ['nullable', 'numeric', 'between:0,99.99'],
@@ -41,7 +41,7 @@ class PluginRequest extends FormRequest
                 return [
                     'plugin_type_id' => ['required'],
                     'name' => ['required', 'string', 'max:255'],
-                    'image' => ['nullable', File::types(['png', 'jpg', 'jpeg'])->size(1024 * 2)],
+                    'image' => ['nullable', File::types(['png', 'jpg', 'jpeg'])],
                     'documentation' => ['nullable', File::types('pdf')->size(1024 * 2)],
                     'video' => ['nullable', 'url'],
                     'version' => ['nullable', 'numeric', 'between:0,99.99'],

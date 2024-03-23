@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\V1\Platform\Auth\AuthController;
+use App\Http\Controllers\API\V1\Platform\Category\CategoryController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -27,6 +28,14 @@ Route::middleware([
                     Route::post('/update-password', 'updatePassword');
                     Route::post('/update-profile-image', 'updateProfileImage');
                     Route::get('/logout', 'logout');
+                });
+
+            Route::controller(CategoryController::class)
+                ->prefix('category')
+                ->group(function () {
+                    Route::get('/list', 'getCategories');
+                    Route::post('/create', 'createCategory');
+                    Route::get('/details/{category}', 'getCategoryDetails');
                 });
         });
     });
