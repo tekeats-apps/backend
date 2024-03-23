@@ -15,10 +15,8 @@ class Category extends Model
     const IMAGE_PATH = 'categories';
 
     protected $fillable = [
-        'parent_id',
         'name',
         'slug',
-        'position',
         'featured',
         'description',
         'image',
@@ -27,10 +25,12 @@ class Category extends Model
         'discount'
     ];
 
-    public function subcategories()
-    {
-        return $this->hasMany(Category::class, 'parent_id');
-    }
+    protected $casts = [
+        'status' => 'boolean',
+        'featured' => 'boolean',
+        'discount_enabled' => 'boolean',
+        'discount' => 'integer',
+    ];
 
     protected function getImageAttribute($value)
     {
