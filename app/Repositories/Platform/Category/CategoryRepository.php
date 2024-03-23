@@ -22,4 +22,9 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return $this->model->create($data);
     }
+
+    public function findCategory($categoryId)
+    {
+        return $this->model->find($categoryId);
+    }
 }

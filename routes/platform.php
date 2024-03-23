@@ -36,6 +36,8 @@ Route::middleware([
                     Route::get('/list', 'getCategories');
                     Route::post('/create', 'createCategory');
                     Route::get('/details/{category}', 'getCategoryDetails');
+                    Route::post('/update/{category}', 'updateCategory');
+                    Route::delete('/delete/{category}', 'deleteCategory');
                 });
         });
     });
