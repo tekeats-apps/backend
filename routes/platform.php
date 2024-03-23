@@ -4,7 +4,7 @@ use App\Http\Controllers\API\V1\Platform\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
-
+use App\Http\Controllers\API\V1\Tags\TagsController;
 Route::middleware([
     'locale', InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
@@ -28,6 +28,14 @@ Route::middleware([
                     Route::post('/update-profile-image', 'updateProfileImage');
                     Route::get('/logout', 'logout');
                 });
+            Route::controller(TagsController::class)
+                ->prefix('tags')
+                ->group(function () {
+                    Route::get('/create-tag', 'createTag');
+                });
+        });
+        Route::middleware(['auth:platform-api'])->group(function () {
+
         });
     });
 
