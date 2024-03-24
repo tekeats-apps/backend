@@ -2,10 +2,10 @@
 
 use App\Http\Controllers\API\V1\Platform\Auth\AuthController;
 use App\Http\Controllers\API\V1\Platform\Category\CategoryController;
+use App\Http\Controllers\API\V1\Platform\Tags\TagsController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
-
 Route::middleware([
     'locale', InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
@@ -29,7 +29,17 @@ Route::middleware([
                     Route::post('/update-profile-image', 'updateProfileImage');
                     Route::get('/logout', 'logout');
                 });
-
+            Route::controller(TagsController::class)
+                ->prefix('tags')
+                ->group(function () {
+                    Route::get('/list', 'getTags');
+                    Route::post('/create-tag', 'createTag');
+                    Route::get('/details/{tag}', 'getTagDetails');
+                    Route::post('/update/{tag}', 'updateTag');
+                    Route::delete('/delete/{tag}', 'deleteTag');
+                });
+        });
+        Route::middleware(['auth:platform-api'])->group(function () {
             Route::controller(CategoryController::class)
                 ->prefix('category')
                 ->group(function () {
