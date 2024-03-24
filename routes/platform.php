@@ -32,7 +32,7 @@ Route::middleware([
             Route::controller(TagsController::class)
                 ->prefix('tags')
                 ->group(function () {
-                    Route::get('/create-tag', 'createTag');
+                    Route::post('/create-tag', 'createTag');
                 });
         });
         Route::middleware(['auth:platform-api'])->group(function () {

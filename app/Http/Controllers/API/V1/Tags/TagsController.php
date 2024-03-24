@@ -10,6 +10,7 @@ use App\Traits\ApiResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Vendor\Tags\CreateTagRequest;
+use App\Services\Platform\TagService;
 use App\Models\Vendor\Tag;
 /**
  * @tags Platform
@@ -17,6 +18,11 @@ use App\Models\Vendor\Tag;
 class TagsController extends Controller
 {
     use ApiResponse;
+    protected TagService $tagService;
+    public function __construct(TagService $tagService)
+    {
+        $this->tagService = $tagService;
+    }
     /**
      * create tag
      *
@@ -29,8 +35,8 @@ class TagsController extends Controller
     {
         try {
             $validatedData = $request->validated();
-            // Tag::createTag($validatedData);
-            return $this->successResponse([], "Tag has been successfully added.", Response::HTTP_OK);
+            $tag = $this->tagService->createTag($validatedData);
+            return $this->successResponse($tag, "Tag has been successfully added.", Response::HTTP_OK);
         } catch (Exception $e) {
             return $this->exceptionResponse($e, 'An error occurred while saving the tag: ' . $e->getMessage());
         }
