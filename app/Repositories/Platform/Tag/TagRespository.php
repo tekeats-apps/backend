@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Repositories\Platform\Tags;
+namespace App\Repositories\Platform\Tag;
 
 use App\Models\Vendor\Tag;
 
-class TagsRespository implements TagsRespositoryInterface
+class TagRespository implements TagRespositoryInterface
 {
     protected Tag $model;
 

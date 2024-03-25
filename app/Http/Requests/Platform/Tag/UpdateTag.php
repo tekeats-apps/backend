@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Platform\Tags;
+namespace App\Http\Requests\Platform\Tag;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;

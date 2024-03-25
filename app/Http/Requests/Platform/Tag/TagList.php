@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Platform\Tags;
+namespace App\Http\Requests\Platform\Tag;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TagsList extends FormRequest
+class TagList extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

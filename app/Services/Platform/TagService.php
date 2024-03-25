@@ -2,29 +2,29 @@
 
 namespace App\Services\Platform;
 
-use App\Repositories\Platform\Tags\TagsRespository;
+use App\Repositories\Platform\Tag\TagRespository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\Vendor\Tag;
 
 class TagService
 {
-    protected TagsRespository $tagsRespository;
+    protected TagRespository $tagRespository;
 
-    public function __construct(TagsRespository $tagsRespository)
+    public function __construct(TagRespository $tagRespository)
     {
-        $this->tagsRespository = $tagsRespository;
+        $this->tagRespository = $tagRespository;
     }
     public function getTagsList()
     {
-        return $this->tagsRespository->tagsList();
+        return $this->tagRespository->tagsList();
     }
     public function getTagDetails($tagId)
     {
-        return $this->tagsRespository->findTag($tagId);
+        return $this->tagRespository->findTag($tagId);
     }
     public function createTag(array $data)
     {
-        $category = $this->tagsRespository->createTag($data);
+        $category = $this->tagRespository->createTag($data);
         return $category;
     }
     /**
@@ -38,7 +38,7 @@ class TagService
 
     public function deleteTag(int $tagId): void
     {
-        $category = $this->tagsRespository->findTag($tagId);
+        $category = $this->tagRespository->findTag($tagId);
         if (!$category) {
             throw new ModelNotFoundException('Tag not found');
         }

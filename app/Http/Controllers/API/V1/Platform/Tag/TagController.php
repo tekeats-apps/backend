@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\V1\Platform\Tags;
+namespace App\Http\Controllers\API\V1\Platform\Tag;
 
 use Log;
 use Exception;
@@ -9,15 +9,15 @@ use Illuminate\Http\Request;
 use App\Traits\ApiResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\Platform\Tags\CreateTags;
-use App\Http\Requests\Platform\Tags\TagsList;
-use App\Http\Requests\Platform\Tags\UpdateTag;
+use App\Http\Requests\Platform\Tag\CreateTag;
+use App\Http\Requests\Platform\Tag\TagList;
+use App\Http\Requests\Platform\Tag\UpdateTag;
 use App\Services\Platform\TagService;
 use App\Models\Vendor\Tag;
 /**
  * @tags Platform
  */
-class TagsController extends Controller
+class TagController extends Controller
 {
     use ApiResponse;
     protected TagService $tagService;
@@ -33,7 +33,7 @@ class TagsController extends Controller
      *
      * Fetch all the categories added by platform user.
      */
-    public function getTags(TagsList $request): \Illuminate\Http\JsonResponse
+    public function getTags(TagList $request): \Illuminate\Http\JsonResponse
     {
         try {
             $limit = $request->input('limit', 10);
@@ -52,7 +52,7 @@ class TagsController extends Controller
      *
      * Creates a new tags with the provided data.
      */
-    public function createTag(CreateTags $request): \Illuminate\Http\JsonResponse
+    public function createTag(CreateTag $request): \Illuminate\Http\JsonResponse
     {
         try {
             $validatedData = $request->validated();

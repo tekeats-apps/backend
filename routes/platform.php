@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\API\V1\Platform\Auth\AuthController;
 use App\Http\Controllers\API\V1\Platform\Category\CategoryController;
-use App\Http\Controllers\API\V1\Platform\Tags\TagsController;
+use App\Http\Controllers\API\V1\Platform\Tag\TagController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -29,7 +29,7 @@ Route::middleware([
                     Route::post('/update-profile-image', 'updateProfileImage');
                     Route::get('/logout', 'logout');
                 });
-            Route::controller(TagsController::class)
+            Route::controller(TagController::class)
                 ->prefix('tags')
                 ->group(function () {
                     Route::get('/list', 'getTags');
