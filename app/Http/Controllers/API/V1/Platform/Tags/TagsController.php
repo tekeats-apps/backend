@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 use App\Traits\ApiResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\platform\Tags\CreateTags;
-use App\Http\Requests\platform\Tags\TagsList;
-use App\Http\Requests\platform\Tags\UpdateTag;
+use App\Http\Requests\Platform\Tags\CreateTags;
+use App\Http\Requests\Platform\Tags\TagsList;
+use App\Http\Requests\Platform\Tags\UpdateTag;
 use App\Services\Platform\TagService;
 use App\Models\Vendor\Tag;
 /**
