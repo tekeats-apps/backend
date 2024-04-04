@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\API\V1\Platform\Auth\AuthController;
-use App\Http\Controllers\API\V1\Platform\Category\CategoryController;
-use App\Http\Controllers\API\V1\Platform\Tag\TagController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use App\Http\Controllers\API\V1\Platform\Tag\TagController;
+use App\Http\Controllers\API\V1\Platform\CustomerController;
+use App\Http\Controllers\API\V1\Platform\Auth\AuthController;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use App\Http\Controllers\API\V1\Platform\Category\CategoryController;
+
 Route::middleware([
     'locale', InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
@@ -13,7 +15,7 @@ Route::middleware([
 
     Route::prefix('v1')->group(function () {
 
-        // Admin Users Authentication Routes
+        // Platform Users Authentication Routes
         Route::controller(AuthController::class)
             ->prefix('auth')
             ->group(function () {
@@ -39,18 +41,20 @@ Route::middleware([
                     Route::delete('/delete/{tag}', 'deleteTag');
                 });
         });
-        Route::middleware(['auth:platform-api'])->group(function () {
-            Route::controller(CategoryController::class)
-                ->prefix('category')
-                ->group(function () {
-                    Route::get('/list', 'getCategories');
-                    Route::post('/create', 'createCategory');
-                    Route::get('/details/{category}', 'getCategoryDetails');
-                    Route::post('/update/{category}', 'updateCategory');
-                    Route::delete('/delete/{category}', 'deleteCategory');
-                });
-        });
+        Route::controller(CategoryController::class)
+            ->prefix('category')
+            ->group(function () {
+                Route::get('/list', 'getCategories');
+                Route::post('/create', 'createCategory');
+                Route::get('/details/{category}', 'getCategoryDetails');
+                Route::post('/update/{category}', 'updateCategory');
+                Route::delete('/delete/{category}', 'deleteCategory');
+            });
+
+        Route::controller(CustomerController::class)
+            ->prefix('customers')
+            ->group(function () {
+                Route::get('/list', 'getCustomers');
+            });
     });
-
 });
-
