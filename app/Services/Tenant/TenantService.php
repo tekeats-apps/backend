@@ -36,7 +36,9 @@ class TenantService {
             } else {
                 // Otherwise, format the opening and closing times
                 $formatted[$dayName] = array_map(function ($slot) {
-                    return $slot['open_time'] . '-' . $slot['close_time'];
+                    $openTime = (new \DateTime($slot['open_time']))->format('H:i');
+                    $closeTime = (new \DateTime($slot['close_time']))->format('H:i');
+                    return $openTime . '-' . $closeTime;
                 }, $dayData['slots']);
             }
         }

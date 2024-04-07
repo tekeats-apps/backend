@@ -11,10 +11,10 @@ class Slot extends Model
 
     protected $fillable = ['restaurant_opening_hour_id', 'open_time', 'close_time'];
 
-    protected $casts = [
-        'open_time' => 'datetime:H:i',
-        'close_time' => 'datetime:H:i',
-    ];
+    // protected $casts = [
+    //     'open_time' => 'datetime:H:i',
+    //     'close_time' => 'datetime:H:i',
+    // ];
 
     public function openingHours()
     {
