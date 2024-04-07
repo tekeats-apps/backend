@@ -6,6 +6,7 @@ use Exception;
 use App\Traits\ApiResponse;
 use App\Models\Vendor\Extra;
 use App\Http\Controllers\Controller;
+use App\Services\Tenant\TenantService;
 use App\Services\Tenant\Order\OrderService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Exceptions\DeliveryUnavailableException;
@@ -23,11 +24,13 @@ class OrderController extends Controller
     use ApiResponse;
     protected $orderService;
     protected $deliveryChargeService;
+    protected $tenantService;
 
-    public function __construct(OrderService $orderService, DeliveryChargeService $deliveryChargeService)
+    public function __construct(OrderService $orderService, DeliveryChargeService $deliveryChargeService, TenantService $tenantService)
     {
         $this->orderService = $orderService;
         $this->deliveryChargeService = $deliveryChargeService;
+        $this->tenantService = $tenantService;
     }
 
     /**
@@ -38,6 +41,9 @@ class OrderController extends Controller
     public function calculateDeliveryCharges(GetDeliveryChargesRequest $request)
     {
         $data = $request->validated();
+        if (!$this->tenantService->isCurrentlyOpen()) {
+            return $this->errorResponse("The restaurant is currently closed.", Response::HTTP_BAD_REQUEST);
+        }
         $address_id = (int) $data['address_id'];
         $delivery = $this->deliveryChargeService->calculateDeliveryCharge($address_id);
         if (!$delivery->delivery_avaiable) {
@@ -54,6 +60,9 @@ class OrderController extends Controller
     {
         $validated = $request->validated();
         try {
+            if (!$this->tenantService->isCurrentlyOpen()) {
+                return $this->errorResponse("The restaurant is currently closed.", Response::HTTP_BAD_REQUEST);
+            }
             $director = new OrderDirector();
             $order = $director->placeOrder(new OrderBuilder($this->orderService, $this->deliveryChargeService), $validated, $request->user());
         } catch (DeliveryUnavailableException $e) {
