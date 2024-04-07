@@ -19,14 +19,14 @@ class Customer extends Authenticatable
     public const IMAGE_PATH = 'customers';
     public const DEFAULT_IMAGE_PATH = 'https://cdn-icons-png.flaticon.com/512/3787/3787263.png';
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
+    // public function __construct(array $attributes = [])
+    // {
+    //     parent::__construct($attributes);
 
-        if (request()->capture()->is('api/*')) {
-            $this->hidden = array_merge($this->hidden, ['id']);
-        }
-    }
+    //     if (request()->capture()->is('api/*')) {
+    //         $this->hidden = array_merge($this->hidden, ['id']);
+    //     }
+    // }
 
     /**
      * The attributes that are mass assignable.
@@ -67,6 +67,7 @@ class Customer extends Authenticatable
      */
     protected $casts = [
         'verified' => 'boolean',
+        'status' => 'boolean',
         'created_at' => 'datetime:M d, Y H:i',
         'updated_at' => 'datetime:M d, Y H:i',
     ];
