@@ -159,6 +159,6 @@ class Customer extends Authenticatable
 
     public function routeNotificationForOneSignal()
     {
-        return ['include_external_user_ids' => [$this->id]];
+        return ['include_external_user_ids' => [(string)$this->id]];
     }
 }
