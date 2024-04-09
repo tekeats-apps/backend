@@ -1,6 +1,8 @@
 <?php
 
+use App\Settings\DeliverySettings;
 use App\Settings\GeneralSettings;
+use App\Settings\OneSignalSettings;
 
 return [
 
@@ -9,7 +11,9 @@ return [
      * put them (manually) here.
      */
     'settings' => [
-        GeneralSettings::class
+        GeneralSettings::class,
+        DeliverySettings::class,
+        OneSignalSettings::class,
     ],
 
     /*
