@@ -156,4 +156,9 @@ class Customer extends Authenticatable
     {
         return $this->hasMany(Address::class);
     }
+
+    public function routeNotificationForOneSignal()
+    {
+        return ['include_external_user_ids' => [$this->id]];
+    }
 }
