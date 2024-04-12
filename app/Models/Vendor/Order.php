@@ -36,7 +36,7 @@ class Order extends Model
         'created_at'
     ];
 
-    protected $appends = ['status_text', 'order_type_text', 'payment_method_text'];
+    protected $appends = ['status_text', 'order_type_text', 'payment_method_text', 'payment_status_text'];
     protected $guarded = ['id'];
     protected $casts = [
         'status' => OrderStatus::class,
@@ -117,6 +117,16 @@ class Order extends Model
         return match ($this->payment_method) {
             OrderPaymentMethod::CARD => 'Card',
             OrderPaymentMethod::CASH => 'Cash',
+            default => 'Unknown Type',
+        };
+    }
+
+    public function getPaymentStatusTextAttribute()
+    {
+        return match ($this->payment_status) {
+            PaymentStatus::UNPAID => 'Unpaid',
+            PaymentStatus::PAID => 'Paid',
+            PaymentStatus::FAILED => 'Failed',
             default => 'Unknown Type',
         };
     }
