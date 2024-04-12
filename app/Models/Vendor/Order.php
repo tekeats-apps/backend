@@ -44,6 +44,8 @@ class Order extends Model
         'payment_method' => OrderPaymentMethod::class,
         'payment_status' => PaymentStatus::class,
         'created_at' => 'datetime:M d, Y H:i',
+        'subtotal_price' => 'float',
+        'total_price' => 'float'
     ];
 
     public function customer()

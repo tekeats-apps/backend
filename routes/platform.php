@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use App\Http\Controllers\API\V1\Platform\OrderController;
 use App\Http\Controllers\API\V1\Platform\SettingController;
 use App\Http\Controllers\API\V1\Platform\Tag\TagController;
 use App\Http\Controllers\API\V1\Platform\CustomerController;
@@ -56,6 +57,12 @@ Route::middleware([
             ->prefix('customers')
             ->group(function () {
                 Route::get('/list', 'getCustomers');
+            });
+        
+        Route::controller(OrderController::class)
+            ->prefix('orders')
+            ->group(function () {
+                Route::get('/list', 'getOrders');
             });
 
         Route::controller(SettingController::class)
