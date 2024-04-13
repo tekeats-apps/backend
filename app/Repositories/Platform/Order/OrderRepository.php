@@ -8,10 +8,11 @@ use App\Repositories\Platform\Order\OrderRepositoryInterface;
 class OrderRepository implements OrderRepositoryInterface
 {
     protected Order $model;
+    
 
-    public function __construct(Order $category)
+    public function __construct(Order $order)
     {
-        $this->model = $category;
+        $this->model = $order;
     }
 
     public function getOrders($sortField = 'id', $sortDirection = 'desc')

@@ -2,15 +2,19 @@
 
 namespace App\Services\Platform;
 
+use App\Events\Platform\OrderStatusUpdateEvent;
 use App\Repositories\Platform\Order\OrderRepository;
+use App\Repositories\Platform\Order\OrderStatusRepository;
 
 class OrderService
 {
     protected OrderRepository $orderRepository;
+    protected OrderStatusRepository $orderStatusHistory;
 
-    public function __construct(OrderRepository $orderRepository)
+    public function __construct(OrderRepository $orderRepository, OrderStatusRepository $orderStatusHistory)
     {
         $this->orderRepository = $orderRepository;
+        $this->orderStatusHistory = $orderStatusHistory;
     }
 
     public function getOrders()
@@ -38,8 +42,12 @@ class OrderService
      */
     public function updateOrderStatus($order, string $status)
     {
-        // You can implement your business logic here to update the order status
-        return $this->orderRepository->updateOrderStatus($order, $status);
+        $order = $this->orderRepository->updateOrderStatus($order, $status);
+        $this->orderStatusHistory->updateOrderStatus($order, $status);
+
+        event(new OrderStatusUpdateEvent($order));
+
+        return $order;
     }
 
 }

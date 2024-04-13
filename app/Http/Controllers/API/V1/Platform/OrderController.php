@@ -60,6 +60,11 @@ class OrderController extends Controller
             if (!$order) {
                 return $this->errorResponse("Order not found!", Response::HTTP_NOT_FOUND);
             }
+            
+            // Check if the status is different from the current status
+            if ($order->status->value === $status) {
+                return $this->errorResponse("Order already has the provided status!", Response::HTTP_BAD_REQUEST);
+            }
 
             // Update the order status
             $updatedOrder = $this->orderService->updateOrderStatus($order, $status);
