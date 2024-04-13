@@ -50,7 +50,7 @@ class OrderStatusNotification extends Notification implements ShouldQueue
 
         return OneSignalMessage::create()
             ->setSubject("🚀 Order Status Updated 🚀")
-            ->setBody("The status of your order #$orderID has been updated to '$status'.")
+            ->setBody("The status of your order #$orderID has been updated to $status.")
             ->setUrl(url('/orders/' . $orderID));
     }
 
