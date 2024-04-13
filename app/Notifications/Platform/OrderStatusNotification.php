@@ -38,7 +38,7 @@ class OrderStatusNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('Your order status has been updated to: ' . $this->order->order_status_text)
+            ->line('Your order status has been updated to: ' . $this->order->status_text)
             ->action('View Order', url('/orders/' . $this->order->id))
             ->line('Thank you for using our service!');
     }
@@ -46,7 +46,7 @@ class OrderStatusNotification extends Notification implements ShouldQueue
     public function toOneSignal(object $notifiable)
     {
         $orderID = $this->order->order_id; // Assuming you have order_id accessible in your Order model
-        $status = $this->order->order_status_text;
+        $status = $this->order->status_text;
 
         return OneSignalMessage::create()
             ->setSubject("🚀 Order Status Updated 🚀")

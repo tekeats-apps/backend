@@ -44,7 +44,7 @@ class OrderService
     {
         $order = $this->orderRepository->updateOrderStatus($order, $status);
         $this->orderStatusHistory->updateOrderStatus($order, $status);
-
+        
         event(new OrderStatusUpdateEvent($order));
 
         return $order;
