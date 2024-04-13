@@ -32,4 +32,17 @@ class OrderRepository implements OrderRepositoryInterface
             ])
             ->orderBy($sortField, $sortDirection);
     }
+
+    public function getOrderById(int $orderId)
+    {
+        return $this->model->find($orderId);
+    }
+
+    public function updateOrderStatus($order, string $status)
+    {
+        $order->status = $status;
+        $order->save();
+
+        return $order;
+    }
 }
