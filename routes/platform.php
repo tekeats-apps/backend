@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use App\Http\Controllers\API\V1\Platform\OrderController;
+use App\Http\Controllers\API\V1\Platform\ProductController;
 use App\Http\Controllers\API\V1\Platform\SettingController;
 use App\Http\Controllers\API\V1\Platform\Tag\TagController;
 use App\Http\Controllers\API\V1\Platform\CustomerController;
@@ -51,6 +52,12 @@ Route::middleware([
                 Route::get('/details/{category}', 'getCategoryDetails');
                 Route::post('/update/{category}', 'updateCategory');
                 Route::delete('/delete/{category}', 'deleteCategory');
+            });
+        
+        Route::controller(ProductController::class)
+            ->prefix('products')
+            ->group(function () {
+                Route::get('/list', 'getProducts');
             });
 
         Route::controller(CustomerController::class)
