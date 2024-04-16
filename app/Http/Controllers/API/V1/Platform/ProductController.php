@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\API\V1\Platform;
 
 use App\Traits\ApiResponse;
+use App\Models\Vendor\Product;
 use App\Http\Controllers\Controller;
 use App\Services\Platform\ProductService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Platform\Product\ListProducts;
 use App\Http\Requests\Platform\Product\CreateProduct;
+use App\Http\Requests\Platform\Product\UpdateProduct;
 
 class ProductController extends Controller
 {
@@ -53,6 +55,28 @@ class ProductController extends Controller
             $data = $request->validated();
             $product = $this->productService->createProduct($data);
             return $this->successResponse($product, "Product created successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Update Product
+     *
+     * @authenticated
+     *
+     * Updates the specified product with the provided data.
+     *
+     * @param UpdateProduct $request
+     * @param Product $product The ID of the product to update.
+     * @return JsonResponse
+     */
+    public function updateProduct(UpdateProduct $request, Product $product): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $data = $request->validated();
+            $updatedProduct = $this->productService->updateProduct($product, $data);
+            return $this->successResponse($updatedProduct, "Product updated successfully!");
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }

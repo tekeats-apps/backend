@@ -43,6 +43,34 @@ class ProductService
         return $product;
     }
 
+    /**
+     * @throws \Exception
+     */
+    public function updateProduct(Product $product, array $data): Product
+    {
+        $data['slug'] = Str::slug($data['name']);
+        $product->update($data);
+        // Handle image update if provided
+        if (!empty($data['image'])) {
+            // If a new image is provided, upload and update the image URL
+            $image = $data['image'];
+            $module = Product::IMAGE_PATH;
+            $recordId = $product->id;
+            $tableField = 'image';
+            $tableName = 'categories';
+
+            if ($product->image) {
+                $this->delete_image_by_name($module, $product->image);
+            }
+
+            $filename = $this->uploadImage($image, $module, $recordId, $tableField, $tableName);
+            $product->image = $filename;
+            $product->save();
+        }
+
+        return $product;
+    }
+
     public function getProductDetails(int $productId)
     {
         return $this->productRepository->findProduct($productId);

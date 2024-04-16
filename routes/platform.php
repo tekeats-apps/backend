@@ -60,6 +60,7 @@ Route::middleware([
                 Route::get('/list', 'getProducts');
                 Route::post('/create', 'createProduct');
                 Route::get('/details/{product}', 'getProductDetails');
+                Route::post('/update/{product}', 'updateProduct');
                 Route::delete('/delete/{product}', 'deleteProduct');
             });
 
