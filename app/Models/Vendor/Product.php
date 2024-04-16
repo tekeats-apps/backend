@@ -22,6 +22,17 @@ class Product extends Model
     ];
     protected $appends = ['discounted_price'];
 
+    protected $casts = [
+        'status' => 'boolean',
+        'featured' => 'boolean',
+        'is_extras_enabled' => 'boolean',
+        'is_variants_enabled' => 'boolean',
+        'created_at' => 'datetime:M d, Y H:i',
+        'is_product_timing_enabled' => 'boolean',
+        'discount_enabled' => 'boolean',
+        'price' => 'float'
+    ];
+
     public function category()
     {
         return $this->belongsTo(Category::class);
