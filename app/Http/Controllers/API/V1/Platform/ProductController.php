@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Platform\ProductService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Platform\Product\ListProducts;
+use App\Http\Requests\Platform\Product\CreateProduct;
 
 class ProductController extends Controller
 {
@@ -34,6 +35,67 @@ class ProductController extends Controller
             $products = $this->productService->getProducts()->paginate($limit);
 
             return $this->successResponse($products, "Orders fetched successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Create a new Product
+     *
+     * @authenticated
+     *
+     * Creates a new product with the provided data.
+     */
+    public function createProduct(CreateProduct $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $data = $request->validated();
+            $product = $this->productService->createProduct($data);
+            return $this->successResponse($product, "Product created successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Get Product Details
+     *
+     * @authenticated
+     *
+     * Fetch details of a specific product.
+     *
+     * @param int $product The ID of the product to fetch details for.
+     */
+    public function getProductDetails(int $product): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $productDetails = $this->productService->getProductDetails($product);
+            if (!$productDetails) {
+                return $this->errorResponse('Product not found', Response::HTTP_NOT_FOUND);
+            }
+
+            return $this->successResponse($productDetails, "Product details retrieved successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Delete a Product (Soft Delete)
+     *
+     * @authenticated
+     *
+     * Deletes the specified product.
+     *
+     * @param int $product The ID of the product to delete.
+     * @return JsonResponse
+     */
+    public function deleteProduct(int $product): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $this->productService->deleteProduct($product);
+            return $this->successResponse(null, "Product deleted successfully!");
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }

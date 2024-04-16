@@ -58,6 +58,9 @@ Route::middleware([
             ->prefix('products')
             ->group(function () {
                 Route::get('/list', 'getProducts');
+                Route::post('/create', 'createProduct');
+                Route::get('/details/{product}', 'getProductDetails');
+                Route::delete('/delete/{product}', 'deleteProduct');
             });
 
         Route::controller(CustomerController::class)
