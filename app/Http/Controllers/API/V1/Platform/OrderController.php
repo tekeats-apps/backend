@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\V1\Platform;
 
 use App\Traits\ApiResponse;
+use App\Models\Vendor\Order;
 use App\Http\Controllers\Controller;
 use App\Services\Platform\OrderService;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,6 +36,30 @@ class OrderController extends Controller
             $customers = $this->orderService->getOrders()->paginate($limit);
 
             return $this->successResponse($customers, "Orders fetched successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Get Order Details
+     *
+     * @authenticated
+     *
+     * Fetch details for order along, cusotmer, items, payment etc.
+     */
+    public function getOrderDetails(int $orderId): \Illuminate\Http\JsonResponse
+    {
+        try {
+            // Get the order by ID
+            $order = $this->orderService->getOrderDetailsByOrderId($orderId);
+
+            // Check if the order exists
+            if (!$order instanceof Order) {
+                return $this->errorResponse("Order not found!", Response::HTTP_NOT_FOUND);
+            }
+            // $order = $this->orderService->getOrderDetails();
+            return $this->successResponse($order, "Order details fetched successfully!");
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
