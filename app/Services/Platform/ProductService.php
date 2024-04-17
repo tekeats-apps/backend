@@ -34,7 +34,7 @@ class ProductService
             $module = Product::IMAGE_PATH; // Define the path where you want to store the images
             $recordId = $product->id; // Use the newly created product's ID
             $tableField = 'image'; // The field in the database where the image path will be stored
-            $tableName = 'categories'; // The table where the product data is stored
+            $tableName = 'products'; // The table where the product data is stored
 
             // Upload the image and update the product record
             $filename = $this->uploadImage($image, $module, $recordId, $tableField, $tableName);
