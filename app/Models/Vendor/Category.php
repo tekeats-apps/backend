@@ -4,7 +4,7 @@ namespace App\Models\Vendor;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
@@ -38,7 +38,7 @@ class Category extends Model
         $image = 'https://cdn-icons-png.flaticon.com/512/3787/3787263.png';
         if ($value) {
             $path = Category::IMAGE_PATH . '/' . $value;
-            $image = tenant_asset($path);
+            $image = Storage::disk('s3')->url($path);
         }
 
         return $image;
