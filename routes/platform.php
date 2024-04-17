@@ -48,6 +48,7 @@ Route::middleware([
             ->prefix('category')
             ->group(function () {
                 Route::get('/list', 'getCategories');
+                Route::get('/active/list', 'getActiveCategories');
                 Route::post('/create', 'createCategory');
                 Route::get('/details/{category}', 'getCategoryDetails');
                 Route::post('/update/{category}', 'updateCategory');

@@ -45,6 +45,25 @@ class CategoryController extends Controller
     }
 
     /**
+     * Get Active Categories List
+     *
+     * @authenticated
+     *
+     * Fetch all the categories added by platform user.
+     */
+    public function getActiveCategories(): \Illuminate\Http\JsonResponse
+    {
+        try {
+
+            $categories = $this->categoryService->getActiveCategoryList();
+
+            return $this->successResponse($categories, "Categories listed successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
      * Create a new Category
      *
      * @authenticated

@@ -21,7 +21,15 @@ class CategoryService
     {
         return $this->categoryRepository->listCategories();
     }
-
+    public function getActiveCategoryList()
+    {
+        $fields = [
+            'id',
+            'name',
+            'slug',
+        ];
+        return $this->categoryRepository->getActiveCategoryList($fields);
+    }
     public function getCategoryDetails($categoryId)
     {
         return $this->categoryRepository->findCategory($categoryId);

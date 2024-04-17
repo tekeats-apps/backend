@@ -17,7 +17,10 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return $this->model->orderBy($sortField, $sortDirection);
     }
-
+    public function getActiveCategoryList($fields, $sortField = 'id', $sortDirection = 'desc')
+    {
+        return $this->model->where('status', 1)->select($fields)->orderBy($sortField, $sortDirection)->get();
+    }
     public function createCategory(array $data)
     {
         return $this->model->create($data);
