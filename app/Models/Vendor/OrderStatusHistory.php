@@ -17,8 +17,13 @@ class OrderStatusHistory extends Model
         'status',
     ];
 
+    protected $appends = [
+        'status_text'
+    ];
+
     protected $casts = [
-        'status' => OrderStatus::class
+        'status' => OrderStatus::class,
+        'created_at' => 'datetime:M d, Y H:i',
     ];
 
     public function getStatusTextAttribute()

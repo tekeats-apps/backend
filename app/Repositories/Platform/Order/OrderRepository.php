@@ -40,7 +40,7 @@ class OrderRepository implements OrderRepositoryInterface
     }
 
     public function getOrderDetailsByOrderId($orderId){
-        return $this->model->with(['customer', 'address', 'charges','rider', 'items.product:id,name,image', 'items.variant:id,name,price'])->where('id', $orderId)->first();
+        return $this->model->with(['customer', 'address', 'charges','rider', 'items.product:id,name,image', 'items.variant:id,name,price', 'statusHistory'])->where('id', $orderId)->first();
     }
 
     public function updateOrderStatus($order, string $status)

@@ -36,7 +36,7 @@ class Order extends Model
         'created_at'
     ];
 
-    protected $appends = ['status_text', 'order_type_text', 'payment_method_text', 'payment_status_text'];
+    protected $appends = ['status_text', 'order_type_text', 'payment_method_text', 'payment_status_text', 'order_actions'];
     protected $guarded = ['id'];
     protected $casts = [
         'status' => OrderStatus::class,
@@ -129,6 +129,17 @@ class Order extends Model
             PaymentStatus::FAILED => 'Failed',
             default => 'Unknown Type',
         };
+    }
+
+    public function getOrderActionsAttribute(){
+        return [
+            'accept_order' => $this->status == OrderStatus::PENDING,
+            'cancel_order' => in_array($this->status, [OrderStatus::PENDING, OrderStatus::ACCEPTED]),
+            'mark_as_ready' => $this->status == OrderStatus::ACCEPTED,
+            'assigne_to_rider' => $this->status == OrderStatus::READY && $this->order_type == OrderType::DELIVERY,
+            'mark_as_delivered' => $this->status == OrderStatus::READY && $this->order_type != OrderType::DELIVERY,
+            'rider_pickup' => $this->status == OrderStatus::ASSIGNED_TO_DRIVER && $this->order_type == OrderType::DELIVERY,
+        ];
     }
 
     public function canBeAccepted()
