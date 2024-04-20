@@ -35,12 +35,12 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class)->withTrashed();
     }
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class)->withTrashed();
     }
 
     public function getPriceAttribute($value)
@@ -50,12 +50,12 @@ class Product extends Model
 
     public function extras()
     {
-        return $this->belongsToMany(Extra::class);
+        return $this->belongsToMany(Extra::class)->withTrashed();
     }
 
     public function variants()
     {
-        return $this->belongsToMany(Variant::class);
+        return $this->belongsToMany(Variant::class)->withTrashed();
     }
 
     public function findExtraByName($name)
