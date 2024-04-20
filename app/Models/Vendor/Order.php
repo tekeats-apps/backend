@@ -133,12 +133,12 @@ class Order extends Model
 
     public function getOrderActionsAttribute(){
         return [
-            'accept_order' => $this->status == OrderStatus::PENDING,
-            'cancel_order' => in_array($this->status, [OrderStatus::PENDING, OrderStatus::ACCEPTED]),
-            'mark_as_ready' => $this->status == OrderStatus::ACCEPTED,
-            'assigne_to_rider' => $this->status == OrderStatus::READY && $this->order_type == OrderType::DELIVERY,
-            'mark_as_delivered' => $this->status == OrderStatus::READY && $this->order_type != OrderType::DELIVERY,
-            'rider_pickup' => $this->status == OrderStatus::ASSIGNED_TO_DRIVER && $this->order_type == OrderType::DELIVERY,
+            OrderStatus::ACCEPTED => $this->status == OrderStatus::PENDING,
+            OrderStatus::CANCELLED => in_array($this->status, [OrderStatus::PENDING, OrderStatus::ACCEPTED]),
+            OrderStatus::READY => $this->status == OrderStatus::ACCEPTED,
+            OrderStatus::ASSIGNED_TO_DRIVER => $this->status == OrderStatus::READY && $this->order_type == OrderType::DELIVERY,
+            OrderStatus::DELIVERED => $this->status == OrderStatus::READY && $this->order_type != OrderType::DELIVERY,
+            OrderStatus::RIDER_PICKED_UP => $this->status == OrderStatus::ASSIGNED_TO_DRIVER && $this->order_type == OrderType::DELIVERY,
         ];
     }
 
