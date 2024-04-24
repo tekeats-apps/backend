@@ -38,6 +38,7 @@ Route::middleware([
                 ->prefix('tags')
                 ->group(function () {
                     Route::get('/list', 'getTags');
+                    Route::get('/active/list', 'getActiveTags');
                     Route::post('/create-tag', 'createTag');
                     Route::get('/details/{tag}', 'getTagDetails');
                     Route::post('/update/{tag}', 'updateTag');

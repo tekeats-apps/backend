@@ -18,6 +18,10 @@ class TagService
     {
         return $this->tagRespository->tagsList();
     }
+    public function getActiveTagsList()
+    {
+        return $this->tagRespository->getActiveTagsList()->get()->toArray();
+    }
     public function getTagDetails($tagId)
     {
         return $this->tagRespository->findTag($tagId);

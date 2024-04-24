@@ -16,6 +16,10 @@ class TagRespository implements TagRespositoryInterface
     {
         return $this->model->orderBy($sortField, $sortDirection);
     }
+    public function getActiveTagsList($sortField = 'id', $sortDirection = 'desc')
+    {
+        return $this->model->select('id', 'name', 'created_at')->where('status', 1)->orderBy($sortField, $sortDirection);
+    }
     public function createTag(array $data)
     {
         return $this->model->create($data);

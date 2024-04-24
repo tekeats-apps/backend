@@ -31,16 +31,33 @@ class TagController extends Controller
      *
      * @authenticated
      *
-     * Fetch all the categories added by platform user.
+     * Fetch all the tags added by platform user.
      */
     public function getTags(TagList $request): \Illuminate\Http\JsonResponse
     {
         try {
             $limit = $request->input('limit', 10);
 
-            $categories = $this->tagService->getTagsList()->paginate($limit);
+            $tags = $this->tagService->getTagsList()->paginate($limit);
 
-            return $this->successResponse($categories, "Categories listed successfully!");
+            return $this->successResponse($tags, "Tags listed successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+     /**
+     * Get Active Tags List
+     *
+     * @authenticated
+     *
+     * Fetch all the active tags added by platform user.
+     */
+    public function getActiveTags(): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $tags = $this->tagService->getActiveTagsList();
+
+            return $this->successResponse($tags, "Tags listed successfully!");
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
