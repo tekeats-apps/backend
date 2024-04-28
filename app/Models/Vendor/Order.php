@@ -133,7 +133,7 @@ class Order extends Model
 
     public function getOrderActionsAttribute(){
         return [
-            OrderStatus::ACCEPTED->value => true,
+            OrderStatus::ACCEPTED->value => OrderStatus::PENDING,
             OrderStatus::CANCELLED->value => in_array($this->status, [OrderStatus::PENDING, OrderStatus::ACCEPTED]),
             OrderStatus::READY->value => $this->status == OrderStatus::ACCEPTED,
             OrderStatus::ASSIGNED_TO_DRIVER->value => $this->status == OrderStatus::READY && $this->order_type == OrderType::DELIVERY,
