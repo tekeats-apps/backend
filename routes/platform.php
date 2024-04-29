@@ -66,6 +66,16 @@ Route::middleware([
                 Route::delete('/delete/{product}', 'deleteProduct');
             });
 
+        Route::controller(ProductController::class)
+            ->prefix('extras')
+            ->group(function () {
+                Route::get('/list', 'getExtras');
+                Route::post('/create', 'createExtra');
+                Route::post('/update/{extra}', 'updateExtra');
+                Route::delete('/delete/{extra}', 'deleteExtra');
+            });
+            
+
         Route::controller(CustomerController::class)
             ->prefix('customers')
             ->group(function () {
