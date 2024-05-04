@@ -10,6 +10,7 @@ use App\Http\Controllers\API\V1\Platform\CustomerController;
 use App\Http\Controllers\API\V1\Platform\Auth\AuthController;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\API\V1\Platform\Category\CategoryController;
+use App\Http\Controllers\API\V1\Platform\ExtraController;
 
 Route::middleware([
     'locale', InitializeTenancyByDomain::class,
@@ -66,11 +67,12 @@ Route::middleware([
                 Route::delete('/delete/{product}', 'deleteProduct');
             });
 
-        Route::controller(ProductController::class)
+        Route::controller(ExtraController::class)
             ->prefix('extras')
             ->group(function () {
                 Route::get('/list', 'getExtras');
                 Route::post('/create', 'createExtra');
+                Route::get('/details/{extra}', 'getExtraDetails');
                 Route::post('/update/{extra}', 'updateExtra');
                 Route::delete('/delete/{extra}', 'deleteExtra');
             });

@@ -28,4 +28,10 @@ class ProductRepository implements ProductRepositoryInterface
     {
         return $this->model->find($productId);
     }
+
+    public function getProductExtras($productId, $sortField = 'id', $sortDirection = 'desc'){
+
+        $product = $this->model->find($productId);
+        return $product->extras()->orderBy($sortField, $sortDirection);
+    }
 }
