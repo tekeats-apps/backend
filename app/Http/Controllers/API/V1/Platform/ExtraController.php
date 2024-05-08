@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\API\V1\Platform;
 
 use App\Traits\ApiResponse;
+use App\Models\Vendor\Extra;
 use App\Http\Controllers\Controller;
 use App\Services\Platform\ExtraService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Platform\Extra\ListExtras;
 use App\Http\Requests\Platform\Extra\CreateExtra;
+use App\Http\Requests\Platform\Extra\UpdateExtra;
 
 
 class ExtraController extends Controller
@@ -58,6 +60,28 @@ class ExtraController extends Controller
             $extra = $this->extraService->createExtra($data);
 
             return $this->successResponse($extra, "Extra created successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Update Extra
+     *
+     * @authenticated
+     *
+     * Updates the specified extra with the provided data.
+     *
+     * @param UpdateExtra $request
+     * @param Extra $extra The ID of the extra to update.
+     * @return JsonResponse
+     */
+    public function updateExtra(UpdateExtra $request, Extra $extra): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $data = $request->validated();
+            $updatedExtra = $this->extraService->updateExtra($extra, $data);
+            return $this->successResponse($updatedExtra, "Extra updated successfully!");
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
