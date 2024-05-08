@@ -85,4 +85,28 @@ class ExtraController extends Controller
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * Delete a Extra (Soft Delete)
+     *
+     * @authenticated
+     *
+     * Deletes the specified extra.
+     *
+     * @param int $extra The ID of the extra to delete.
+     * @return JsonResponse
+     */
+    public function deleteExtra(int $extra): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $extra = $this->extraService->getExtraDetails($extra);
+            if (!$extra) {
+                return $this->errorResponse('Extra not found', Response::HTTP_NOT_FOUND);
+            }
+            $extra->delete();
+            return $this->successResponse(null, "Extra deleted successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }
