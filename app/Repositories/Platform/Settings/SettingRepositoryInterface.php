@@ -17,4 +17,5 @@ interface SettingRepositoryInterface
      * @return mixed
      */
     public function getDeliverySettings();
+    public function getBusinessTiming();
 }

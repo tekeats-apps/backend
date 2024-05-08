@@ -43,4 +43,9 @@ class SettingService
             'range_based_charges' => $deliverySettings->range_based_charges,
         ];
     }
+
+    public function getBusinessTiming(){
+        $businessTiming = $this->settingRepository->getBusinessTiming()->get();
+        return $businessTiming;
+    }
 }
