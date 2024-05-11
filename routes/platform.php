@@ -99,6 +99,9 @@ Route::middleware([
                 Route::get('/delivery', 'getDeliverySettings');
                 Route::get('/branding', 'getBrandingSettings');
                 Route::get('/business/timing', 'getBusinessTiming');
+                Route::get('/localization', 'getLocalizationSettings');
+                Route::get('/order', 'getOrderSettings');
+                Route::get('/media', 'getMediaSettings');
             });
     });
 });

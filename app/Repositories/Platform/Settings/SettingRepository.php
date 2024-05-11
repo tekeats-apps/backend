@@ -2,23 +2,25 @@
 
 namespace App\Repositories\Platform\Settings;
 
+use App\Settings\MediaSettings;
+use App\Settings\OrderSettings;
 use App\Settings\GeneralSettings;
 use App\Settings\DeliverySettings;
+use App\Settings\LocalizationSettings;
 use App\Models\Vendor\RestaurantOpeningHour;
 use App\Repositories\Platform\Settings\SettingRepositoryInterface;
 
 class SettingRepository implements SettingRepositoryInterface
 {
-
-    protected GeneralSettings $generalSettings;
-    protected DeliverySettings $deliverySettings;
-    protected RestaurantOpeningHour $openingHours;
-
-    public function __construct(GeneralSettings $generalSettings, DeliverySettings $deliverySettings, RestaurantOpeningHour $openingHours)
+    public function __construct(
+        protected GeneralSettings $generalSettings, 
+        protected DeliverySettings $deliverySettings, 
+        protected RestaurantOpeningHour $openingHours, 
+        protected OrderSettings $orderSettings, 
+        protected MediaSettings $mediaSettings, 
+        protected LocalizationSettings $localizationSettings)
     {
-        $this->generalSettings = $generalSettings;
-        $this->deliverySettings = $deliverySettings;
-        $this->openingHours = $openingHours;
+
     }
 
     public function getGeneralSettings()
@@ -34,5 +36,20 @@ class SettingRepository implements SettingRepositoryInterface
     public function getBusinessTiming()
     {
         return $this->openingHours->with('slots');
+    }
+
+    public function getOrderSettings()
+    {
+        return $this->orderSettings;
+    }
+
+    public function getMediaSettings()
+    {
+        return $this->mediaSettings;
+    }
+
+    public function getLocalizationSettings()
+    {
+        return $this->localizationSettings;
     }
 }

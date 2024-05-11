@@ -13,7 +13,7 @@ class SettingService
         $this->settingRepository = $settingRepository;
     }
 
-    public function getGeneralSettings()
+    public function getGeneralSettings(): array
     {
         $generalSettings = $this->settingRepository->getGeneralSettings();
         return [
@@ -29,7 +29,7 @@ class SettingService
         ];
     }
 
-    public function getDeliverySettings()
+    public function getDeliverySettings(): array
     {
         $deliverySettings = $this->settingRepository->getDeliverySettings();
         return [
@@ -44,7 +44,51 @@ class SettingService
         ];
     }
 
-    public function getBusinessTiming(){
+    // Function to get OrderSettings
+    public function getOrderSettings(): array
+    {
+        $orderSettings = $this->settingRepository->getOrderSettings();
+        return [
+            'dine_in' => $orderSettings->dine_in,
+            'pickup' => $orderSettings->pickup,
+            'delivery' => $orderSettings->delivery,
+            'cash_on_delivery' => $orderSettings->cash_on_delivery,
+            'orders_auto_accept' => $orderSettings->orders_auto_accept,
+            'allow_special_instructions' => $orderSettings->allow_special_instructions,
+            'allow_order_discounts' => $orderSettings->allow_order_discounts,
+            'minimum_order' => $orderSettings->minimum_order,
+            'order_preparation_time' => $orderSettings->order_preparation_time,
+            'order_lead_time' => $orderSettings->order_lead_time,
+            'order_cutoff_time' => $orderSettings->order_cutoff_time,
+        ];
+    }
+
+    public function getLocalizationSettings(): array
+    {
+        $localizationSettings = $this->settingRepository->getLocalizationSettings();
+        return [
+            'languages' => $localizationSettings->languages,
+            'default_language' => $localizationSettings->default_language,
+            'timezone' => $localizationSettings->timezone,
+            'date_format' => $localizationSettings->date_format,
+            'time_format' => $localizationSettings->time_format,
+            'currency' => $localizationSettings->currency,
+            'currency_symbol' => $localizationSettings->currency_symbol,
+            'currency_position' => $localizationSettings->currency_position
+        ];
+    }
+
+    public function getMediaSettings(): array
+    {
+        $mediaSettings = $this->settingRepository->getMediaSettings();
+        return [
+            'logo' => $mediaSettings->logo,
+            'favicon' => $mediaSettings->favicon,
+        ];
+    }
+
+    public function getBusinessTiming()
+    {
         $businessTiming = $this->settingRepository->getBusinessTiming()->get();
         return $businessTiming;
     }
