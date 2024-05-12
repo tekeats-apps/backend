@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\API\V1\Platform;
 
 use App\Traits\ApiResponse;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Platform\SettingService;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\Platform\Settings\UpdateMediaSettingRequest;
+use App\Http\Requests\Platform\Settings\UpdateOrderSettingRequest;
+use App\Http\Requests\Platform\Settings\UpdateGeneralSettingRequest;
+use App\Http\Requests\Platform\Settings\UpdateDeliverySettingRequest;
+use App\Http\Requests\Platform\Settings\UpdateLocalizationSettingRequest;
 
 class SettingController extends Controller
 {
@@ -28,6 +32,81 @@ class SettingController extends Controller
         try {
             $settings = $this->settingService->getGeneralSettings();
             return $this->successResponse($settings, "General settings retrieved successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Update General Settings
+     *
+     * Update the general settings for the platform.
+     */
+    public function updateGeneralSettings(UpdateGeneralSettingRequest $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $updatedSettings = $this->settingService->updateGeneralSettings($request->validated());
+            return $this->successResponse($updatedSettings, "General settings updated successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Update Delivery Settings
+     *
+     * Update the Delivery settings for the platform.
+     */
+    public function updateDeliverySettings(UpdateDeliverySettingRequest $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $updatedSettings = $this->settingService->updateDeliverySettings($request->validated());
+            return $this->successResponse($updatedSettings, "Delivery settings updated successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Update Order Settings
+     *
+     * Update the Order settings for the platform.
+     */
+    public function updateOrderSettings(UpdateOrderSettingRequest $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $updatedSettings = $this->settingService->updateOrderSettings($request->validated());
+            return $this->successResponse($updatedSettings, "Order settings updated successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Update Localization Settings
+     *
+     * Update the Localization settings for the platform.
+     */
+    public function updateLocalizationSettings(UpdateLocalizationSettingRequest $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $updatedSettings = $this->settingService->updateLocalizationSettings($request->validated());
+            return $this->successResponse($updatedSettings, "Localization settings updated successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Update Media Settings
+     *
+     * Update the Media settings for the platform.
+     */
+    public function updateMediaSettings(UpdateMediaSettingRequest $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $updatedSettings = $this->settingService->updateMediaSettings($request->validated());
+            return $this->successResponse($updatedSettings, "Media settings updated successfully!");
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }

@@ -2,10 +2,14 @@
 
 namespace App\Services\Platform;
 
+use App\Settings\MediaSettings;
+use App\Traits\TenantImageUploadTrait;
+use Illuminate\Support\Facades\Storage;
 use App\Repositories\Platform\Settings\SettingRepository;
 
 class SettingService
 {
+    use TenantImageUploadTrait;
     protected SettingRepository $settingRepository;
 
     public function __construct(SettingRepository $settingRepository)
@@ -82,14 +86,133 @@ class SettingService
     {
         $mediaSettings = $this->settingRepository->getMediaSettings();
         return [
-            'logo' => $mediaSettings->logo,
-            'favicon' => $mediaSettings->favicon,
+            'logo' => $this->getMediaFileURL($mediaSettings->logo),
+            'favicon' => $this->getMediaFileURL($mediaSettings->favicon),
         ];
+    }
+
+    protected function getMediaFileURL($value)
+    {
+        $image = '';
+        if ($value) {
+            $path = MediaSettings::IMAGE_PATH . '/' . $value;
+            $image = Storage::disk('s3')->url($path);
+        }
+
+        return $image;
     }
 
     public function getBusinessTiming()
     {
         $businessTiming = $this->settingRepository->getBusinessTiming()->get();
         return $businessTiming;
+    }
+
+    // Function to update GeneralSettings
+    public function updateGeneralSettings(array $data): array
+    {
+        $generalSettings = $this->settingRepository->getGeneralSettings();
+
+        $generalSettings->name = $data['name'] ?? tenant()->business_name;
+        $generalSettings->email = $data['email'] ?? tenant()->email;
+        $generalSettings->phone = $data['phone'] ?? '';
+        $generalSettings->address = $data['address'] ?? '';
+        $generalSettings->address_2 = $data['address_2'] ?? '';
+        $generalSettings->country = $data['country'] ?? '';
+        $generalSettings->city = $data['city'] ?? '';
+        $generalSettings->latitude = $data['latitude'] ?? null;
+        $generalSettings->longitude = $data['longitude'] ?? null;
+
+        $generalSettings->save();
+
+        return $this->getGeneralSettings();
+    }
+
+    public function updateDeliverySettings(array $data): array
+    {
+        $deliverySettings = $this->settingRepository->getDeliverySettings();
+
+        $deliverySettings->free_delivery = $data['free_delivery'] ?? false;
+        $deliverySettings->free_delivery_charge_type = $data['free_delivery_charge_type'] ?? '';
+        $deliverySettings->free_delivery_radius = $data['free_delivery_radius'] ?? 0;
+        $deliverySettings->delivery_charge_type = $data['delivery_charge_type'] ?? '';
+        $deliverySettings->distance_unit = $data['distance_unit'] ?? '';
+        $deliverySettings->distance_based_radius = $data['distance_based_radius'] ?? 0;
+        $deliverySettings->delivery_charges = $data['delivery_charges'] ?? 0;
+        $deliverySettings->range_based_charges = $data['range_based_charges'] ?? null;
+
+        $deliverySettings->save();
+
+        return $this->getDeliverySettings();
+    }
+
+    public function updateOrderSettings(array $data): array
+    {
+        $orderSettings = $this->settingRepository->getOrderSettings();
+
+        $orderSettings->dine_in = $data['dine_in'] ?? false;
+        $orderSettings->pickup = $data['pickup'] ?? false;
+        $orderSettings->delivery = $data['delivery'] ?? false;
+        $orderSettings->cash_on_delivery = $data['cash_on_delivery'] ?? false;
+        $orderSettings->orders_auto_accept = $data['orders_auto_accept'] ?? false;
+        $orderSettings->allow_special_instructions = $data['allow_special_instructions'] ?? false;
+        $orderSettings->allow_order_discounts = $data['allow_order_discounts'] ?? false;
+        $orderSettings->minimum_order = $data['minimum_order'] ?? null;
+        $orderSettings->order_preparation_time = $data['order_preparation_time'] ?? null;
+        $orderSettings->order_lead_time = $data['order_lead_time'] ?? null;
+        $orderSettings->order_cutoff_time = $data['order_cutoff_time'] ?? null;
+
+        $orderSettings->save();
+
+        return $this->getOrderSettings();
+    }
+
+    public function updateLocalizationSettings(array $data): array
+    {
+        $localizationSettings = $this->settingRepository->getLocalizationSettings();
+
+        $localizationSettings->languages = $data['languages'] ?? null;
+        $localizationSettings->default_language = $data['default_language'] ?? null;
+        $localizationSettings->timezone = $data['timezone'] ?? null;
+        $localizationSettings->date_format = $data['date_format'] ?? null;
+        $localizationSettings->time_format = $data['time_format'] ?? null;
+        $localizationSettings->currency = $data['currency'] ?? null;
+        $localizationSettings->currency_symbol = $data['currency_symbol'] ?? null;
+        $localizationSettings->currency_position = $data['currency_position'] ?? null;
+
+        $localizationSettings->save();
+
+        return $this->getLocalizationSettings();
+    }
+
+    public function updateMediaSettings(array $data): array
+    {
+        $mediaSettings = $this->settingRepository->getMediaSettings();
+
+        if (isset($data['logo']) && !empty($data['logo'])) {
+            $image = $data['logo'];
+            $module = MediaSettings::IMAGE_PATH;
+            $tableField = 'logo';
+
+            if ($mediaSettings->logo) {
+                $this->delete_image_by_name($module, $mediaSettings->logo);
+            }
+
+            $this->uploadImage($image, $module, null, $tableField, null, $mediaSettings);
+        }
+
+        if (isset($data['favicon']) && !empty($data['favicon'])) {
+            $image = $data['favicon'];
+            $module = MediaSettings::IMAGE_PATH;
+            $tableField = 'favicon';
+
+            if ($mediaSettings->favicon) {
+                $this->delete_image_by_name($module, $mediaSettings->favicon);
+            }
+
+            $this->uploadImage($image, $module, null, $tableField, null, $mediaSettings);
+        }
+
+        return $this->getMediaSettings();
     }
 }

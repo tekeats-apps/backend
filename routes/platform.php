@@ -102,6 +102,12 @@ Route::middleware([
                 Route::get('/localization', 'getLocalizationSettings');
                 Route::get('/order', 'getOrderSettings');
                 Route::get('/media', 'getMediaSettings');
+
+                Route::put('/business/info', 'updateGeneralSettings');
+                Route::put('/delivery', 'updateDeliverySettings');
+                Route::put('/order', 'updateOrderSettings');
+                Route::put('/localization', 'updateLocalizationSettings');
+                Route::post('/media', 'updateMediaSettings');
             });
     });
 });

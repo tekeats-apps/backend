@@ -7,20 +7,25 @@ use Illuminate\Support\Facades\Storage;
 
 trait TenantImageUploadTrait
 {
-    protected $disk; // Global disk variable
+    protected $disk;
 
     public function __construct()
     {
         $this->disk = config('filesystems.default');
     }
 
-    public function uploadImage($image, $folder = 'images', $id, $tableField, $tableName): string
+    public function uploadImage($image, $folder = 'images', $id = null, $tableField = null, $tableName = null, $settingsModule = null): string
     {
         $this->disk = config('filesystems.default');
         $filename = $this->disk === 's3' ? $this->uploadToS3($image, $folder) : $this->uploadToLocal($image, $folder);
 
         if ($filename) {
-            $this->updateData($tableName, $tableField, $filename, $id);
+            if (!$settingsModule) {
+                $this->updateData($tableName, $tableField, $filename, $id);
+            } else {
+                $settingsModule->{$tableField} = $filename;
+                $settingsModule->save();
+            }
         }
 
         return $filename;
