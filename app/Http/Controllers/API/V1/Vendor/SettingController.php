@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use App\Settings\GeneralSettings;
 use App\Settings\DeliverySettings;
 use App\Http\Controllers\Controller;
+use App\Services\Platform\SettingService;
 
 /**
  * @tags Settings
@@ -16,14 +17,12 @@ use App\Http\Controllers\Controller;
 class SettingController extends Controller
 {
     use ApiResponse;
+    
+    protected SettingService $settingService;
 
-    protected $deliverySettings;
-    protected $generalSettings;
-
-    public function __construct(DeliverySettings $deliverySettings, GeneralSettings $generalSettings)
+    public function __construct(SettingService $settingService)
     {
-        $this->deliverySettings = $deliverySettings;
-        $this->generalSettings = $generalSettings;
+        $this->settingService = $settingService;
     }
 
     /**
@@ -35,8 +34,11 @@ class SettingController extends Controller
     {
         try {
             $settings = [
-                'restaurnat_info' => $this->getRestaurantInfo(),
-                'delivery_settings' => $this->getDeliverySettings(),
+                'restaurnat_info' => $this->settingService->getGeneralSettings(),
+                'delivery_settings' => $this->settingService->getDeliverySettings(),
+                'order_settings' => $this->settingService->getOrderSettings(),
+                'localization_settings' => $this->settingService->getLocalizationSettings(),
+                'media_settings' => $this->settingService->getMediaSettings(),
             ];
             return $this->successResponse($settings, "Settings fetched successfully.", Response::HTTP_OK);
         } catch (Exception $e) {
