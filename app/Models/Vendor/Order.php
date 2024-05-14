@@ -96,7 +96,6 @@ class Order extends Model
             OrderStatus::ASSIGNED_TO_DRIVER => 'Assigned to Driver',
             OrderStatus::RIDER_PICKED_UP => 'Rider Picked Up',
             OrderStatus::DELIVERED => 'Delivered',
-            OrderStatus::RETURNED => 'Returned',
             OrderStatus::CANCELLED => 'Cancelled',
             default => 'Unknown Status',
         };

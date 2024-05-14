@@ -29,7 +29,7 @@ class OrderStatusNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mail', OneSignalChannel::class];
+        return ['mail', 'database', OneSignalChannel::class];
     }
 
     /**
@@ -45,13 +45,24 @@ class OrderStatusNotification extends Notification implements ShouldQueue
 
     public function toOneSignal(object $notifiable)
     {
-        $orderID = $this->order->order_id; // Assuming you have order_id accessible in your Order model
+        $orderID = $this->order->order_id;
         $status = $this->order->status_text;
 
         return OneSignalMessage::create()
-            ->setSubject("🚀 Order Status Updated 🚀")
-            ->setBody("The status of your order #$orderID has been updated to $status.")
+            ->setSubject($this->getTitle())
+            ->setBody($this->getMessage(['order_id' => $orderID, 'status' => $status]))
             ->setUrl(url('/orders/' . $orderID));
+    }
+
+
+    protected function getTitle(): string
+    {
+        return "🚀 Order Status Updated 🚀";
+    }
+
+    protected function getMessage(array $data): string
+    {
+        return "The status of your order #" . $data['order_id'] . " has been updated to " . $data['status'] . ". Tap here for more details.";
     }
 
     /**
@@ -62,7 +73,10 @@ class OrderStatusNotification extends Notification implements ShouldQueue
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'order_id' => $this->order->order_id,
+            'title' => $this->getTitle(),
+            'message' => $this->getMessage(['order_id' => $this->order->order_id, 'status' => $this->order->status_text]),
+            'url' => url('/orders/' . $this->order->order_id),
         ];
     }
 }

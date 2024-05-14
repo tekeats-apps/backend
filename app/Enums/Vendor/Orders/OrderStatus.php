@@ -10,6 +10,5 @@ enum OrderStatus: string
     case ASSIGNED_TO_DRIVER = 'assigned_to_driver';
     case RIDER_PICKED_UP = 'rider_picked_up';
     case DELIVERED = 'delivered';
-    case RETURNED = 'returned';
     case CANCELLED = 'cancelled';
 }
