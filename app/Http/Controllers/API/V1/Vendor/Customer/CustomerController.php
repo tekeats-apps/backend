@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Vendor\Customers\LoginRequest;
 use App\Http\Requests\Vendor\Auth\SocialLoginRequest;
 use App\Http\Requests\Vendor\Auth\VerifyEmailRequest;
+use App\Http\Resources\Platform\NotificationResource;
 use App\Http\Requests\Vendor\Customers\API\GetCustomerOrders;
 use App\Http\Requests\Vendor\Customers\PasswordUpdateRequest;
 use App\Http\Requests\Vendor\Customers\API\ProfileUpdateRequest;
@@ -202,6 +203,69 @@ class CustomerController extends Controller
             return $this->exceptionResponse($e, "Failed to fetch profile.");
         }
     }
+
+    /**
+     * Get Customer Notifications
+     *
+     * @authenticated
+     *
+     * Fetch all the notifications sent to the user.
+     */
+    public function getNotifications(Request $request)
+    {
+        try {
+            $user = $request->user(); // Get the authenticated user.
+            $notifications = NotificationResource::collection($user->notifications);
+            return $this->successResponse($notifications, "Notifications fetched successfully.", Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return $this->exceptionResponse($e, "Failed to fetch notifications.");
+        }
+    }
+
+       /**
+     * Mark a Notification as Read
+     *
+     * @authenticated
+     *
+     * Mark a specific notification as read by ID.
+     */
+    public function markAsRead(Request $request, $notificationId)
+    {
+        try {
+            $user = $request->user(); // Get the authenticated user.
+            $notification = $user->notifications()->find($notificationId);
+
+            if ($notification) {
+                $notification->markAsRead();
+                return $this->successResponse(new NotificationResource($notification), "Notification marked as read.", Response::HTTP_OK);
+            } else {
+                return $this->errorResponse("Notification not found.", Response::HTTP_NOT_FOUND);
+            }
+        } catch (\Exception $e) {
+            return $this->exceptionResponse($e, "Failed to mark notification as read.");
+        }
+    }
+
+    /**
+     * Mark All Notifications as Read
+     *
+     * @authenticated
+     *
+     * Mark all notifications as read for the authenticated user.
+     */
+    public function markAllAsRead(Request $request)
+    {
+        try {
+            $user = $request->user(); // Get the authenticated user.
+            $user->unreadNotifications->markAsRead();
+
+            return $this->successResponse([], "All notifications marked as read.", Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return $this->exceptionResponse($e, "Failed to mark all notifications as read.");
+        }
+    }
+
+    
 
     /**
      * Update Profile

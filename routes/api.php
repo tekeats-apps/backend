@@ -44,6 +44,9 @@ Route::middleware([
                 Route::post('/verify-email', 'verifyEmail');
 
                 Route::get('/get-profile', 'getProfile');
+                Route::get('/notifications', 'getNotifications');
+                Route::put('/notifications/{notification}', 'markAsRead');
+                Route::get('/notifications/read-all', 'markAllAsRead');
                 Route::put('/update-profile', 'updateProfile');
                 Route::post('/update-password', 'updatePassword');
                 Route::post('/update-profile-image', 'updateProfileImage');
