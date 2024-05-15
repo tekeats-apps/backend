@@ -161,4 +161,9 @@ class Customer extends Authenticatable
     {
         return ['include_external_user_ids' => [(string)$this->id]];
     }
+
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable')->orderBy('created_at', 'desc');
+    }
 }

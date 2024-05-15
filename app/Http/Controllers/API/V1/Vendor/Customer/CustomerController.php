@@ -215,7 +215,11 @@ class CustomerController extends Controller
     {
         try {
             $user = $request->user(); // Get the authenticated user.
-            $notifications = NotificationResource::collection($user->notifications);
+            $notifications = $user->notifications()->simplePaginate(20);
+            $transformedNotifications = $notifications->map(function ($notification) {
+                return $notification->formatted;
+            });
+            $notifications->setCollection($transformedNotifications);
             return $this->successResponse($notifications, "Notifications fetched successfully.", Response::HTTP_OK);
         } catch (\Exception $e) {
             return $this->exceptionResponse($e, "Failed to fetch notifications.");
