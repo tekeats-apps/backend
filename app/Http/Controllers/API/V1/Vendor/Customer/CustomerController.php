@@ -241,7 +241,7 @@ class CustomerController extends Controller
 
             if ($notification) {
                 $notification->markAsRead();
-                return $this->successResponse(new NotificationResource($notification), "Notification marked as read.", Response::HTTP_OK);
+                return $this->successResponse($notification->formatted, "Notification marked as read.", Response::HTTP_OK);
             } else {
                 return $this->errorResponse("Notification not found.", Response::HTTP_NOT_FOUND);
             }
