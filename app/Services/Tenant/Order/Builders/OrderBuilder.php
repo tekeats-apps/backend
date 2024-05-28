@@ -8,6 +8,7 @@ use App\Services\Tenant\Order\OrderService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Exceptions\DeliveryUnavailableException;
 use App\Services\Tenant\Order\DeliveryChargeService;
+use App\Services\Tenant\Payment\PaymentGatewayFactory;
 use App\Services\Tenant\Order\Builders\Interfaces\OrderBuilderInterface;
 
 class OrderBuilder implements OrderBuilderInterface
@@ -20,6 +21,7 @@ class OrderBuilder implements OrderBuilderInterface
     private Model $order;
     protected $orderService;
     protected $deliveryChargeService;
+    protected $paymentGateway;
 
     public function __construct(OrderService $orderService, DeliveryChargeService $deliveryChargeService)
     {
@@ -61,6 +63,15 @@ class OrderBuilder implements OrderBuilderInterface
         );
         $this->order = $order;
         return $this;
+    }
+
+    public function processPayment()
+    {
+        $this->paymentGateway = PaymentGatewayFactory::make($this->validatedData['payment_method']);
+
+        $this->orderService->setPaymentGateway($this->paymentGateway);
+
+        return $this->orderService->processOrderPayment($this->order);
     }
 
     public function getOrder(): Model

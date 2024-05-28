@@ -9,10 +9,13 @@ use App\Enums\Vendor\Orders\OrderType;
 use App\Factories\Tenant\OrderFactory;
 use App\Enums\Vendor\Orders\PaymentStatus;
 use App\Exceptions\CustomerNotFoundException;
+use App\Enums\Vendor\Orders\OrderPaymentMethod;
 use App\Strategies\Tenant\Order\PricingStrategy;
 use App\Repositories\Tenant\Order\OrderRepository;
 use App\Repositories\Tenant\Order\OrderItemRepository;
 use App\Repositories\Tenant\Order\OrderChargeRepository;
+use App\Repositories\Tenant\Order\OrderTransactionRepository;
+use App\Services\Tenant\Payment\Contracts\PaymentGatewayInterface;
 
 class OrderService
 {
@@ -20,17 +23,33 @@ class OrderService
     protected $orderItemRepository;
     protected $pricingStrategy;
     protected $orderChargeRepository;
+    protected $paymentGateway;
+    protected $orderTransactionRepository;
 
-    public function __construct(OrderRepository $orderRepository, OrderItemRepository $orderItemRepository, PricingStrategy $pricingStrategy, OrderChargeRepository $orderChargeRepository)
+
+    public function __construct(
+        OrderRepository $orderRepository, 
+        OrderItemRepository $orderItemRepository, 
+        PricingStrategy $pricingStrategy, 
+        OrderChargeRepository $orderChargeRepository,
+        OrderTransactionRepository $orderTransactionRepository
+        )
     {
         $this->orderRepository = $orderRepository;
         $this->orderItemRepository = $orderItemRepository;
         $this->pricingStrategy = $pricingStrategy;
         $this->orderChargeRepository = $orderChargeRepository;
+        $this->orderTransactionRepository = $orderTransactionRepository;
+    }
+
+    public function setPaymentGateway(PaymentGatewayInterface $paymentGateway)
+    {
+        $this->paymentGateway = $paymentGateway;
     }
 
     public function placeOrder(array $data, Customer $customer, object $deliveryCharge = null)
     {
+
         try {
             $additionalCharges = [];
             if (!$customer) {
@@ -100,6 +119,35 @@ class OrderService
     protected function addOrderCharges(array $additionalCharges)
     {
         $this->orderChargeRepository->createBulk($additionalCharges);
+    }
+
+    public function processOrderPayment(Order $order)
+    {
+        if ($this->paymentGateway->getName() !== OrderPaymentMethod::CASH->value) {
+            $paymentResult = $this->paymentGateway->processPayment([
+                'amount' => $order->total_price * 100,
+            ]);
+
+            if ($paymentResult['success'] !== true) {
+                throw new Exception($paymentResult['message']);
+            }
+            $paymentData = $paymentResult['data'];
+            $paymentResponse = [
+                'order_id' => $order->id,
+                'transaction_id' => $paymentData->id,
+                'amount' => $order->total_price,
+                'status' => $paymentData->status,
+                'payment_method' => $this->paymentGateway->getName(),
+                'response' => $paymentData,
+            ];
+            $this->addOrderPaymentTransacrion($paymentResponse);
+            $order->load('transaction');
+        }
+    }
+
+    protected function addOrderPaymentTransacrion(array $transaction)
+    {
+        $this->orderTransactionRepository->create($transaction);
     }
 
     /**
