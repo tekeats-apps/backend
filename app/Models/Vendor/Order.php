@@ -68,9 +68,9 @@ class Order extends Model
         return $this->belongsTo(Rider::class);
     }
 
-    public function transactions()
+    public function transaction()
     {
-        return $this->hasMany(OrderTransaction::class);
+        return $this->hasOne(OrderTransaction::class);
     }
 
     public function charges()

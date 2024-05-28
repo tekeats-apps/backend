@@ -45,4 +45,8 @@ return [
         'rest_api_key' => env('ONESIGNAL_REST_API_KEY'),
         'guzzle_client_timeout' => env('ONESIGNAL_GUZZLE_CLIENT_TIMEOUT', 0),
     ],
+    'stripe' => [
+        'publish_key' => env('STRIPE_KEY'),
+        'secret_key' => env('STRIPE_SECRET')
+    ],
 ];

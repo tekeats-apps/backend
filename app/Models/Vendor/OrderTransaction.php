@@ -9,8 +9,14 @@ class OrderTransaction extends Model
 {
     use HasFactory;
 
+    protected $table = 'transactions';
+
     protected $fillable = [
         'order_id', 'transaction_id', 'amount', 'status', 'payment_method', 'response'
+    ];
+
+    protected $casts = [
+        'response' => 'array',
     ];
 
     public function order()
