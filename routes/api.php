@@ -47,6 +47,7 @@ Route::middleware([
                 Route::get('/notifications', 'getNotifications');
                 Route::put('/notifications/{notification}', 'markAsRead');
                 Route::get('/notifications/read-all', 'markAllAsRead');
+                Route::get('/notifications/unread/count', 'getUnreadNotificationsCount');
                 Route::put('/update-profile', 'updateProfile');
                 Route::post('/update-password', 'updatePassword');
                 Route::post('/update-profile-image', 'updateProfileImage');

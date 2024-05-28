@@ -250,6 +250,26 @@ class CustomerController extends Controller
         }
     }
 
+      /**
+     * Get Unread Notifications Count
+     *
+     * @authenticated
+     *
+     * Mark a specific notification as read by ID.
+     */
+    public function getUnreadNotificationsCount(Request $request)
+    {
+        try {
+            $user = $request->user(); // Get the authenticated user.
+            $unread = $user->unreadNotifications()->count();
+            $data['unread_count'] = $unread;
+
+            return $this->successResponse($data, "Notification fetched successfully.", Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return $this->exceptionResponse($e, "Failed fectch notifications count.");
+        }
+    }
+
     /**
      * Mark All Notifications as Read
      *
