@@ -95,6 +95,7 @@ Route::middleware([
         Route::controller(SettingController::class)
             ->prefix('settings')
             ->group(function () {
+                Route::get('/', 'getAllSettings');
                 Route::get('/business/info', 'getGeneralSettings');
                 Route::get('/delivery', 'getDeliverySettings');
                 Route::get('/branding', 'getBrandingSettings');

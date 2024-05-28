@@ -188,5 +188,22 @@ class SettingController extends Controller
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * Get Business Timing
+     *
+     * Fetch business timing/working hours with slots for the platform.
+     */
+    public function getAllSettings(): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $settings = $this->settingService->getAllSettings();
+            return $this->successResponse($settings, "Business settings< retrieved successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    
     
 }

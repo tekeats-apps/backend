@@ -215,4 +215,18 @@ class SettingService
 
         return $this->getMediaSettings();
     }
+
+    public function getAllSettings(): array
+    {
+        $settings = [
+            'restaurnat_info' => $this->getGeneralSettings(),
+            'delivery_settings' => $this->getDeliverySettings(),
+            'order_settings' => $this->getOrderSettings(),
+            'localization_settings' => $this->getLocalizationSettings(),
+            'media_settings' => $this->getMediaSettings(),
+        ];
+
+        return $settings;
+    }
+    
 }
