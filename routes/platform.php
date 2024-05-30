@@ -88,6 +88,7 @@ Route::middleware([
             ->prefix('orders')
             ->group(function () {
                 Route::get('/list', 'getOrders');
+                Route::get('/live', 'getLiveOrders');
                 Route::get('/detail/{order}', 'getOrderDetails');
                 Route::put('update-status/{order}', 'updateOrderStatus');
             });

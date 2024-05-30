@@ -101,5 +101,23 @@ class OrderController extends Controller
         }
     }
 
+     /**
+     * Get Today's Orders Grouped by Status
+     *
+     * @authenticated
+     *
+     * Fetch today's orders and group them by status.
+     */
+    public function getLiveOrders(): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $groupedOrders = $this->orderService->getOrdersGroupedByStatusForToday();
+
+            return $this->successResponse($groupedOrders, "Today's orders grouped by status fetched successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 }

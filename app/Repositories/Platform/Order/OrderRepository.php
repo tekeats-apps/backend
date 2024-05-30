@@ -34,6 +34,24 @@ class OrderRepository implements OrderRepositoryInterface
             ->orderBy($sortField, $sortDirection);
     }
 
+    public function getOrdersByDate($date, $sortField = 'id', $sortDirection = 'desc')
+    {
+        return $this->model->whereDate('created_at', $date)
+            ->with('customer:id,first_name,last_name,email')
+            ->select([
+                'id',
+                'order_id',
+                'customer_id',
+                'status',
+                'payment_status',
+                'payment_method',
+                'order_type',
+                'subtotal_price',
+                'total_price',
+                'created_at'
+            ])->orderBy($sortField, $sortDirection)->get();
+    }
+
     public function getOrderById(int $orderId)
     {
         return $this->model->find($orderId);
@@ -52,7 +70,7 @@ class OrderRepository implements OrderRepositoryInterface
                 'statusHistory'
             ]
         )->where('id', $orderId)
-        ->first();
+            ->first();
     }
 
     public function updateOrderStatus($order, string $status)

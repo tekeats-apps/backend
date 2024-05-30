@@ -3,6 +3,7 @@
 namespace App\Services\Platform;
 
 use App\Models\Vendor\Extra;
+use App\Enums\Vendor\Orders\OrderStatus;
 use App\Events\Platform\OrderStatusUpdateEvent;
 use App\Repositories\Platform\Order\OrderRepository;
 use App\Repositories\Platform\Order\OrderStatusRepository;
@@ -75,6 +76,43 @@ class OrderService
         event(new OrderStatusUpdateEvent($order));
 
         return $order;
+    }
+
+     /**
+     * Get today's orders grouped by status
+     *
+     * @return array
+     */
+    public function getOrdersGroupedByStatusForToday(): array
+    {
+        $today = \Carbon\Carbon::today();
+        $orders = $this->orderRepository->getOrdersByDate($today);
+        // dd(OrderStatus::PENDING->value);
+        $groupedOrders = [
+            'new' => [],
+            'in_progress' => [],
+            'completed' => []
+        ];
+
+        foreach ($orders as $order) {
+            switch ($order->status) {
+                case OrderStatus::PENDING:
+                    $groupedOrders['new'][] = $order;
+                    break;
+                case OrderStatus::ACCEPTED:
+                case OrderStatus::READY:
+                case OrderStatus::ASSIGNED_TO_DRIVER:
+                case OrderStatus::RIDER_PICKED_UP:
+                    $groupedOrders['in_progress'][] = $order;
+                    break;
+                case OrderStatus::DELIVERED:
+                case OrderStatus::CANCELLED:
+                    $groupedOrders['completed'][] = $order;
+                    break;
+            }
+        }
+
+        return $groupedOrders;
     }
 
 }
