@@ -126,6 +126,7 @@ class OrderService
         if ($this->paymentGateway->getName() !== OrderPaymentMethod::CASH->value) {
             $paymentResult = $this->paymentGateway->processPayment([
                 'amount' => $order->total_price * 100,
+                'customer' => $order->customer
             ]);
 
             if ($paymentResult['success'] !== true) {

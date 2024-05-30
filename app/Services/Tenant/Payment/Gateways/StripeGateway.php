@@ -3,6 +3,7 @@
 namespace App\Services\Tenant\Payment\Gateways;
 
 use Stripe\StripeClient;
+use App\Models\Vendor\Customer;
 use Stripe\Exception\ApiErrorException;
 use App\Services\Tenant\Payment\Contracts\PaymentGatewayInterface;
 
@@ -20,13 +21,58 @@ class StripeGateway implements PaymentGatewayInterface
         return 'stripe';
     }
 
+    protected function findOrCreateCustomer(Customer $customer)
+    {
+        try {
+            // Find customer by email
+            $customers = $this->stripe->customers->all(['email' => $customer->email, 'limit' => 1]);
+            if (!empty($customers->data)) {
+                $customer = $customers->data[0];
+                // Update customer if needed
+                $this->stripe->customers->update($customer->id, [
+                    'name' => $customer->full_name,
+                ]);
+                return $customer;
+            } else {
+                // Create new customer
+                return $this->stripe->customers->create([
+                    'email' => $customer->email,
+                    'name' => $customer->full_name,
+                ]);
+            }
+        } catch (ApiErrorException $e) {
+            throw new \Exception('Failed to find or create customer');
+        }
+    }
+
+    protected function createEphemeralKey($customerId)
+    {
+        try {
+            return $this->stripe->ephemeralKeys->create(
+                ['customer' => $customerId],
+                ['stripe_version' => '2024-04-10']
+            );
+        } catch (ApiErrorException $e) {
+            throw new \Exception('Failed to create ephemeral key');
+        }
+    }
+
     public function processPayment(array $paymentDetails): array
     {
         try {
+            // Extract customer details
+            $customerDetails = $paymentDetails['customer'];
+            $customer = $this->findOrCreateCustomer($customerDetails);
+            $ephemeralKey = $this->createEphemeralKey($customer->id);
             $paymentIntent = $this->stripe->paymentIntents->create([
                 'amount' => $paymentDetails['amount'],
                 'currency' => "USD",
                 'payment_method_types' => ['card'],
+                'customer' => $customer->id,
+                'metadata' => [
+                    'ephemeral_key' => $ephemeralKey->id,
+                    'customer_email' => $customer->email,
+                ],
             ]);
 
             return [
