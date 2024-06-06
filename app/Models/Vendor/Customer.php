@@ -2,9 +2,11 @@
 
 namespace App\Models\Vendor;
 
+use Illuminate\Support\Str;
 use App\Models\Vendor\Address;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -17,14 +19,14 @@ class Customer extends Authenticatable
     public const IMAGE_PATH = 'customers';
     public const DEFAULT_IMAGE_PATH = 'https://cdn-icons-png.flaticon.com/512/3787/3787263.png';
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
+    // public function __construct(array $attributes = [])
+    // {
+    //     parent::__construct($attributes);
 
-        if (request()->capture()->is('api/*')) {
-            $this->hidden = array_merge($this->hidden, ['id']);
-        }
-    }
+    //     if (request()->capture()->is('api/*')) {
+    //         $this->hidden = array_merge($this->hidden, ['id']);
+    //     }
+    // }
 
     /**
      * The attributes that are mass assignable.
@@ -40,6 +42,9 @@ class Customer extends Authenticatable
         'avatar',
         'birthday',
         'gender',
+        'verified',
+        'social_id',
+        'social_provider'
     ];
 
     /**
@@ -51,6 +56,8 @@ class Customer extends Authenticatable
         'password',
         'remember_token',
         'updated_at',
+        'otp',
+        'social_id',
     ];
 
     /**
@@ -59,10 +66,11 @@ class Customer extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime'
+        'verified' => 'boolean',
+        'status' => 'boolean',
+        'created_at' => 'datetime:M d, Y H:i',
+        'updated_at' => 'datetime:M d, Y H:i',
     ];
-
-    protected $appends = ['is_email_verified'];
 
     protected function getAvatarAttribute($value)
     {
@@ -70,15 +78,10 @@ class Customer extends Authenticatable
         $image = Customer::DEFAULT_IMAGE_PATH;
         if ($value) {
             $path = Customer::IMAGE_PATH . '/' . $value;
-            $image = tenant_asset($path);
+            $image = Storage::disk('s3')->url($path);
         }
 
         return $image;
-    }
-
-    public function getIsEmailVerifiedAttribute()
-    {
-        return !is_null($this->email_verified_at);
     }
 
     public function scopeList($query, $search, $status, $sortField, $sortDirection)
@@ -125,8 +128,42 @@ class Customer extends Authenticatable
         ]);
     }
 
+    public function scopeCreateNewSocialUser($query, $provider, $data)
+    {
+        $randomPassword = Str::random(10);
+        return $query->create([
+            'social_provider' => $provider,
+            'social_id' => $data['id'],
+            'first_name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($randomPassword),
+            'verified' => true
+        ]);
+    }
+
+    public function updateSocialUserData($provider, $data)
+    {
+        // Update only the fields you want to change
+        $this->update([
+            'social_provider' => $provider,
+            'social_id' => $data['id'],
+            'first_name' => $data['name'],
+            'email' => $data['email'],
+        ]);
+    }
+
     public function addresses()
     {
         return $this->hasMany(Address::class);
+    }
+
+    public function routeNotificationForOneSignal()
+    {
+        return ['include_external_user_ids' => [(string)$this->id]];
+    }
+
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable')->orderBy('created_at', 'desc');
     }
 }

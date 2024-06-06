@@ -33,8 +33,8 @@ class OrderList extends Component
     }
     public function getOrders()
     {
-        // $orders = Order::getOrdersList($this->search, $this->status, $this->paymentStatus, $this->startDate, $this->endDate, $this->sortField, $this->sortDirection)->paginate($this->perPage);
-        return [];
+        $orders = Order::getOrdersList($this->search, $this->status, $this->paymentStatus, $this->startDate, $this->endDate, $this->sortField, $this->sortDirection)->paginate($this->perPage);
+        return $orders;
     }
 
     public function startDateChange($startDate)

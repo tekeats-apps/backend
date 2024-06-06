@@ -24,7 +24,8 @@ class PricingStrategy implements PricingStrategyMethods
     protected function getProductPrice(int $productId): float
     {
         $product = Product::find($productId);
-        $price = $product->price;
+
+        $price = $product->discounted_price;
         return $price;
     }
 
@@ -37,7 +38,7 @@ class PricingStrategy implements PricingStrategyMethods
     protected function getVariantPrice(int $variantId): float
     {
         $variant = Variant::find($variantId);
-        return $variant ? $variant->price : 0;
+        return $variant ? $variant->discounted_price : 0;
     }
 
     /**
@@ -56,29 +57,39 @@ class PricingStrategy implements PricingStrategyMethods
         $basePrice = isset($item['variant_id'])
             ? $this->getVariantPrice($item['variant_id'])
             : $this->calculateItemPrice($item['product_id']);
+
         $subtotal = $basePrice * $item['quantity'];
 
         $extrasPrice = 0.0;
         if (isset($item['extras']) && is_array($item['extras'])) {
             foreach ($item['extras'] as $extraId) {
-                $extrasPrice += $this->getExtraPrice($extraId);
+                $extrasPrice += $this->getExtraPrice($extraId) * $item['quantity'];
             }
         }
-
+        // $price = $this->calculateItemPrice($item['product_id']);
         $total = $subtotal + $extrasPrice;
-
-        return ['subtotal' => $subtotal, 'total' => $total];
+        return ['price' => $basePrice, 'subtotal' => $subtotal, 'total' => $total];
     }
 
     /**
-     * Calculate the total of the order.
+     * Calculate the total of the order including additional charges.
      *
-     * @param array $items
+     * @param float $subtotal - The subtotal of the order
+     * @param array $additionalCharges - Associative array of additional charge types and amounts
      * @return float
      */
-    public function calculateOrderTotal(float $subtotal): float
+    public function calculateOrderTotal(float $subtotal, array $additionalCharges = []): float
     {
-        // You can expand this method to include any additional calculations like taxes, discounts, etc.
-        return $subtotal;
+        $chargesTotal = $this->calculateAdditionalCharges($additionalCharges);
+        return $subtotal + $chargesTotal;
+    }
+
+    protected function calculateAdditionalCharges(array $charges): float
+    {
+        $totalCharges = 0.00;
+        foreach ($charges as $charge) {
+            $totalCharges += $charge['amount'];
+        }
+        return $totalCharges;
     }
 }

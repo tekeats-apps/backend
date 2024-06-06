@@ -9,6 +9,8 @@ class Variant extends Model
 {
     use SoftDeletes;
 
+    protected $appends = ['discounted_price'];
+
     protected $fillable = ['name', 'price', 'quantity', 'status'];
 
     public function scopeCreateNew($query, $name, $price)
@@ -29,6 +31,18 @@ class Variant extends Model
             ]);
         }
         return $extra;
+    }
+
+    public function getDiscountedPriceAttribute()
+    {
+        $product = $this->products()->first();
+
+        if ($product && $product->discount_enabled && $product->discount > 0) {
+            $discountAmount = ($this->price * $product->discount) / 100;
+            return $this->price - $discountAmount;
+        }
+
+        return $this->price;
     }
 
     public function products()

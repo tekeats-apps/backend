@@ -173,36 +173,13 @@ Route::middleware([
                 ->as('vendor.order.')
                 ->group(function () {
                     Route::get('/',  'index')->name('list');
+                    Route::get('/detail/{id}',  'detail')->name('detail');
                 });
 
             // Coupon Routes Group
             Route::controller(CouponController::class)
                 ->prefix('coupons')
                 ->as('vendor.coupons.')->group(function () {
-                    Route::get('/', 'index')->name('list');
-                    Route::get('/create', 'create')->name('create');
-                    Route::post('/store', 'store')->name('store');
-                    Route::get('/show/{id}', 'show')->name('show');
-                    Route::get('/edit/{id}', 'edit')->name('edit');
-                    Route::put('/update/{id}', 'update')->name('update');
-                });
-
-            // Tax Routes Group
-            Route::controller(TaxController::class)
-                ->prefix('taxes')
-                ->as('vendor.taxes.')->group(function () {
-                    Route::get('/', 'index')->name('list');
-                    Route::get('/create', 'create')->name('create');
-                    Route::post('/store', 'store')->name('store');
-                    Route::get('/show/{id}', 'show')->name('show');
-                    Route::get('/edit/{id}', 'edit')->name('edit');
-                    Route::put('/update/{id}', 'update')->name('update');
-                });
-
-            // Discount Routes Group
-            Route::controller(DiscountController::class)
-                ->prefix('discounts')
-                ->as('vendor.discounts.')->group(function () {
                     Route::get('/', 'index')->name('list');
                     Route::get('/create', 'create')->name('create');
                     Route::post('/store', 'store')->name('store');

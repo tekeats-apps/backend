@@ -48,6 +48,16 @@ return [
             'driver' => 'session',
             'provider' => 'customer'
         ],
+        'admin-api' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+            'hash' => false
+        ],
+        'platform-api' => [
+            'driver' => 'sanctum',
+            'provider' => 'platform',
+            'hash' => false
+        ],
         'customers' => [
             'driver' => 'sanctum',
             'provider' => 'customer',
@@ -78,6 +88,10 @@ return [
             'model' => App\Models\User::class,
         ],
         'vendor' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Vendor\User::class,
+        ],
+        'platform' => [
             'driver' => 'eloquent',
             'model' => App\Models\Vendor\User::class,
         ],

@@ -24,6 +24,7 @@ class StoreAddressRequest extends FormRequest
     {
         return [
             'type' => 'required|string|in:' . implode(',', AddressType::getAll()),
+            'label' => 'required_if:type,' . AddressType::OTHER,
             'address_line1' => 'required|string|max:255',
             'address_line2' => 'nullable|string|max:255',
             'city' => 'required|string|max:255',

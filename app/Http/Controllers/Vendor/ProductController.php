@@ -23,9 +23,9 @@ class ProductController extends Controller
 
     public function create()
     {
-        $subCategories = Category::getAllActiveSubCategories()->pluck('name', 'id');
+        $categories = Category::getAllActiveCategories()->pluck('name', 'id');
         $tags = Tag::getActiveTags()->pluck('name', 'id');
-        return view('vendor.modules.products.create-edit', compact('subCategories', 'tags'));
+        return view('vendor.modules.products.create-edit', compact('categories', 'tags'));
     }
 
     public function store(CreateProductRequest $request)
@@ -59,16 +59,17 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $subCategories = Category::getAllActiveSubCategories()->pluck('name', 'id');
+        $categories = Category::getAllActiveCategories()->pluck('name', 'id');
         $tags = Tag::getActiveTags()->pluck('name', 'id');
         $product = Product::findOrFail($id);
-        return view('vendor.modules.products.create-edit', compact('product', 'subCategories', 'tags'));
+        return view('vendor.modules.products.create-edit', compact('product', 'categories', 'tags'));
     }
 
     public function update(UpdateProductRequest $request, Product $product)
     {
         try {
             $validatedData = $request->validated();
+
             // If there is an image, you should store the image and update $validatedData['image'] with the path of the image.
             $product->updateProduct($product->id, $validatedData);
             if ($product) {

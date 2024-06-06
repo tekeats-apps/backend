@@ -2,20 +2,14 @@
 
 namespace App\Listeners\Tenant;
 
-use NotificationService;
-use App\Events\OrderPlacedEvent;
+use App\Events\Tenant\OrderPlacedEvent;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\Tenant\OrderPlacedNotification;
 
 class SendNotificationListener
 {
-    protected $notificationService;
-
-    public function __construct(NotificationService $notificationService)
-    {
-        $this->notificationService = $notificationService;
-    }
-
     public function handle(OrderPlacedEvent $event)
     {
-        $this->notificationService->sendOrderNotification($event->order);
+        Notification::send($event->order->customer, new OrderPlacedNotification($event->order));
     }
 }

@@ -14,6 +14,7 @@ class OrderItem extends Model
         'product_id',
         'variant_id',
         'extras',
+        'price',
         'quantity',
         'special_instructions',
         'subtotal',
@@ -23,4 +24,15 @@ class OrderItem extends Model
     protected $casts = [
         'extras' => 'array',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class)->withTrashed();
+    }
+
+    public function variant()
+    {
+        return $this->belongsTo(Variant::class, 'variant_id')->withTrashed();
+    }
+
 }

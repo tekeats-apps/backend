@@ -2,8 +2,8 @@
 
 namespace App\Models\Vendor;
 
-use App\Models\Vendor\Role;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\Vendor\User as StoreUser;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasFactory, HasRoles;
+    use HasFactory, HasRoles, HasApiTokens;
 
     public const IMAGE_PATH = 'users';
 

@@ -15,20 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('order_id')->unique();
             $table->unsignedBigInteger('customer_id');
-            $table->enum(
-                'status',
-                [
-                    'pending',
-                    'processing',
-                    'assigned_to_driver',
-                    'on_the_way',
-                    'completed',
-                    'returned',
-                    'cancelled'
-                ]
-            )->default('pending');
-            $table->enum('payment_method', ['card', 'paypal', 'cash_on_delivery']);
-            $table->enum('order_type', ['dine_in', 'takeaway', 'delivery']);
+            $table->string('status')->default('pending');
+            $table->string('payment_method');
+            $table->string('order_type');
+            $table->string('payment_status');
 
             $table->string('coupon_code')->nullable();
             $table->text('notes')->nullable();
@@ -48,6 +38,7 @@ return new class extends Migration
             $table->index('status');
             $table->index('payment_method');
             $table->index('order_type');
+            $table->index('payment_status');
             $table->index(['customer_id', 'status']); // Composite index
             $table->index(['customer_id', 'order_type']);
             $table->index(['customer_id', 'created_at']); // For ordering by creation time within a specific customer

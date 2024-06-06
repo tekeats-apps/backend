@@ -73,14 +73,16 @@
                                     <label class="form-check-label" for="responsivetableCheck"></label>
                                 </div>
                             </th>
-                            <th class="sort text-uppercase" scope="col">#</th>
+                            <th class="sort text-uppercase" scope="col">Order ID</th>
                             <th class="sort text-uppercase" scope="col" wire:click="sortBy('customer_name')">Customer
                                 Name</th>
                             <th class="sort text-uppercase" scope="col">Customer Email</th>
+                            <th class="sort text-uppercase" scope="col">Subtotal</th>
+                            <th class="sort text-uppercase" scope="col">Total Amount</th>
                             <th class="sort text-uppercase" scope="col">Payment Status</th>
                             <th class="sort text-uppercase" scope="col">Status</th>
                             <th class="sort text-uppercase" scope="col" wire:click="sortBy('created_at')">Date</th>
-                            <th class="text-uppercase" scope="col">Action</th>
+                            <th class="text-uppercase" scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -94,45 +96,45 @@
                                             <label class="form-check-label" for="responsivetableCheck01"></label>
                                         </div>
                                     </th>
-                                    <td><a href="#" class="fw-semibold">#{{ $order->invoice_no }}</a></td>
+                                    <td><a href="{{ route('vendor.order.detail', $order->id) }}"
+                                            class="fw-semibold">{{ strtoupper($order->order_id) }}</a></td>
                                     <td>
                                         <div class="d-flex gap-2 align-items-center">
-                                            <div class="flex-shrink-0">
-                                                <img src="{{ URL::asset('assets/images/users/avatar-3.jpg') }}"
-                                                    alt="" class="avatar-xs rounded-circle" />
-                                            </div>
                                             <div class="flex-grow-1">
-                                                {{ $order->customer_name }}
+                                                {{ $order->customer->full_name }}
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{{ $order->email }}</td>
-                                    @if ($order->payment_status == 'paid')
-                                        <td class="text-success"><i
-                                                class="ri-checkbox-circle-line fs-17 align-middle"></i>
-                                            {{ ucfirst($order->payment_status) }}</td>
-                                    @elseif ($order->payment_status == 'unpaid')
+                                    <td>{{ $order->customer->email }}</td>
+                                    <td><strong>${{ $order->subtotal_price }}</strong></td>
+                                    <td> <strong>${{ $order->total_price }}</strong> </td>
+                                    @if ($order->payment_status == \App\Enums\Vendor\Orders\PaymentStatus::PAID)
+                                        <td class="text-success"><i class="ri-checkbox-circle-line fs-17 align-middle"></i>
+                                            {{ ucfirst($order->payment_status->value) }}
+                                        </td>
+                                    @elseif ($order->payment_status == \App\Enums\Vendor\Orders\PaymentStatus::UNPAID)
                                         <td class="text-warning"><i class="ri-refresh-line fs-17 align-middle"></i>
-                                            {{ ucfirst($order->payment_status) }}</td>
+                                            {{ ucfirst($order->payment_status->value) }}
+                                        </td>
                                     @else
                                         <td class="text-danger"><i class="ri-close-circle-line fs-17 align-middle"></i>
-                                            {{ ucfirst($order->payment_status) }}</td>
+                                            {{ ucfirst($order->payment_status->value) }}
+                                        </td>
                                     @endif
-
                                     <td class="text-success"><i class="ri-checkbox-circle-line fs-17 align-middle"></i>
-                                        {{ ucfirst($order->status) }}</td>
+                                        {{ ucfirst($order->status->value) }}</td>
                                     <td>{{ $order->created_at }}</td>
                                     <td>
-                                        <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
+                                        {{-- <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
                                             data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="ri-more-fill align-middle"></i>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><button class="dropdown-item" href="javascript:void(0);"
-                                                    onclick="ViewInvoice(this);" data-id="` + raw.invoice_no + `"><i
+                                            <li><a class="dropdown-item" href="{{ route('vendor.order.detail', $order->id) }}"><i
                                                         class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                    View</button></li>
-                                        </ul>
+                                                    View</a></li>
+                                        </ul> --}}
+                                        @livewire('vendor.orders.order-status-action', ['order' => $order])
                                     </td>
                                 </tr>
                             @endforeach

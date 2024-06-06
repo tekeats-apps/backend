@@ -18,10 +18,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('phone_number')->nullable();
-            $table->date('birthday')->nullable(); // to store customer's birthday
-            $table->enum('gender', ['male', 'female', 'other'])->nullable(); // to store the gender
-            $table->string('avatar')->nullable(); // to store the avatar url
-            $table->timestamp('email_verified_at')->nullable();
+            $table->date('birthday')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('avatar')->nullable();
+            $table->integer('otp')->nullable();
+            $table->boolean('verified')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

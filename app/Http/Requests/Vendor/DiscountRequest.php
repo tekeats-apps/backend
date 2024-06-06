@@ -30,7 +30,9 @@ class DiscountRequest extends FormRequest
                     'description' => ['nullable', 'string', 'max:20000'],
                     'type' => ['required', new Enum(DiscountType::class)],
                     'amount' => ['required', 'numeric', 'between:0,99999999.99'],
-                    'active' => ['nullable']
+                    'active' => ['nullable'],
+                    'categories' => ['nullable'],
+                    'products' => ['nullable']
                 ];
             case 'PUT':
                 return [
@@ -38,7 +40,9 @@ class DiscountRequest extends FormRequest
                     'description' => ['nullable', 'string', 'max:20000'],
                     'type' => ['required', new Enum(DiscountType::class)],
                     'amount' => ['required', 'numeric', 'between:0,99999999.99'],
-                    'active' => ['nullable']
+                    'active' => ['nullable'],
+                    'categories' => ['nullable'],
+                    'products' => ['nullable']
                 ];
         }
     }

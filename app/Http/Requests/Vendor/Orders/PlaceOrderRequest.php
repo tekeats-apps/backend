@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Vendor\Orders;
 
+use Illuminate\Validation\Rules\Enum;
+use App\Enums\Vendor\Orders\OrderType;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Enums\Vendor\Orders\OrderPaymentMethod;
 
 class PlaceOrderRequest extends FormRequest
 {
@@ -22,8 +25,8 @@ class PlaceOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'payment_method' => 'required|in:card,paypal,cash_on_delivery',
-            'order_type' => 'required|in:dine_in,takeaway,delivery',
+            'payment_method' => ['required', new Enum(OrderPaymentMethod::class)],
+            'order_type' => ['required', new Enum(OrderType::class)],
             'coupon_code' => 'nullable|string|exists:coupons,code',
             'notes' => 'nullable|string',
 

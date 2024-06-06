@@ -30,7 +30,9 @@ class TaxRequest extends FormRequest
                     'description' => ['nullable', 'string', 'max:20000'],
                     'type' => ['required', new Enum(TaxType::class)],
                     'amount' => ['required', 'numeric', 'between:0,99999999.99'],
-                    'active' => ['nullable']
+                    'active' => ['nullable'],
+                    'categories' => ['nullable'],
+                    'products' => ['nullable']
                 ];
             case 'PUT':
                 return [
@@ -38,7 +40,9 @@ class TaxRequest extends FormRequest
                     'description' => ['nullable', 'string', 'max:20000'],
                     'type' => ['required', new Enum(TaxType::class)],
                     'amount' => ['required', 'numeric', 'between:0,99999999.99'],
-                    'active' => ['nullable']
+                    'active' => ['nullable'],
+                    'categories' => ['nullable'],
+                    'products' => ['nullable']
                 ];
         }
     }

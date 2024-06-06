@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
     extra_hosts:
     - 'host.docker.internal:host-gateway'
-    - "fos.lvh.me:127.0.0.1"
+    - "tekeats.local:127.0.0.1"
     volumes:
       - ./:/var/www
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
@@ -26,7 +26,7 @@ services:
       - '443:443'
     extra_hosts:
     - 'host.docker.internal:host-gateway'
-    - "fos.lvh.me:127.0.0.1"
+    - "tekeats.test:127.0.0.1"
     volumes:
       - ./:/var/www
       - ./docker/nginx/conf.d/:/etc/nginx/conf.d/

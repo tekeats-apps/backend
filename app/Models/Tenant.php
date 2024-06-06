@@ -6,6 +6,7 @@ use App\Models\Vendor\Role;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Vendor\User as StoreUser;
+use Bpuig\Subby\Traits\HasSubscriptions;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
@@ -13,24 +14,27 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
 
 class Tenant extends BaseTenant implements TenantWithDatabase
 {
-    use HasDatabase, HasDomains;
+    use HasDatabase, HasDomains, HasSubscriptions;
 
     public static function getCustomColumns(): array
     {
         return [
-            'id',
-            'order_id'
+            'id'
         ];
     }
 
+    protected $casts = [
+        'created_at' => 'datetime:M d, Y H:i',
+        'updated_at' => 'datetime:M d, Y H:i',
+    ];
+
     public function scopeRegisterRestaurant($query, $data)
     {
-        $tenantID = Str::slug($data['store_name'], '_'); // Generate tenant ID with spaces removed and concatenated with underscores
-        $domain = $data['domain'] . '.' . request()->getHost();
+        $tenantID = Str::slug($data['business_name'], '_'); // Generate tenant ID with spaces removed and concatenated with underscores
+        $domain = $data['domain'] . '.' . env('TENANT_DOMAIN');
         $databaseName = 'tenant_' . $tenantID; // Generate the tenant's database name
-        $tenant = Tenant::create([
-            'order_id' => $data['order_id'],
-            'business_name' => $data['store_name'],
+        $tenant = $query->create([
+            'business_name' => $data['business_name'],
             'email' => $data['email'],
             'domain' => $domain,
             'tenancy_db_name' => $databaseName
@@ -42,18 +46,9 @@ class Tenant extends BaseTenant implements TenantWithDatabase
         return $tenant;
     }
 
-    public function scopeGetRestaurantsList($query, $search, $status, $sortField, $sortDirection)
+    public function scopeGetTenantsList($query, $status = 1, $sortField = 'id', $sortDirection = 'desc')
     {
-        if (!empty($search)) {
-            $query->where(function ($q) use ($search) {
-                $q->where('data->email', 'like', '%' . $search . '%')
-                    ->orWhere('data->status', 'like', '%' . $search . '%')
-                    ->orWhere('data->business_name', 'like', '%' . $search . '%');
-            });
-        }
-        if (!empty($status)) {
-            $query->where('status', $status);
-        }
+        $query->where('status', $status);
         return $query->orderBy($sortField, $sortDirection);
     }
 
@@ -63,7 +58,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
             $user = new StoreUser();
             $user->name = $data['customer_name'];
             $user->email = $data['email'];
-            $user->password = Hash::make($data['login_password']);
+            $user->password = Hash::make($data['password']);
 
             if ($role) {
                 $role = Role::where('name', $role)->first();
@@ -74,10 +69,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
         });
         return $tenant;
     }
-    public function order()
-    {
-        return $this->hasOne(Order::class);
-    }
+
     public function domains()
     {
         return $this->hasMany(Domain::class);

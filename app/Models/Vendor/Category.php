@@ -4,6 +4,7 @@ namespace App\Models\Vendor;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
@@ -14,20 +15,22 @@ class Category extends Model
     const IMAGE_PATH = 'categories';
 
     protected $fillable = [
-        'parent_id',
         'name',
         'slug',
-        'position',
         'featured',
         'description',
         'image',
         'status',
+        'discount_enabled',
+        'discount'
     ];
 
-    public function subcategories()
-    {
-        return $this->hasMany(Category::class, 'parent_id');
-    }
+    protected $casts = [
+        'status' => 'boolean',
+        'featured' => 'boolean',
+        'discount_enabled' => 'boolean',
+        'discount' => 'integer',
+    ];
 
     protected function getImageAttribute($value)
     {
@@ -35,7 +38,7 @@ class Category extends Model
         $image = 'https://cdn-icons-png.flaticon.com/512/3787/3787263.png';
         if ($value) {
             $path = Category::IMAGE_PATH . '/' . $value;
-            $image = tenant_asset($path);
+            $image = Storage::disk('s3')->url($path);
         }
 
         return $image;
@@ -43,7 +46,6 @@ class Category extends Model
 
     public function scopeList($query, $search = '', $sortField = 'id', $sortDirection = 'desc')
     {
-        $query->whereNull('parent_id');
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', '%' . $search . '%')
@@ -57,35 +59,13 @@ class Category extends Model
         }
         return $query->orderBy($sortField, $sortDirection);
     }
-    public function scopeGetSubCategorieslist($query, $parentId, $search, $sortField, $sortDirection, $status)
+    public function scopeGetAllActiveCategories($query, $fields = ['*'],$sortField = 'id', $sortDirection = 'desc', $status = 1)
     {
-        $query->where('parent_id', $parentId);
-        if (!empty($search)) {
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('description', 'like', '%' . $search . '%')
-                    ->orWhere('slug', 'like', '%' . $search . '%');
-            });
-        }
-
-        if (!empty($status)) {
-            $query->where('status', $status);
-        }
-        return $query->orderBy($sortField, $sortDirection);
-    }
-    public function scopeGetAllActiveSubCategories($query, $sortField = 'id', $sortDirection = 'desc', $status = 1)
-    {
-        $query->whereNotNull('parent_id');
-
         if (!empty($status)) {
             $query->where('status', $status);
         }
 
-        return $query->orderBy($sortField, $sortDirection);
-    }
-    public function scopeGetSubcategoriesUsedPositions($query)
-    {
-        return $query->whereNotNull('parent_id')->pluck('position')->toArray();
+        return $query->select($fields)->orderBy($sortField, $sortDirection);
     }
     public function scopeStoreCategory($query, $data)
     {
@@ -95,6 +75,8 @@ class Category extends Model
             'slug' => Str::slug($data['name']),
             'position' => isset($data['position']) ? $data['position'] : 0,
             'description' => isset($data['description']) ? $data['description'] : null,
+            'discount_enabled' => isset($data['discount_enabled']) ? $data['discount_enabled'] : 0,
+            'discount' => isset($data['discount']) ? $data['discount'] : 0,
             'featured' => isset($data['featured']) ? $data['featured'] : 0,
             'status' => isset($data['status']) ? $data['status'] : 0
         ]);
