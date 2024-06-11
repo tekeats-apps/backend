@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   app:
     build:
@@ -37,7 +37,7 @@ services:
       - app-network
 
   db:
-    image: mariadb:latest
+    image: mysql:latest
     container_name: backend_db
     restart: unless-stopped
     ports:
@@ -46,11 +46,24 @@ services:
       MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
       MYSQL_ROOT_HOST: "%"
       MYSQL_DATABASE: '${DB_DATABASE}'
-      MYSQL_USER: '${DB_USERNAME}'
       MYSQL_PASSWORD: '${DB_PASSWORD}'
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     volumes:
-      - mariadbdata:/var/lib/mysql
+      - mysqldata:/var/lib/mysql
+    networks:
+      - app-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: unless-stopped
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+    depends_on:
+      - db
     networks:
       - app-network
 
@@ -59,5 +72,5 @@ networks:
     driver: bridge
 
 volumes:
-  mariadbdata:
+  mysqldata:
     driver: local
