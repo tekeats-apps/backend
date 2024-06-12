@@ -30,18 +30,18 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             Route::middleware('api')
-                ->prefix('api')
+                ->prefix('/')
                 ->group(base_path('routes/api.php'));
 
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
+            // Route::middleware('web')
+            //     ->group(base_path('routes/web.php'));
 
             Route::middleware('api')
-                ->prefix('api')
+                ->prefix('admin')
                 ->group(base_path('routes/admin.php'));
 
             Route::middleware('api')
-                ->prefix('api/platform')
+                ->prefix('platform')
                 ->group(base_path('routes/platform.php'));
         });
     }
@@ -58,15 +58,15 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
-    protected function mapWebRoutes()
-    {
-        foreach ($this->centralDomains() as $domain) {
-            Route::middleware('web')
-                ->domain($domain)
-                ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
-        }
-    }
+    // protected function mapWebRoutes()
+    // {
+    //     foreach ($this->centralDomains() as $domain) {
+    //         Route::middleware('web')
+    //             ->domain($domain)
+    //             ->namespace($this->namespace)
+    //             ->group(base_path('routes/web.php'));
+    //     }
+    // }
 
     protected function mapApiRoutes()
     {

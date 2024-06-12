@@ -17,7 +17,6 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
 
-    Route::prefix('v1')->group(function () {
 
         // Platform Users Authentication Routes
         Route::controller(AuthController::class)
@@ -112,4 +111,3 @@ Route::middleware([
                 Route::post('/media', 'updateMediaSettings');
             });
     });
-});

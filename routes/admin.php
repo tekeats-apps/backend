@@ -5,8 +5,6 @@ use App\Http\Controllers\API\V1\Admin\Auth\AuthController;
 use App\Http\Controllers\API\V1\Admin\Tenant\PlanController;
 use App\Http\Controllers\API\V1\Admin\Tenant\TenantController;
 
-Route::prefix('v1/admin')->group(function () {
-
     // Admin Users Authentication Routes
     Route::controller(AuthController::class)
         ->prefix('auth')
@@ -41,4 +39,3 @@ Route::prefix('v1/admin')->group(function () {
                 Route::get('/list', 'getPlansList');
             });
     });
-});
