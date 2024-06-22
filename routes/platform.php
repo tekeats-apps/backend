@@ -109,4 +109,4 @@ Route::middleware([
                 Route::put('/localization', 'updateLocalizationSettings');
                 Route::post('/media', 'updateMediaSettings');
             });
-    });
+});
