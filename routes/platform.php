@@ -17,7 +17,6 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
 
-
         // Platform Users Authentication Routes
         Route::controller(AuthController::class)
             ->prefix('auth')
@@ -110,4 +109,4 @@ Route::middleware([
                 Route::put('/localization', 'updateLocalizationSettings');
                 Route::post('/media', 'updateMediaSettings');
             });
-    });
+});
