@@ -24,7 +24,7 @@ class RegisterTenantRequest extends FormRequest
         return [
             'customer_name' => 'required',
             'business_name' => 'required',
-            'plan_id' => 'required|exists:plans,id',
+            // 'plan_id' => 'required|exists:plans,id',
             'domain' => 'required',
             'email' => 'required|email',
             'password' => 'required',

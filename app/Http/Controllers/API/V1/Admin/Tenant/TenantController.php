@@ -55,12 +55,12 @@ class TenantController extends Controller
             }
 
             // Subscribe to plan
-            $plan = Plan::getById($data['plan_id']);
+            // $plan = Plan::getById($data['plan_id']);
 
-            $subscription = $this->tenantService->subscribeToPlan($tenant, $plan);
-            if (!$subscription) {
-                throw new Exception("Plan subscription failed.");
-            }
+            // $subscription = $this->tenantService->subscribeToPlan($tenant, $plan);
+            // if (!$subscription) {
+            //     throw new Exception("Plan subscription failed.");
+            // }
 
             $this->tenantService->registerTenantUser($tenant, $data);
 
