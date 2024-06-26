@@ -228,5 +228,9 @@ class SettingService
 
         return $settings;
     }
-    
+
+    public function updateBusinessTiming(array $data): array
+    {
+        dd($data);
+    }
 }

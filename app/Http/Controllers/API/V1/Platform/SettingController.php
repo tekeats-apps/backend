@@ -8,6 +8,7 @@ use App\Services\Platform\SettingService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Platform\Settings\UpdateMediaSettingRequest;
 use App\Http\Requests\Platform\Settings\UpdateOrderSettingRequest;
+use App\Http\Requests\Platform\Settings\UpdateBusinessTimingRequest;
 use App\Http\Requests\Platform\Settings\UpdateGeneralSettingRequest;
 use App\Http\Requests\Platform\Settings\UpdateDeliverySettingRequest;
 use App\Http\Requests\Platform\Settings\UpdateLocalizationSettingRequest;
@@ -204,6 +205,15 @@ class SettingController extends Controller
         }
     }
 
+    public function updateBusinessTiming(UpdateBusinessTimingRequest $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $updatedSettings = $this->settingService->updateBusinessTiming($request->validated());
+            return $this->successResponse($updatedSettings, "Business timing updated successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
     
     
 }

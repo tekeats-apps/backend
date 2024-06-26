@@ -108,5 +108,6 @@ Route::middleware([
                 Route::put('/order', 'updateOrderSettings');
                 Route::put('/localization', 'updateLocalizationSettings');
                 Route::post('/media', 'updateMediaSettings');
+                Route::put('/business/timing', 'updateBusinessTiming');
             });
 });
