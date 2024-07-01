@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/admin/dashboard';
+    public const HOME = '/';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -31,10 +31,6 @@ class RouteServiceProvider extends ServiceProvider
         $this->routes(function () {
             Route::middleware('api')
                 ->group(base_path('routes/api.php'));
-
-            // Route::middleware('web')
-            //     ->prefix('panel')
-            //     ->group(base_path('routes/web.php'));
 
             Route::middleware('api')
                 ->prefix('admin')
@@ -57,16 +53,6 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
     }
-
-    // protected function mapWebRoutes()
-    // {
-    //     foreach ($this->centralDomains() as $domain) {
-    //         Route::middleware('web')
-    //             ->domain($domain)
-    //             ->namespace($this->namespace)
-    //             ->group(base_path('routes/web.php'));
-    //     }
-    // }
 
     protected function mapApiRoutes()
     {
