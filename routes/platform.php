@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use App\Http\Controllers\API\V1\Platform\ExtraController;
 use App\Http\Controllers\API\V1\Platform\OrderController;
 use App\Http\Controllers\API\V1\Platform\DomainController;
@@ -11,10 +10,11 @@ use App\Http\Controllers\API\V1\Platform\Tag\TagController;
 use App\Http\Controllers\API\V1\Platform\CustomerController;
 use App\Http\Controllers\API\V1\Platform\Auth\AuthController;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 use App\Http\Controllers\API\V1\Platform\Category\CategoryController;
 
 Route::middleware([
-    'locale', InitializeTenancyByDomain::class,
+    'locale', InitializeTenancyByDomainOrSubdomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
 
@@ -116,5 +116,7 @@ Route::middleware([
         ->prefix('domains')
         ->group(function () {
             Route::get('/list', 'getDomains');
+            Route::post('/create', 'createDomain');
+            Route::delete('/delete/{domain}', 'deleteDomain');
         });
 });

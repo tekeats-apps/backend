@@ -31,7 +31,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     public function scopeRegisterRestaurant($query, $data)
     {
         $tenantID = Str::slug($data['business_name'], '_'); // Generate tenant ID with spaces removed and concatenated with underscores
-        $domain = $data['domain'] . '.' . env('TENANT_DOMAIN');
+        $domain = $data['domain'];
         $databaseName = 'tenant_' . $tenantID; // Generate the tenant's database name
         $tenant = $query->create([
             'business_name' => $data['business_name'],
