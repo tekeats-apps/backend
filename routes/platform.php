@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\V1\Platform\ExtraController;
 use App\Http\Controllers\API\V1\Platform\OrderController;
 use App\Http\Controllers\API\V1\Platform\DomainController;
+use App\Http\Controllers\API\V1\Platform\PluginController;
 use App\Http\Controllers\API\V1\Platform\ProductController;
 use App\Http\Controllers\API\V1\Platform\SettingController;
 use App\Http\Controllers\API\V1\Platform\Tag\TagController;
@@ -118,5 +119,11 @@ Route::middleware([
             Route::get('/list', 'getDomains');
             Route::post('/create', 'createDomain');
             Route::delete('/delete/{domain}', 'deleteDomain');
+        });
+
+    Route::controller(PluginController::class)
+        ->prefix('plugins')
+        ->group(function () {
+            Route::get('/list', 'getPlugins');
         });
 });
