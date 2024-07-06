@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\V1\Admin\PluginController;
 use App\Http\Controllers\API\V1\Admin\Auth\AuthController;
-use App\Http\Controllers\API\V1\Admin\Tenant\PlanController;
 use App\Http\Controllers\API\V1\Admin\Tenant\TenantController;
 
     // Admin Users Authentication Routes
@@ -33,9 +33,18 @@ use App\Http\Controllers\API\V1\Admin\Tenant\TenantController;
                 Route::post('/validate/business/domain', 'checkDomain');
             });
 
-        Route::controller(PlanController::class)
-            ->prefix('plans')
+        Route::controller(PluginController::class)
+            ->prefix('plugins')
             ->group(function () {
-                Route::get('/list', 'getPlansList');
+
+                Route::prefix('type')->group(function () {
+                    Route::get('/list', 'getPluginTypes');
+                    Route::get('/edit/{id}', 'getPluginType');
+                    Route::post('/create', 'createPluginType');
+                    Route::put('/update/{id}', 'updatePluginType');
+                    Route::delete('/delete/{id}', 'deletePluginType');
+                });
             });
+
+        
     });

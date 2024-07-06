@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\V1\Platform;
 
 use App\Traits\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Services\Platform\PluginService;
+use App\Services\Admin\PluginService;
 use Symfony\Component\HttpFoundation\Response;
 
 class PluginController extends Controller
