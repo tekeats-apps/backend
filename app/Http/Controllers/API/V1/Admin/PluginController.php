@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\API\V1\Admin;
 
+use App\Models\Plugin;
 use App\Traits\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Services\Admin\PluginService;
 use App\Http\Requests\Admin\PluginTypeRequest;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\Admin\Plugin\GetPluginsRequest;
+use App\Http\Requests\Admin\Plugin\CreatePluginRequest;
+use App\Http\Requests\Admin\Plugin\UpadatePluginRequest;
+use App\Http\Requests\Admin\Plugin\Types\GetPluginTypesRequest;
 
 class PluginController extends Controller
 {
@@ -18,9 +23,11 @@ class PluginController extends Controller
         $this->pluginService = $pluginService;
     }
 
-    public function getPluginTypes(){
+    //Plugin Types functions
+    public function getPluginTypes(GetPluginTypesRequest $request){
         try{
-            $plugins = $this->pluginService->getPluginTypes();
+            $limit = $request->limit ?? 10;
+            $plugins = $this->pluginService->getPluginTypes()->simplePaginate($limit);
             return $this->successResponse($plugins, "Plugin types fetched successfully!");
         }catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -62,6 +69,57 @@ class PluginController extends Controller
         try {
             $this->pluginService->deletePluginType($id);
             return $this->successResponse([], "Plugin type deleted successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //Plugin functions
+    public function getPlugins(GetPluginsRequest $request){
+        try{
+            $limit = $request->limit ?? 10;
+            $plugins = $this->pluginService->getPlugins()->simplePaginate($limit);
+            return $this->successResponse($plugins, "Plugins fetched successfully!");
+        }catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function createPlugin(CreatePluginRequest $request)
+    {
+        try {
+            $plugins = $this->pluginService->createPlugin($request->validated());
+            return $this->successResponse($plugins, "Plugin created successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function updatePlugin(UpadatePluginRequest $request, Plugin $plugin)
+    {
+        try {
+            $plugins = $this->pluginService->updatePlugin($request->validated(), $plugin);
+            return $this->successResponse($plugins, "Plugin updated successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getPluginDetails($id)
+    {
+        try {
+            $plugin = $this->pluginService->getPluginDetails($id);
+            return $this->successResponse($plugin, "Plugin details fetched successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function deletePlugin($id)
+    {
+        try {
+            $this->pluginService->deletePlugin($id);
+            return $this->successResponse([], "Plugin deleted successfully!");
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }

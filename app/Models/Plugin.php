@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Plugin extends Model
 {
     use HasFactory, HasUuids;
+
+    public const IMAGE_PATH = 'plugins';
+    public const DOCUMENTATION_PATH = 'plugins/documents';
+    public const DEFAULT_IMAGE_PATH = 'https://solidwp.com/wp-content/uploads/2017/05/what-is-a-plugin.png';
 
     protected $fillable = [
         'id',
@@ -29,46 +32,40 @@ class Plugin extends Model
         'featured'
     ];
 
+    protected $casts = [
+        'is_paid' => 'boolean',
+        'active' => 'boolean',
+        'featured' => 'boolean',
+        'created_at' => 'datetime:M d, Y H:i',
+        'updated_at' => 'datetime:M d, Y H:i',
+    ];
+
     public function uniqueIds()
     {
         return ['uuid'];
     }
 
-    public function scopeGetList($query, $search, $sortField, $sortDirection)
+    protected function getImageAttribute($value)
     {
-        if (!empty($search)) {
-            $query->where(function ($subQuery) use ($search) {
-                $subQuery->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('description', 'like', '%' . $search . '%')
-                    ->orWhere('version', 'like', '%' . $search . '%')
-                    ->orWhereHas('type', function ($query) use ($search) {
-                        $query->where('name', 'like', '%' . $search . '%');
-                    });
-            });
+
+        $image = Plugin::DEFAULT_IMAGE_PATH;
+        if ($value) {
+            $path = Plugin::IMAGE_PATH . '/' . $value;
+            $image = Storage::disk('s3')->url($path);
         }
 
-        return $query->orderBy($sortField, $sortDirection);
+        return $image;
     }
 
-    public function isPaid(): Attribute
+    protected function getDocumentationAttribute($value)
     {
-        return new Attribute(
-            set: fn ($value) => $value === 'on' ? 1 : 0
-        );
-    }
+        $documentation = null;
+        if ($value) {
+            $path = Plugin::DOCUMENTATION_PATH . '/' . $value;
+            $documentation = Storage::disk('s3')->url($path);
+        }
 
-    public function active(): Attribute
-    {
-        return new Attribute(
-            set: fn ($value) => $value === 'on' ? 1 : 0
-        );
-    }
-
-    public function featured(): Attribute
-    {
-        return new Attribute(
-            set: fn ($value) => $value === 'on' ? 1 : 0
-        );
+        return $documentation;
     }
 
     public function type(): BelongsTo

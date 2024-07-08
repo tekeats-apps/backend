@@ -19,7 +19,7 @@ class PluginRepository implements PluginRepositoryInterface
 
     public function getPluginTypes()
     {
-        return $this->pluginType->all();
+        return $this->pluginType;
     }
 
     public function getPluginType($id)
@@ -42,5 +42,20 @@ class PluginRepository implements PluginRepositoryInterface
     public function deletePluginType($id)
     {
         return $this->pluginType->find($id)->delete();
+    }
+
+    public function getPlugins()
+    {
+        return $this->plugin;
+    }
+
+    public function createPlugin($data)
+    {
+        return $this->plugin->create($data);
+    }
+
+    public function getPluginDetail($id)
+    {
+        return $this->plugin->find($id);
     }
 }
