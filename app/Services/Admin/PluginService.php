@@ -56,8 +56,8 @@ class PluginService
         if (is_null($this->pluginType)) {
             return [];
         }
-        return $this->pluginType->with('plugins')->get()->groupBy('type')->map(function ($type) {
-            return $type->pluck('plugins');
+        return $this->pluginType->with('plugins')->get()->mapWithKeys(function ($type) {
+            return [$type->name => $type->plugins];
         });
     }
 

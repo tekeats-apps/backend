@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 class Plugin extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, CentralConnection;
 
     public const IMAGE_PATH = 'plugins';
     public const DOCUMENTATION_PATH = 'plugins/documents';
@@ -39,6 +40,15 @@ class Plugin extends Model
         'created_at' => 'datetime:M d, Y H:i',
         'updated_at' => 'datetime:M d, Y H:i',
     ];
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        if (request()->capture()->is('platform/*')) {
+            $this->hidden = array_merge($this->hidden, ['id', 'plugin_type_id']);
+        }
+    }
 
     public function uniqueIds()
     {
