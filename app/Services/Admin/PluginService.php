@@ -7,6 +7,7 @@ use App\Models\PluginType;
 use App\Traits\TenantImageUploadTrait;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\Plugin\PluginRepository;
+use App\Repositories\Platform\PlatformPluginRepository;
 
 class PluginService
 {
@@ -14,11 +15,13 @@ class PluginService
 
     protected $pluginRepository;
     protected $pluginType;
+    protected $platformPluginRepository;
 
-    public function __construct(PluginRepository $pluginRepository, PluginType $pluginType)
+    public function __construct(PluginRepository $pluginRepository, PluginType $pluginType, PlatformPluginRepository $platformPluginRepository)
     {
         $this->pluginRepository = $pluginRepository;
         $this->pluginType = $pluginType;
+        $this->platformPluginRepository = $platformPluginRepository;
     }
 
     public function getPlugins()
@@ -56,9 +59,47 @@ class PluginService
         if (is_null($this->pluginType)) {
             return [];
         }
+
         return $this->pluginType->with('plugins')->get()->mapWithKeys(function ($type) {
-            return [$type->name => $type->plugins];
+            return [$type->name => $this->formatPlugins($type->plugins)];
         });
+    }
+
+    private function formatPlugins($plugins)
+    {
+        return $plugins->map(function ($plugin) {
+            return $this->formatPluginDetails($plugin);
+        });
+    }
+
+    private function formatPluginDetails($plugin)
+    {
+        $platformPlugin = $this->platformPluginRepository->getPluginStatus($plugin->uuid);
+        $enabled = $platformPlugin ? $platformPlugin->enabled : false;
+        $installed = (bool) $platformPlugin;
+
+        return [
+            'id' => $plugin->uuid,
+            'name' => $plugin->name,
+            'description' => $plugin->description,
+            'image' => $plugin->image,
+            'documentation' => $plugin->documentation,
+            'version' => $plugin->version,
+            'is_paid' => $plugin->is_paid,
+            'price' => $plugin->price,
+            'featured' => $plugin->featured,
+            'enabled' => $enabled,
+            'installed' => $installed,
+            'next_action' => $this->determineNextAction($enabled, $installed)
+        ];
+    }
+
+    private function determineNextAction($enabled, $installed)
+    {
+        if (!$installed) {
+            return ['label' => 'Install'];
+        }
+        return ['label' => $enabled ? 'Disable' : 'Enable'];
     }
 
     public function createPlugin($data)
