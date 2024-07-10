@@ -27,7 +27,7 @@ class PluginController extends Controller
     public function getPluginTypes(GetPluginTypesRequest $request){
         try{
             $limit = $request->limit ?? 10;
-            $plugins = $this->pluginService->getPluginTypes()->simplePaginate($limit);
+            $plugins = $this->pluginService->getPluginTypes()->paginate($limit);
             return $this->successResponse($plugins, "Plugin types fetched successfully!");
         }catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -78,7 +78,7 @@ class PluginController extends Controller
     public function getPlugins(GetPluginsRequest $request){
         try{
             $limit = $request->limit ?? 10;
-            $plugins = $this->pluginService->getPlugins()->simplePaginate($limit);
+            $plugins = $this->pluginService->getPlugins()->paginate($limit);
             return $this->successResponse($plugins, "Plugins fetched successfully!");
         }catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
