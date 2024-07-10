@@ -12,6 +12,7 @@ class PlatformPlugin extends Model
     protected $fillable = ['plugin_id', 'settings', 'enabled'];
     
     protected $casts = [
+        'enabled' => 'boolean',
         'settings' => 'array',
     ];
 }

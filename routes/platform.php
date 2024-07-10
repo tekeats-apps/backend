@@ -125,5 +125,6 @@ Route::middleware([
         ->prefix('plugins')
         ->group(function () {
             Route::get('/list', 'getPlugins');
+            Route::post('/update/{plugin_id}', 'updatePlugin');
         });
 });

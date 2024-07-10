@@ -89,17 +89,18 @@ class PluginService
             'price' => $plugin->price,
             'featured' => $plugin->featured,
             'enabled' => $enabled,
-            'installed' => $installed,
-            'next_action' => $this->determineNextAction($enabled, $installed)
+            'next_action' => $this->determineNextAction($enabled)
         ];
     }
 
-    private function determineNextAction($enabled, $installed)
+    private function determineNextAction($enabled)
     {
-        if (!$installed) {
-            return ['label' => 'Install'];
-        }
         return ['label' => $enabled ? 'Disable' : 'Enable'];
+    }
+
+    public function updatePlatformPlugin($plugin_id, $data)
+    {
+        return $this->platformPluginRepository->updatePlugin($plugin_id, $data);
     }
 
     public function createPlugin($data)

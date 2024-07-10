@@ -18,4 +18,12 @@ class PlatformPluginRepository
         return $this->platformPlugins->where('plugin_id', $pluginId)->first();
     }
 
+    public function updatePlugin($pluginId, $data)
+    {
+        return $this->platformPlugins->updateOrCreate(
+            ['plugin_id' => $pluginId],
+            $data
+        );
+    }
+
 }
