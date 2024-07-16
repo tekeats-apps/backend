@@ -57,11 +57,10 @@ class Plugin extends Model
 
     protected function getImageAttribute($value)
     {
-
         $image = Plugin::DEFAULT_IMAGE_PATH;
         if ($value) {
             $path = Plugin::IMAGE_PATH . '/' . $value;
-            $image = Storage::disk('s3')->url($path);
+            $image = Storage::disk('s3-central')->url($path);
         }
 
         return $image;
@@ -72,7 +71,7 @@ class Plugin extends Model
         $documentation = null;
         if ($value) {
             $path = Plugin::DOCUMENTATION_PATH . '/' . $value;
-            $documentation = Storage::disk('s3')->url($path);
+            $documentation = Storage::disk('s3-central')->url($path);
         }
 
         return $documentation;
