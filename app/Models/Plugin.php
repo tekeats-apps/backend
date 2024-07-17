@@ -31,7 +31,7 @@ class Plugin extends Model
         'price',
         'active',
         'featured',
-        'setting_fields'
+        'settings_form'
     ];
 
     protected $casts = [
@@ -40,7 +40,7 @@ class Plugin extends Model
         'featured' => 'boolean',
         'created_at' => 'datetime:M d, Y H:i',
         'updated_at' => 'datetime:M d, Y H:i',
-        'setting_fields' => 'array',
+        'settings_form' => 'array',
     ];
 
     public function __construct(array $attributes = [])

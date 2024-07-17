@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Admin\PluginService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Platform\Plugins\UpdatePluginRequest;
+use App\Http\Requests\Platform\Plugins\UpdatePluginSettingsRequest;
 
 class PluginController extends Controller
 {
@@ -33,6 +34,16 @@ class PluginController extends Controller
         try {
             $this->pluginService->updatePlatformPlugin($plugin_id, $request->validated());
             return $this->successResponse([], "Plugin updated successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function updatePluginSettings(UpdatePluginSettingsRequest $request, $plugin)
+    {
+        try {
+            $plugin = $this->pluginService->updatePluginSettings($request->validated(), $plugin);
+            return $this->successResponse($plugin, "Plugin settings updated successfully!");
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }

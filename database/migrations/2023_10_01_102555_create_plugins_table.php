@@ -26,7 +26,7 @@ return new class extends Migration
             $table->decimal('price')->nullable();
             $table->boolean('active')->default(false);
             $table->boolean('featured')->default(false);
-            $table->json('setting_fields')->nullable();
+            $table->json('settings_form')->nullable();
             $table->timestamps();
         });
     }

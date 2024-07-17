@@ -206,7 +206,22 @@ class PluginService
 
     public function updatePluginSettingsFields($data, Plugin $plugin)
     {
-        $plugin->update(['setting_fields' => $data['setting_fields']]);
+        $plugin->update(['settings_form' => $data['settings_form']]);
         return $plugin;
+    }
+
+    public function updatePluginSettings($data, $plugin)
+    {
+        $plugin = $this->pluginRepository->getPluginByUUID($plugin);
+        if (!$plugin) {
+            throw new \Exception('Plugin not found');
+        }
+
+        $settings = [];
+        foreach ($data['settings'] as $key => $value) {
+            $settings[$value['name']] = $value['value'];
+        }
+        $platformPlugin = $this->platformPluginRepository->updatePlugin($plugin->uuid, ['settings' => $settings]);
+        return $platformPlugin;
     }
 }

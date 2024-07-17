@@ -4,14 +4,14 @@ namespace App\Http\Requests\Platform\Plugins;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateSettingFieldsRequest extends FormRequest
+class UpdatePluginSettingsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->check();
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class UpdateSettingFieldsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'settings_form' => 'required|array'
+            'settings' => 'required|array',
+            'settings.*' => 'required',
         ];
     }
 }

@@ -58,4 +58,9 @@ class PluginRepository implements PluginRepositoryInterface
     {
         return $this->plugin->find($id);
     }
+
+    public function getPluginByUUID($uuid)
+    {
+        return $this->plugin->where('uuid', $uuid)->first();
+    }
 }
