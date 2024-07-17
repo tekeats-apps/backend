@@ -203,4 +203,10 @@ class PluginService
         $plugin->delete();
         return $plugin;
     }
+
+    public function updatePluginSettingsFields($data, Plugin $plugin)
+    {
+        $plugin->update(['setting_fields' => $data['setting_fields']]);
+        return $plugin;
+    }
 }

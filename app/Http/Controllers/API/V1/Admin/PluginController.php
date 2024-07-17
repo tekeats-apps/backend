@@ -12,6 +12,7 @@ use App\Http\Requests\Admin\Plugin\GetPluginsRequest;
 use App\Http\Requests\Admin\Plugin\CreatePluginRequest;
 use App\Http\Requests\Admin\Plugin\UpadatePluginRequest;
 use App\Http\Requests\Admin\Plugin\Types\GetPluginTypesRequest;
+use App\Http\Requests\Platform\Plugins\UpdateSettingFieldsRequest;
 
 class PluginController extends Controller
 {
@@ -120,6 +121,16 @@ class PluginController extends Controller
         try {
             $this->pluginService->deletePlugin($id);
             return $this->successResponse([], "Plugin deleted successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function updatePluginSettingsFields(UpdateSettingFieldsRequest $request, Plugin $plugin)
+    {
+        try {
+            $this->pluginService->updatePluginSettingsFields($request->all(), $plugin);
+            return $this->successResponse($plugin->refresh(), "Plugin settings fields updated successfully!");
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }

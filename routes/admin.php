@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\V1\Admin\PluginController;
 use App\Http\Controllers\API\V1\Admin\Auth\AuthController;
 use App\Http\Controllers\API\V1\Admin\Tenant\TenantController;
+use App\Models\Vendor\Role;
 
 // Admin Users Authentication Routes
 Route::controller(AuthController::class)
@@ -50,5 +51,6 @@ Route::middleware(['auth:admin-api'])->group(function () {
             Route::post('/create', 'createPlugin');
             Route::post('/update/{plugin}', 'updatePlugin');
             Route::delete('/delete/{id}', 'deletePlugin');
+            Route::post('/update/settings/fields/{plugin}', 'updatePluginSettingsFields');
         });
 });

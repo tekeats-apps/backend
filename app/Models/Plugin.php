@@ -30,7 +30,8 @@ class Plugin extends Model
         'is_paid',
         'price',
         'active',
-        'featured'
+        'featured',
+        'setting_fields'
     ];
 
     protected $casts = [
@@ -39,6 +40,7 @@ class Plugin extends Model
         'featured' => 'boolean',
         'created_at' => 'datetime:M d, Y H:i',
         'updated_at' => 'datetime:M d, Y H:i',
+        'setting_fields' => 'array',
     ];
 
     public function __construct(array $attributes = [])
