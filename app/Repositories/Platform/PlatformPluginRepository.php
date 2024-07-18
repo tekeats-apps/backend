@@ -13,6 +13,11 @@ class PlatformPluginRepository
         $this->platformPlugins = $platformPlugins;
     }
 
+    public function getPluginByUUID($plugin_id)
+    {
+        return $this->platformPlugins->where('plugin_id', $plugin_id)->first();
+    }
+
     public function getPluginStatus($pluginId)
     {
         return $this->platformPlugins->where('plugin_id', $pluginId)->first();
