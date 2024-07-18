@@ -48,4 +48,14 @@ class PluginController extends Controller
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getPluginSettings($plugin_id)
+    {
+        try {
+            $settings = $this->pluginService->getPluginSettings($plugin_id);
+            return $this->successResponse($settings, "Plugin settings fetched successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

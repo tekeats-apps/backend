@@ -89,7 +89,8 @@ class PluginService
             'price' => $plugin->price,
             'featured' => $plugin->featured,
             'enabled' => $enabled,
-            'next_action' => $this->determineNextAction($enabled)
+            'next_action' => $this->determineNextAction($enabled),
+            'settings_form' => !empty($plugin->settings_form)
         ];
     }
 
@@ -223,5 +224,11 @@ class PluginService
         }
         $platformPlugin = $this->platformPluginRepository->updatePlugin($plugin->uuid, ['settings' => $settings]);
         return $platformPlugin;
+    }
+
+    public function getPluginSettings($plugin_id)
+    {
+        $plugin = $this->pluginRepository->getPluginByUUID($plugin_id);
+        return $plugin->settings_form;
     }
 }
