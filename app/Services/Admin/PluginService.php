@@ -229,14 +229,15 @@ class PluginService
     public function getPluginSettings($plugin_id)
     {
         $plugin = $this->pluginRepository->getPluginByUUID($plugin_id);
-        if (!$plugin) {
-            throw new \Exception('Plugin not found');
+        if (!$plugin || !$plugin->settings_form) {
+            throw new \Exception('Plugin settings not found');
         }
         $pluginSettings = $this->platformPluginRepository->getPluginByUUID($plugin_id);
         if (!$pluginSettings) {
             throw new \Exception('Plugin settings not found');
         }
         $settings_form = $plugin->settings_form['fields'];
+        
         foreach ($settings_form as $key => $value) {
             $settings_form[$key]['value'] = isset($pluginSettings->settings[$value['name']]) ? $pluginSettings->settings[$value['name']] : null;
         }
