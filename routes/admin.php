@@ -47,10 +47,12 @@ Route::middleware(['auth:admin-api'])->group(function () {
             });
 
             Route::get('/list', 'getPlugins');
+            Route::get('/list/active', 'getActivePlugins');
             Route::get('/details/{id}', 'getPluginDetails');
             Route::post('/create', 'createPlugin');
             Route::post('/update/{plugin}', 'updatePlugin');
             Route::delete('/delete/{id}', 'deletePlugin');
-            Route::post('/update/settings/fields/{plugin}', 'updatePluginSettingsFields');
+            Route::post('/update/settings/form/{plugin}', 'updatePluginSettingsForm');
+            Route::get('/settings/form/{plugin}', 'getPluginSettingsForm');
         });
 });

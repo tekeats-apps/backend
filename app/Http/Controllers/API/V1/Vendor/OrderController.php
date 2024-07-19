@@ -14,7 +14,6 @@ use App\Services\Tenant\Order\Builders\OrderBuilder;
 use App\Services\Tenant\Order\DeliveryChargeService;
 use App\Http\Requests\Vendor\Orders\PlaceOrderRequest;
 use App\Services\Tenant\Order\Directors\OrderDirector;
-use App\Services\Tenant\Payment\PaymentGatewayFactory;
 use App\Http\Requests\Vendor\Orders\GetDeliveryChargesRequest;
 
 /**
@@ -26,8 +25,9 @@ class OrderController extends Controller
     protected $orderService;
     protected $deliveryChargeService;
     protected $tenantService;
+    protected $paymentService;
 
-    public function __construct(OrderService $orderService, DeliveryChargeService $deliveryChargeService, TenantService $tenantService)
+    public function __construct(OrderService $orderService, DeliveryChargeService $deliveryChargeService, TenantService $tenantService, PaymentService $paymentService)
     {
         $this->orderService = $orderService;
         $this->deliveryChargeService = $deliveryChargeService;
@@ -105,4 +105,14 @@ class OrderController extends Controller
 
         return $this->successResponse($orderDetails, "Order details fetched successfully!");
     }
+
+    public function paymentCallback($orderId)
+    {
+        try {
+            $this->orderService->paymentCallback($orderId);
+        } catch (Exception $e) {
+            return $this->errorResponse("Oops! Something went wrong. " . $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

@@ -29,6 +29,12 @@ class PluginService
         return $this->pluginRepository->getPlugins();
     }
 
+    public function getActivePlugins()
+    {
+        $status = 1;
+        return $this->pluginRepository->getPlugins($status);
+    }
+
     public function getPluginTypes()
     {
         return $this->pluginRepository->getPluginTypes();
@@ -189,7 +195,11 @@ class PluginService
 
     public function getPluginDetails($id)
     {
-        return $this->pluginRepository->getPluginDetail($id);
+        $plugin = $this->pluginRepository->getPluginDetail($id);
+        if (!$plugin) {
+            throw new \Exception('Plugin not found');
+        }
+        return $plugin;
     }
 
     public function deletePlugin($id)
@@ -205,7 +215,7 @@ class PluginService
         return $plugin;
     }
 
-    public function updatePluginSettingsFields($data, Plugin $plugin)
+    public function updatePluginSettingsForm($data, Plugin $plugin)
     {
         $plugin->update(['settings_form' => $data['settings_form']]);
         return $plugin;

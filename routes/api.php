@@ -92,6 +92,7 @@ Route::middleware([
                 Route::get('/order/{orderId}', 'getOrderDetails');
                 Route::get('/calculate-delivery-charges', 'calculateDeliveryCharges');
                 Route::post('/place-order', 'placeOrder');
+                Route::post('/payment/callback/{orderId}', 'paymentCallback');
             });
     });
 });

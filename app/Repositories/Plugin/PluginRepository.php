@@ -44,9 +44,13 @@ class PluginRepository implements PluginRepositoryInterface
         return $this->pluginType->find($id)->delete();
     }
 
-    public function getPlugins()
+    public function getPlugins($status = null)
     {
-        return $this->plugin;
+        $query = $this->plugin;
+        if ($status !== null) {
+            $query = $query->where('active', $status);
+        }
+        return $query->get();
     }
 
     public function createPlugin($data)

@@ -203,4 +203,11 @@ class OrderService
 
         return $orders;
     }
+
+    public function paymentCallback($orderId)
+    {
+        $order = Order::find($orderId);
+        $order->payment_status = PaymentStatus::PAID;
+        $order->save();
+    }
 }

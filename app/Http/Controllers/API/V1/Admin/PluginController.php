@@ -86,6 +86,16 @@ class PluginController extends Controller
         }
     }
 
+    public function getActivePlugins()
+    {
+        try {
+            $plugins = $this->pluginService->getActivePlugins();
+            return $this->successResponse($plugins, "Active plugins fetched successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function createPlugin(CreatePluginRequest $request)
     {
         try {
@@ -126,11 +136,22 @@ class PluginController extends Controller
         }
     }
 
-    public function updatePluginSettingsFields(UpdateSettingFieldsRequest $request, Plugin $plugin)
+    public function updatePluginSettingsForm(UpdateSettingFieldsRequest $request, Plugin $plugin)
     {
         try {
-            $this->pluginService->updatePluginSettingsFields($request->all(), $plugin);
-            return $this->successResponse($plugin->refresh(), "Plugin settings fields updated successfully!");
+            $this->pluginService->updatePluginSettingsForm($request->all(), $plugin);
+            return $this->successResponse($plugin->refresh(), "Plugin settings form updated successfully!");
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getPluginSettingsForm($id)
+    {
+        try {
+            $plugin = $this->pluginService->getPluginDetails($id);
+            $settingsForm = $plugin->settings_form;
+            return $this->successResponse($settingsForm, "Plugin settings form fetched successfully!");
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
