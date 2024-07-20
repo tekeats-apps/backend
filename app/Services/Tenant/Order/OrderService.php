@@ -162,6 +162,11 @@ class OrderService
         return Order::GetOrderByOrderID($orderId);
     }
 
+    public function findOrder($orderId)
+    {
+        return $this->orderRepository->find($orderId);
+    }
+
     public function getCustomerOrders($customer_id, $validatedData)
     {
         $limit = (isset($validatedData['limit']) ? $validatedData['limit'] : 10);
@@ -204,9 +209,9 @@ class OrderService
         return $orders;
     }
 
-    public function paymentCallback($orderId)
+    public function updatePaymentStatusAsPaid($orderId)
     {
-        $order = Order::find($orderId);
+        $order = $this->orderRepository->find($orderId);
         $order->payment_status = PaymentStatus::PAID;
         $order->save();
     }

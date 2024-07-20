@@ -10,12 +10,13 @@ use App\Services\Tenant\TenantService;
 use App\Services\Tenant\Order\OrderService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Exceptions\DeliveryUnavailableException;
+use App\Factories\Tenant\PaymentCallbackFactory;
 use App\Services\Tenant\Order\Builders\OrderBuilder;
 use App\Services\Tenant\Order\DeliveryChargeService;
 use App\Http\Requests\Vendor\Orders\PlaceOrderRequest;
 use App\Services\Tenant\Order\Directors\OrderDirector;
-use App\Services\Tenant\Payment\PaymentGatewayFactory;
 use App\Http\Requests\Platform\Order\PaymentCallBackRequest;
+use App\Repositories\Tenant\Order\OrderTransactionRepository;
 use App\Http\Requests\Vendor\Orders\GetDeliveryChargesRequest;
 
 /**
@@ -27,12 +28,14 @@ class OrderController extends Controller
     protected $orderService;
     protected $deliveryChargeService;
     protected $tenantService;
+    protected $orderTransactionRepository;
 
-    public function __construct(OrderService $orderService, DeliveryChargeService $deliveryChargeService, TenantService $tenantService)
+    public function __construct(OrderService $orderService, DeliveryChargeService $deliveryChargeService, TenantService $tenantService, OrderTransactionRepository $orderTransactionRepository)
     {
         $this->orderService = $orderService;
         $this->deliveryChargeService = $deliveryChargeService;
         $this->tenantService = $tenantService;
+        $this->orderTransactionRepository = $orderTransactionRepository;
     }
 
     /**
@@ -65,7 +68,7 @@ class OrderController extends Controller
             if (!$this->tenantService->isCurrentlyOpen()) {
                 return $this->errorResponse("The restaurant is currently closed.", Response::HTTP_BAD_REQUEST);
             }
-            
+
             $director = new OrderDirector();
             $order = $director->placeOrder(new OrderBuilder($this->orderService, $this->deliveryChargeService), $validated, $request->user());
         } catch (DeliveryUnavailableException $e) {
@@ -112,13 +115,30 @@ class OrderController extends Controller
         try {
 
             $data = $request->validated();
-            $order = $this->orderService->getOrderDetailsById($order_id);
-            $paymentTransaction = PaymentGatewayFactory::make($data['payment_method'], $data, $order);
-            dd($paymentTransaction);
+            $order = $this->orderService->findOrder($order_id);
+            if (!$order) {
+                return $this->errorResponse("Order not found.", Response::HTTP_NOT_FOUND);
+            }
+            $paymentTransaction = PaymentCallbackFactory::make($data['payment_method']);
+            $transactionObject = $paymentTransaction->handleWebhook($data['data'], $order);
 
+            $this->orderTransactionRepository->updateTransaction(
+                $transactionObject->transaction_id,
+                $order_id,
+                [
+                    'status' => $transactionObject->status,
+                    'response' => $transactionObject->response
+                ]
+            );
+
+            if ($transactionObject->type == 'success') {
+                $this->orderService->updatePaymentStatusAsPaid($order_id);
+            }
+
+            return $this->successResponse($transactionObject, "Payment callback processed successfully!");
+            
         } catch (Exception $e) {
             return $this->errorResponse("Oops! Something went wrong. " . $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
 }
