@@ -46,7 +46,7 @@ return [
         'guzzle_client_timeout' => env('ONESIGNAL_GUZZLE_CLIENT_TIMEOUT', 0),
     ],
     'stripe' => [
-        'publish_key' => env('STRIPE_KEY'),
-        'secret_key' => env('STRIPE_SECRET')
+        'publish_key' => env('STRIPE_PUBLISH_KEY'),
+        'secret_key' => env('STRIPE_SECRET_KEY')
     ],
 ];
