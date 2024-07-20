@@ -2,13 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\V1\Vendor\OrderController;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use App\Http\Controllers\API\V1\Vendor\SettingController;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\API\V1\Vendor\Product\ProductController;
 use App\Http\Controllers\API\V1\Vendor\Customer\AddressController;
 use App\Http\Controllers\API\V1\Vendor\Product\CategoryController;
 use App\Http\Controllers\API\V1\Vendor\Customer\CustomerController;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +23,7 @@ use App\Http\Controllers\API\V1\Vendor\Customer\CustomerController;
 
 //Apply Middleware group on routes
 Route::middleware([
-    'locale', InitializeTenancyByDomain::class,
+    'locale', InitializeTenancyByDomainOrSubdomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
 
