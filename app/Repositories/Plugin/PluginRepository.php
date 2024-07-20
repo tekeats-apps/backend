@@ -50,7 +50,7 @@ class PluginRepository implements PluginRepositoryInterface
         if ($status !== null) {
             $query = $query->where('active', $status);
         }
-        return $query->get();
+        return $query;
     }
 
     public function createPlugin($data)

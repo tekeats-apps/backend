@@ -89,7 +89,7 @@ class PluginController extends Controller
     public function getActivePlugins()
     {
         try {
-            $plugins = $this->pluginService->getActivePlugins();
+            $plugins = $this->pluginService->getActivePlugins()->get();
             return $this->successResponse($plugins, "Active plugins fetched successfully!");
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
