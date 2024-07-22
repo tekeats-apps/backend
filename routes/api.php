@@ -5,6 +5,7 @@ use App\Http\Controllers\API\V1\Vendor\OrderController;
 use App\Http\Controllers\API\V1\Vendor\SettingController;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\API\V1\Vendor\Product\ProductController;
+use App\Http\Controllers\API\V1\Platform\PaymentWebhookController;
 use App\Http\Controllers\API\V1\Vendor\Customer\AddressController;
 use App\Http\Controllers\API\V1\Vendor\Product\CategoryController;
 use App\Http\Controllers\API\V1\Vendor\Customer\CustomerController;
@@ -92,7 +93,11 @@ Route::middleware([
                 Route::get('/order/{orderId}', 'getOrderDetails');
                 Route::get('/calculate-delivery-charges', 'calculateDeliveryCharges');
                 Route::post('/place-order', 'placeOrder');
-                Route::post('/payment/callback/{orderId}', 'paymentCallback');
-            });
+            }); 
     });
+
+    Route::controller(PaymentWebhookController::class)
+            ->group(function () {
+            Route::post('/webhook/payment/{gateway}', 'paymentCallback');
+        });
 });

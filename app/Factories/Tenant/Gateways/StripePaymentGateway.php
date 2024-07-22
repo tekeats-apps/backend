@@ -4,13 +4,13 @@ namespace App\Factories\Tenant\Gateways;
 
 class StripePaymentGateway
 {
-    public function handleWebhook($data, $order)
+    public function handleWebhook($event)
     {
         return (object) [
-            'transaction_id' => $data['id'],
-            'status' => $data['status'],
-            'type' => $data['type'] === 'payment_intent.succeeded' ? 'success' : ($data['type'] === 'payment_intent.payment_failed' ? 'failed' : 'pending'),
-            'response' => $data
+            'transaction_id' => $event['data']['object']['id'],
+            'order_id' => $event['data']['object']['metadata']['order_id'],
+            'status' => $event['data']['object']['status'],
+            'response' => $event
         ];
     }
 }

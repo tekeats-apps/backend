@@ -10,12 +10,10 @@ use App\Services\Tenant\TenantService;
 use App\Services\Tenant\Order\OrderService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Exceptions\DeliveryUnavailableException;
-use App\Factories\Tenant\PaymentCallbackFactory;
 use App\Services\Tenant\Order\Builders\OrderBuilder;
 use App\Services\Tenant\Order\DeliveryChargeService;
 use App\Http\Requests\Vendor\Orders\PlaceOrderRequest;
 use App\Services\Tenant\Order\Directors\OrderDirector;
-use App\Http\Requests\Platform\Order\PaymentCallBackRequest;
 use App\Repositories\Tenant\Order\OrderTransactionRepository;
 use App\Http\Requests\Vendor\Orders\GetDeliveryChargesRequest;
 
@@ -108,37 +106,5 @@ class OrderController extends Controller
         }
 
         return $this->successResponse($orderDetails, "Order details fetched successfully!");
-    }
-
-    public function paymentCallback(PaymentCallBackRequest $request, $order_id)
-    {
-        try {
-
-            $data = $request->validated();
-            $order = $this->orderService->findOrder($order_id);
-            if (!$order) {
-                return $this->errorResponse("Order not found.", Response::HTTP_NOT_FOUND);
-            }
-            $paymentTransaction = PaymentCallbackFactory::make($data['payment_method']);
-            $transactionObject = $paymentTransaction->handleWebhook($data['data'], $order);
-
-            $this->orderTransactionRepository->updateTransaction(
-                $transactionObject->transaction_id,
-                $order_id,
-                [
-                    'status' => $transactionObject->status,
-                    'response' => $transactionObject->response
-                ]
-            );
-
-            if ($transactionObject->type == 'success') {
-                $this->orderService->updatePaymentStatusAsPaid($order_id);
-            }
-
-            return $this->successResponse($transactionObject, "Payment callback processed successfully!");
-            
-        } catch (Exception $e) {
-            return $this->errorResponse("Oops! Something went wrong. " . $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
     }
 }
