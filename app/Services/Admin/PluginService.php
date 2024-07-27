@@ -78,11 +78,15 @@ class PluginService
         });
     }
 
+    public function getPaymentPlugins(){
+        $paymentPlugins = $this->pluginRepository->getPaymentPlugins();
+        return $paymentPlugins;
+    }
+
     private function formatPluginDetails($plugin)
     {
         $platformPlugin = $this->platformPluginRepository->getPluginStatus($plugin->uuid);
         $enabled = $platformPlugin ? $platformPlugin->enabled : false;
-        $installed = (bool) $platformPlugin;
 
         return [
             'id' => $plugin->uuid,

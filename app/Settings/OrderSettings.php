@@ -15,8 +15,8 @@ class OrderSettings extends Settings
     public bool $allow_order_discounts = true;
     public ?float $minimum_order = null;
     public ?string $order_preparation_time = null;
-    public ?string $order_lead_time = null;
-    public ?string $order_cutoff_time = null;
+    public bool $online_payment = false;
+    public ?array $allowed_payment_methods = null;
 
     public static function group(): string
     {

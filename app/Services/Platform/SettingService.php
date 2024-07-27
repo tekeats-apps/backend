@@ -64,8 +64,8 @@ class SettingService
             'allow_order_discounts' => $orderSettings->allow_order_discounts,
             'minimum_order' => $orderSettings->minimum_order,
             'order_preparation_time' => $orderSettings->order_preparation_time,
-            'order_lead_time' => $orderSettings->order_lead_time,
-            'order_cutoff_time' => $orderSettings->order_cutoff_time,
+            'online_payment' => $orderSettings->online_payment,
+            'allowed_payment_methods' => $orderSettings->allowed_payment_methods,
         ];
     }
 
@@ -161,8 +161,8 @@ class SettingService
         $orderSettings->allow_order_discounts = $data['allow_order_discounts'] ?? false;
         $orderSettings->minimum_order = $data['minimum_order'] ?? null;
         $orderSettings->order_preparation_time = $data['order_preparation_time'] ?? null;
-        $orderSettings->order_lead_time = $data['order_lead_time'] ?? null;
-        $orderSettings->order_cutoff_time = $data['order_cutoff_time'] ?? null;
+        $orderSettings->online_payment = $data['online_payment'] ?? false;
+        $orderSettings->allowed_payment_methods = $data['allowed_payment_methods'] ?? null;
 
         $orderSettings->save();
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1\Platform;
 
 use App\Traits\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Services\Admin\PluginService;
 use App\Services\Platform\SettingService;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Platform\Settings\UpdateMediaSettingRequest;
@@ -17,10 +18,12 @@ class SettingController extends Controller
 {
     use ApiResponse;
     protected SettingService $settingService;
+    protected PluginService $pluginService;
 
-    public function __construct(SettingService $settingService)
+    public function __construct(SettingService $settingService, PluginService $pluginService)
     {
         $this->settingService = $settingService;
+        $this->pluginService = $pluginService;
     }
 
      /**
@@ -152,6 +155,7 @@ class SettingController extends Controller
     {
         try {
             $settings = $this->settingService->getOrderSettings();
+            $settings['payment_plugins'] = $this->pluginService->getPaymentPlugins();
             return $this->successResponse($settings, "Order settings retrieved successfully!");
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);

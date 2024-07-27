@@ -53,6 +53,13 @@ class PluginRepository implements PluginRepositoryInterface
         return $query;
     }
 
+    public function getPaymentPlugins()
+    {
+        return $this->plugin->whereHas('type', function ($query) {
+            $query->whereRaw('LOWER(name) = ?', ['payments']);
+        })->get(['uuid', 'name']);
+    }
+
     public function createPlugin($data)
     {
         return $this->plugin->create($data);
