@@ -66,27 +66,7 @@ Route::middleware([
                         Route::put('/set-default/{id}', 'setDefaultAddress');
                     });
             });
-
-        Route::controller(SettingController::class)
-            ->prefix('setting')
-            ->group(function () {
-                Route::get('/get-restaurant-settings', 'getSettings');
-            });
-
-        Route::controller(CategoryController::class)
-            ->prefix('category')
-            ->group(function () {
-                Route::get('/list', 'getList');
-            });
-            Route::controller(ProductController::class)
-            ->prefix('product')
-            ->group(function () {
-                Route::get('/list', 'getList');
-                Route::get('/detail/{productId}', 'getProductDetails');
-                Route::get('/category/{categoryId}', 'getProductsByCategory');
-                Route::get('/search', 'searchProducts');
-            });
-
+            
         Route::controller(OrderController::class)
             ->prefix('orders')
             ->group(function () {
@@ -94,6 +74,26 @@ Route::middleware([
                 Route::get('/calculate-delivery-charges', 'calculateDeliveryCharges');
                 Route::post('/place-order', 'placeOrder');
             }); 
+    });
+
+    Route::controller(CategoryController::class)
+    ->prefix('category')
+    ->group(function () {
+        Route::get('/list', 'getList');
+    });
+    Route::controller(ProductController::class)
+    ->prefix('product')
+    ->group(function () {
+        Route::get('/list', 'getList');
+        Route::get('/detail/{productId}', 'getProductDetails');
+        Route::get('/category/{categoryId}', 'getProductsByCategory');
+        Route::get('/search', 'searchProducts');
+    });
+
+    Route::controller(SettingController::class)
+    ->prefix('setting')
+    ->group(function () {
+        Route::get('/get-restaurant-settings', 'getSettings');
     });
 
     Route::controller(PaymentWebhookController::class)
