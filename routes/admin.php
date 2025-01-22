@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\V1\Admin\LeadController;
 use App\Http\Controllers\API\V1\Admin\PluginController;
 use App\Http\Controllers\API\V1\Admin\Auth\AuthController;
 use App\Http\Controllers\API\V1\Admin\Tenant\TenantController;
-use App\Models\Vendor\Role;
 
 // Admin Users Authentication Routes
 Route::controller(AuthController::class)
@@ -32,6 +32,16 @@ Route::middleware(['auth:admin-api'])->group(function () {
             Route::post('/register', 'registerTenant');
             Route::post('/validate/business', 'checkBusinessName');
             Route::post('/validate/business/domain', 'checkDomain');
+        });
+
+    Route::controller(LeadController::class)
+        ->prefix('leads')
+        ->group(function () {
+
+            Route::post('/create', 'store');
+            Route::get('/list', 'getLeads');
+            Route::patch('{lead}/status/{status}', [LeadController::class, 'updateStatus']);
+
         });
 
     Route::controller(PluginController::class)

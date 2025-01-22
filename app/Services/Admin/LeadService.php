@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Services\Admin;
+
+use App\Models\Lead;
+use App\Enums\LeadStatus;
+use App\Repositories\Lead\LeadRepository;
+
+class LeadService
+{
+    public function __construct(protected LeadRepository $leadRepository) {}
+
+    public function createLead(array $data): Lead
+    {
+        // Ensure system_goals is an array
+        if (isset($data['system_goals']) && is_string($data['system_goals'])) {
+            $data['system_goals'] = explode(',', $data['system_goals']);
+        }
+
+        return $this->leadRepository->create($data);
+    }
+
+    public function updateLeadStatus(Lead $lead, LeadStatus $status): bool
+    {
+        return $this->leadRepository->update(['status' => $status], $lead->id);
+    }
+
+    public function getLeadsByStatus(?LeadStatus $status = null)
+    {
+        return $this->leadRepository->getAllByLeads($status);
+    }
+}
