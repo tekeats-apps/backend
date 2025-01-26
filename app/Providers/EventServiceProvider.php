@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\LeadCreated;
 use Illuminate\Auth\Events\Registered;
 use App\Events\Tenant\OrderPlacedEvent;
+use App\Listeners\SendLeadNotification;
 use App\Events\Platform\OrderStatusUpdateEvent;
 use App\Listeners\Tenant\SendNotificationListener;
 use SocialiteProviders\Apple\AppleExtendSocialite;
@@ -31,6 +33,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         SocialiteWasCalled::class => [
             AppleExtendSocialite::class . '@handle',
+        ],
+        LeadCreated::class => [
+            SendLeadNotification::class,
         ],
     ];
 

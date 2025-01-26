@@ -4,6 +4,7 @@ namespace App\Services\Admin;
 
 use App\Models\Lead;
 use App\Enums\LeadStatus;
+use App\Events\LeadCreated;
 use App\Repositories\Lead\LeadRepository;
 
 class LeadService
@@ -17,7 +18,13 @@ class LeadService
             $data['system_goals'] = explode(',', $data['system_goals']);
         }
 
-        return $this->leadRepository->create($data);
+        $lead = $this->leadRepository->create($data);
+
+            // Dispatch the event
+        event(new LeadCreated($lead));
+
+        return $lead;
+
     }
 
     public function updateLeadStatus(Lead $lead, LeadStatus $status): bool

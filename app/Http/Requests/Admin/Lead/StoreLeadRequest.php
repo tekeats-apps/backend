@@ -9,6 +9,7 @@ class StoreLeadRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'restaurant_name' => ['required', 'string', 'max:255'],
             'full_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['nullable', 'string', 'max:20'],

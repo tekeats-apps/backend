@@ -37,11 +37,8 @@ Route::middleware(['auth:admin-api'])->group(function () {
     Route::controller(LeadController::class)
         ->prefix('leads')
         ->group(function () {
-
-            Route::post('/create', 'store');
             Route::get('/list', 'getLeads');
             Route::patch('{lead}/status/{status}', [LeadController::class, 'updateStatus']);
-
         });
 
     Route::controller(PluginController::class)
@@ -66,3 +63,11 @@ Route::middleware(['auth:admin-api'])->group(function () {
             Route::get('/settings/form/{plugin}', 'getPluginSettingsForm');
         });
 });
+
+
+//Public routes
+Route::controller(LeadController::class)
+        ->prefix('leads')
+        ->group(function () {
+            Route::post('/create', 'store');
+        });

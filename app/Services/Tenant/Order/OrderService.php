@@ -28,9 +28,9 @@ class OrderService
 
 
     public function __construct(
-        OrderRepository $orderRepository, 
-        OrderItemRepository $orderItemRepository, 
-        PricingStrategy $pricingStrategy, 
+        OrderRepository $orderRepository,
+        OrderItemRepository $orderItemRepository,
+        PricingStrategy $pricingStrategy,
         OrderChargeRepository $orderChargeRepository,
         OrderTransactionRepository $orderTransactionRepository
         )
@@ -142,12 +142,12 @@ class OrderService
                 'payment_method' => $this->paymentGateway->getName(),
                 'response' => $paymentData,
             ];
-            $this->addOrderPaymentTransacrion($paymentResponse);
+            $this->addOrderPaymentTransaction($paymentResponse);
             $order->load('transaction');
         }
     }
 
-    protected function addOrderPaymentTransacrion(array $transaction)
+    protected function addOrderPaymentTransaction(array $transaction)
     {
         $this->orderTransactionRepository->create($transaction);
     }
