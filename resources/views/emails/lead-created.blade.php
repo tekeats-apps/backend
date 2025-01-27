@@ -54,22 +54,35 @@
         }
 
         .details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
             background-color: #f9f9f9;
             border-radius: 8px;
             padding: 15px;
             margin: 15px 0;
+            border-left: 5px solid;
+            border-image: linear-gradient(90deg, #F4831F, #EC2024) 1;
         }
 
         .details-item {
             display: flex;
-            margin-bottom: 10px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 0;
         }
 
         .details-label {
             font-weight: 600;
             color: #2c3e50;
-            min-width: 120px;
-            margin-right: 10px;
+            min-width: 150px;
+        }
+
+        .details-value {
+            color: #555;
+            word-wrap: break-word;
+            text-align: left;
+            flex: 1;
         }
 
         .cta-button {
@@ -100,6 +113,7 @@
 
             .details-item {
                 flex-direction: column;
+                align-items: flex-start;
             }
 
             .details-label {
@@ -116,7 +130,7 @@
 <body>
     <div class="email-container">
         <div class="logo-container">
-            <img class="logo" src="{{ asset('assets/logo.png') }}" alt="Tekeats Logo" />
+            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/logo.png'))) }}" alt="Tekeats" style="max-width: 220px; height: 85px;" />
         </div>
 
         <div class="header-gradient">
@@ -132,27 +146,27 @@
 
             <div class="details">
                 <div class="details-item">
-                    <div class="details-label">Restaurant Name</div>
+                    <div class="details-label">Restaurant Name:</div>
                     <div class="details-value">{{ $lead->restaurant_name }}</div>
                 </div>
                 <div class="details-item">
-                    <div class="details-label">Email</div>
+                    <div class="details-label">Email:</div>
                     <div class="details-value">{{ $lead->email }}</div>
                 </div>
                 <div class="details-item">
-                    <div class="details-label">Phone Number</div>
+                    <div class="details-label">Phone Number:</div>
                     <div class="details-value">{{ $lead->phone }}</div>
                 </div>
                 <div class="details-item">
-                    <div class="details-label">Business Size</div>
+                    <div class="details-label">Business Size:</div>
                     <div class="details-value">{{ $lead->business_size }}</div>
                 </div>
                 <div class="details-item">
-                    <div class="details-label">Experience Level</div>
+                    <div class="details-label">Experience Level:</div>
                     <div class="details-value">{{ $lead->experience_level }}</div>
                 </div>
                 <div class="details-item">
-                    <div class="details-label">Goals</div>
+                    <div class="details-label">Goals:</div>
                     <div class="details-value">{{ implode(', ', $lead->system_goals) }}</div>
                 </div>
             </div>
