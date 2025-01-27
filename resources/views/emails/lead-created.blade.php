@@ -13,14 +13,17 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.6;
             color: #333;
+            background-color: #f7f7f7;
         }
 
         .email-container {
             width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
+            max-width: 600px;
+            margin: 20px auto;
             background-color: white;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         .logo-container {
@@ -40,12 +43,12 @@
             background: linear-gradient(90deg, #F4831F -0.01%, #EC2024 99.94%);
             color: white;
             text-align: center;
-            padding: 15px;
+            padding: 20px;
         }
 
         .header-gradient h1 {
             margin: 0;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 600;
         }
 
@@ -56,11 +59,11 @@
         .details {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
             background-color: #f9f9f9;
             border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
+            padding: 20px;
+            margin: 20px 0;
             border-left: 5px solid;
             border-image: linear-gradient(90deg, #F4831F, #EC2024) 1;
         }
@@ -69,20 +72,25 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 5px 0;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .details-item:last-child {
+            border-bottom: none;
         }
 
         .details-label {
             font-weight: 600;
             color: #2c3e50;
-            min-width: 150px;
+            flex: 1;
         }
 
         .details-value {
             color: #555;
             word-wrap: break-word;
             text-align: left;
-            flex: 1;
+            flex: 2;
         }
 
         .cta-button {
@@ -90,9 +98,9 @@
             background: linear-gradient(90deg, #F4831F -0.01%, #EC2024 99.94%);
             color: white !important;
             text-decoration: none;
-            padding: 10px 20px;
+            padding: 12px 25px;
             border-radius: 6px;
-            margin-top: 15px;
+            margin-top: 20px;
             text-align: center;
             width: auto;
             font-weight: 600;
@@ -101,7 +109,7 @@
         .footer {
             background-color: #f4f4f4;
             text-align: center;
-            padding: 10px;
+            padding: 15px;
             font-size: 12px;
             color: #7f8c8d;
         }
@@ -114,6 +122,7 @@
             .details-item {
                 flex-direction: column;
                 align-items: flex-start;
+                gap: 5px;
             }
 
             .details-label {
@@ -122,6 +131,23 @@
 
             .logo {
                 max-width: 200px;
+            }
+
+            .header-gradient h1 {
+                font-size: 18px;
+            }
+
+            .cta-button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .details {
+                padding: 15px;
             }
         }
     </style>
