@@ -32,7 +32,8 @@ class LeadController extends Controller
     public function getLeads(): JsonResponse
     {
         try {
-            $leads = $this->leadService->getLeadsByStatus();
+            $limit = 10;
+            $leads = $this->leadService->getLeadsByStatus()->paginate($limit);
             return $this->successResponse($leads, "Leads retrieved successfully!");
         }catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);

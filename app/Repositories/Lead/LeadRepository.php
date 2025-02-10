@@ -31,7 +31,7 @@ class LeadRepository implements LeadRepositoryInterface
         return $this->model->destroy($id);
     }
 
-    public function getAllByLeads(?LeadStatus $status = null, string $sortBy = 'created_at', string $sortOrder = 'desc'): Collection
+    public function getAllByLeads(?LeadStatus $status = null, string $sortBy = 'created_at', string $sortOrder = 'desc')
     {
         $query = $this->model;
 
@@ -39,7 +39,7 @@ class LeadRepository implements LeadRepositoryInterface
             $query = $query->where('status', $status->value);
         }
 
-        return $query->orderBy($sortBy, strtolower($sortOrder))->get();
+        return $query->orderBy($sortBy, strtolower($sortOrder));
     }
 
 }
