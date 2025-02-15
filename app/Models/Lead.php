@@ -31,4 +31,9 @@ class Lead extends Model
     {
         return $this->email;
     }
+
+    public function getExperienceLevelAttribute()
+    {
+        return ucfirst(str_replace('-', ' ', $this->attributes['experience_level']));
+    }
 }

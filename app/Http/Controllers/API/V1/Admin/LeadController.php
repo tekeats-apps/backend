@@ -40,6 +40,16 @@ class LeadController extends Controller
         }
     }
 
+    public function getLeadDetails(Lead $lead): JsonResponse
+    {
+        try {
+            $lead = $this->leadService->getLeadDetails($lead);
+            return $this->successResponse($lead, "Lead details retrieved successfully!");
+        }catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function updateStatus(Lead $lead, LeadStatus $status): JsonResponse
     {
         try {

@@ -36,4 +36,9 @@ class LeadService
     {
         return $this->leadRepository->getAllByLeads($status);
     }
+
+    public function getLeadDetails(Lead $lead): Lead
+    {
+        return $this->leadRepository->find($lead->id);
+    }
 }

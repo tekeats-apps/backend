@@ -38,6 +38,7 @@ Route::middleware(['auth:admin-api'])->group(function () {
         ->prefix('leads')
         ->group(function () {
             Route::get('/list', 'getLeads');
+            Route::get('/details/{lead}', 'getLeadDetails');
             Route::patch('{lead}/status/{status}', [LeadController::class, 'updateStatus']);
         });
 
