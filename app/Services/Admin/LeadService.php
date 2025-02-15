@@ -27,9 +27,9 @@ class LeadService
 
     }
 
-    public function updateLeadStatus(Lead $lead, LeadStatus $status): bool
+    public function updateLeadStatus(Lead $lead, $status, $reason = null): bool
     {
-        return $this->leadRepository->update(['status' => $status], $lead->id);
+        return $this->leadRepository->update(['status' => $status, 'reason' => $reason], $lead->id);
     }
 
     public function getLeadsByStatus(?LeadStatus $status = null)
@@ -37,8 +37,8 @@ class LeadService
         return $this->leadRepository->getAllByLeads($status);
     }
 
-    public function getLeadDetails(Lead $lead): Lead
+    public function getLeadDetails($id):?Lead
     {
-        return $this->leadRepository->find($lead->id);
+        return $this->leadRepository->find($id);
     }
 }

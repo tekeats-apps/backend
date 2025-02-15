@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('experience_level');
             $table->json('system_goals');
             $table->string('status')->default('pending');
+            $table->text('reason')->nullable();
             $table->timestamps();
         });
     }

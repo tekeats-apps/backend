@@ -10,6 +10,7 @@ use App\Services\Admin\LeadService;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Admin\Lead\StoreLeadRequest;
+use App\Http\Requests\Admin\Lead\UpdateLeadStatusRequest;
 
 class LeadController extends Controller
 {
@@ -40,20 +41,28 @@ class LeadController extends Controller
         }
     }
 
-    public function getLeadDetails(Lead $lead): JsonResponse
+    public function getLeadDetails($lead): JsonResponse
     {
         try {
             $lead = $this->leadService->getLeadDetails($lead);
+            if(!$lead){
+                return $this->errorResponse("Lead not found", Response::HTTP_NOT_FOUND);
+            }
             return $this->successResponse($lead, "Lead details retrieved successfully!");
         }catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function updateStatus(Lead $lead, LeadStatus $status): JsonResponse
+    public function updateStatus(UpdateLeadStatusRequest $request): JsonResponse
     {
         try {
-            $this->leadService->updateLeadStatus($lead, $status);
+            $validatedData = $request->validated();
+            $lead = $this->leadService->getLeadDetails($validatedData['lead_id']);
+            if(!$lead){
+                return $this->errorResponse("Lead not found", Response::HTTP_NOT_FOUND);
+            }
+            $this->leadService->updateLeadStatus($lead, $validatedData['status'], $validatedData['reason']);
             return $this->successResponse(null, "Lead status updated successfully!");
         }catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);

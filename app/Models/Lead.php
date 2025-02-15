@@ -19,7 +19,8 @@ class Lead extends Model
         'business_size',
         'experience_level',
         'system_goals',
-        'status'
+        'status',
+        'reason'
     ];
 
     protected $casts = [
