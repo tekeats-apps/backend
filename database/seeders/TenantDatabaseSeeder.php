@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Database\Seeders\Roles;
 use Illuminate\Database\Seeder;
+use Database\Seeders\TimingSeeder;
 use Database\Seeders\CategorySeeder;
 
 class TenantDatabaseSeeder extends Seeder
@@ -14,8 +15,9 @@ class TenantDatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            Roles::class,
-            CategorySeeder::class
+            // Roles::class,
+            // CategorySeeder::class,
+            TimingSeeder::class
         ]);
     }
 }

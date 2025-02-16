@@ -2,9 +2,11 @@
 
 namespace App\Services\Platform;
 
+use App\Models\Vendor\Slot;
 use App\Settings\MediaSettings;
 use App\Traits\TenantImageUploadTrait;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Vendor\RestaurantOpeningHour;
 use App\Repositories\Platform\Settings\SettingRepository;
 
 class SettingService
@@ -62,8 +64,8 @@ class SettingService
             'allow_order_discounts' => $orderSettings->allow_order_discounts,
             'minimum_order' => $orderSettings->minimum_order,
             'order_preparation_time' => $orderSettings->order_preparation_time,
-            'order_lead_time' => $orderSettings->order_lead_time,
-            'order_cutoff_time' => $orderSettings->order_cutoff_time,
+            'online_payment' => $orderSettings->online_payment,
+            'allowed_payment_methods' => $orderSettings->allowed_payment_methods,
         ];
     }
 
@@ -159,8 +161,8 @@ class SettingService
         $orderSettings->allow_order_discounts = $data['allow_order_discounts'] ?? false;
         $orderSettings->minimum_order = $data['minimum_order'] ?? null;
         $orderSettings->order_preparation_time = $data['order_preparation_time'] ?? null;
-        $orderSettings->order_lead_time = $data['order_lead_time'] ?? null;
-        $orderSettings->order_cutoff_time = $data['order_cutoff_time'] ?? null;
+        $orderSettings->online_payment = $data['online_payment'] ?? false;
+        $orderSettings->allowed_payment_methods = $data['allowed_payment_methods'] ?? null;
 
         $orderSettings->save();
 
@@ -228,5 +230,47 @@ class SettingService
 
         return $settings;
     }
-    
+
+    public function updateBusinessTiming(array $data)
+    {
+        foreach ($data['opening_hours'] as $day => $daysData) {
+            $openingHour = RestaurantOpeningHour::updateOrCreate(
+                ['day' => $day],
+                [
+                    'day' => $day,
+                    'is_closed' => $daysData['is_closed'] ?? 0
+                ]
+            );
+            
+            // Update the slots
+            $this->updateSlots($openingHour, $daysData['slots']);
+        }
+
+        return $this->getBusinessTiming();
+    }
+
+    private function updateSlots($openingHour, $slotsData)
+    {
+        // Get current slot IDs for this OpeningHour
+        $currentSlotIds = $openingHour->slots()->pluck('id')->toArray();
+
+        $newSlotIds = [];
+
+        foreach ($slotsData as $slot) {
+            // Create or update the slot
+            $slot = Slot::updateOrCreate([
+                'restaurant_opening_hour_id' => $openingHour->id,
+                'open_time' => $slot['open_time'],
+                'close_time' => $slot['close_time'],
+            ]);
+
+            $newSlotIds[] = $slot->id;
+        }
+
+        // Find IDs of slots to be removed
+        $slotsToRemove = array_diff($currentSlotIds, $newSlotIds);
+
+        // Delete the removed slots
+        Slot::whereIn('id', $slotsToRemove)->delete();
+    }
 }

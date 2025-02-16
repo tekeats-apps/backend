@@ -28,9 +28,9 @@ class OrderService
 
 
     public function __construct(
-        OrderRepository $orderRepository, 
-        OrderItemRepository $orderItemRepository, 
-        PricingStrategy $pricingStrategy, 
+        OrderRepository $orderRepository,
+        OrderItemRepository $orderItemRepository,
+        PricingStrategy $pricingStrategy,
         OrderChargeRepository $orderChargeRepository,
         OrderTransactionRepository $orderTransactionRepository
         )
@@ -126,7 +126,8 @@ class OrderService
         if ($this->paymentGateway->getName() !== OrderPaymentMethod::CASH->value) {
             $paymentResult = $this->paymentGateway->processPayment([
                 'amount' => $order->total_price * 100,
-                'customer' => $order->customer
+                'customer' => $order->customer,
+                'order_id' => $order->id
             ]);
 
             if ($paymentResult['success'] !== true) {
@@ -141,12 +142,12 @@ class OrderService
                 'payment_method' => $this->paymentGateway->getName(),
                 'response' => $paymentData,
             ];
-            $this->addOrderPaymentTransacrion($paymentResponse);
+            $this->addOrderPaymentTransaction($paymentResponse);
             $order->load('transaction');
         }
     }
 
-    protected function addOrderPaymentTransacrion(array $transaction)
+    protected function addOrderPaymentTransaction(array $transaction)
     {
         $this->orderTransactionRepository->create($transaction);
     }
@@ -160,6 +161,11 @@ class OrderService
     public function getOrderDetailsById($orderId)
     {
         return Order::GetOrderByOrderID($orderId);
+    }
+
+    public function findOrder($orderId)
+    {
+        return $this->orderRepository->find($orderId);
     }
 
     public function getCustomerOrders($customer_id, $validatedData)
@@ -202,5 +208,12 @@ class OrderService
             ->paginate($limit);
 
         return $orders;
+    }
+
+    public function updatePaymentStatusAsPaid($orderId)
+    {
+        $order = $this->orderRepository->find($orderId);
+        $order->payment_status = PaymentStatus::PAID;
+        $order->save();
     }
 }

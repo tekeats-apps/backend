@@ -18,4 +18,9 @@ class OrderRepository
         return $this->orderModel->create($data);
     }
 
+    public function find($id)
+    {
+        return $this->orderModel->find($id);
+    }
+
 }

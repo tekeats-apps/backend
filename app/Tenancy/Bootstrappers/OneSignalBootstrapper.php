@@ -6,6 +6,7 @@ use DB;
 use App\Settings\OneSignalSettings;
 use Stancl\Tenancy\Contracts\Tenant;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
 use Stancl\Tenancy\Contracts\TenancyBootstrapper;
 
 class OneSignalBootstrapper implements TenancyBootstrapper
@@ -41,6 +42,9 @@ class OneSignalBootstrapper implements TenancyBootstrapper
 
     private function migrationHasBeenRun($migrationName)
     {
-        return DB::table('migrations')->where('migration', $migrationName)->exists();
+        if (Schema::hasTable('migrations')) {
+            return \Illuminate\Support\Facades\DB::table('migrations')->where('migration', $migrationName)->exists();
+        }
+        return false;
     }
 }

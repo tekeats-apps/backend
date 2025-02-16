@@ -13,4 +13,13 @@ class Domain extends Model
         'id', 'domain','tenant_id','type', 'status'
     ];
 
+    protected $hidden = [
+        'tenant_id'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime:M d, Y H:i',
+        'updated_at' => 'datetime:M d, Y H:i',
+    ];
+
 }
