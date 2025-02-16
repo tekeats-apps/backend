@@ -2,13 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\V1\Vendor\OrderController;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use App\Http\Controllers\API\V1\Vendor\SettingController;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\API\V1\Vendor\Product\ProductController;
+use App\Http\Controllers\API\V1\Platform\PaymentWebhookController;
 use App\Http\Controllers\API\V1\Vendor\Customer\AddressController;
 use App\Http\Controllers\API\V1\Vendor\Product\CategoryController;
 use App\Http\Controllers\API\V1\Vendor\Customer\CustomerController;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +24,7 @@ use App\Http\Controllers\API\V1\Vendor\Customer\CustomerController;
 
 //Apply Middleware group on routes
 Route::middleware([
-    'locale', InitializeTenancyByDomain::class,
+    'locale', InitializeTenancyByDomainOrSubdomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
 
@@ -65,33 +66,38 @@ Route::middleware([
                         Route::put('/set-default/{id}', 'setDefaultAddress');
                     });
             });
-
-        Route::controller(SettingController::class)
-            ->prefix('setting')
-            ->group(function () {
-                Route::get('/get-restaurant-settings', 'getSettings');
-            });
-
-        Route::controller(CategoryController::class)
-            ->prefix('category')
-            ->group(function () {
-                Route::get('/list', 'getList');
-            });
-            Route::controller(ProductController::class)
-            ->prefix('product')
-            ->group(function () {
-                Route::get('/list', 'getList');
-                Route::get('/detail/{productId}', 'getProductDetails');
-                Route::get('/category/{categoryId}', 'getProductsByCategory');
-                Route::get('/search', 'searchProducts');
-            });
-
+            
         Route::controller(OrderController::class)
             ->prefix('orders')
             ->group(function () {
                 Route::get('/order/{orderId}', 'getOrderDetails');
                 Route::get('/calculate-delivery-charges', 'calculateDeliveryCharges');
                 Route::post('/place-order', 'placeOrder');
-            });
+            }); 
     });
+
+    Route::controller(CategoryController::class)
+    ->prefix('category')
+    ->group(function () {
+        Route::get('/list', 'getList');
+    });
+    Route::controller(ProductController::class)
+    ->prefix('product')
+    ->group(function () {
+        Route::get('/list', 'getList');
+        Route::get('/detail/{productId}', 'getProductDetails');
+        Route::get('/category/{categoryId}', 'getProductsByCategory');
+        Route::get('/search', 'searchProducts');
+    });
+
+    Route::controller(SettingController::class)
+    ->prefix('setting')
+    ->group(function () {
+        Route::get('/get-restaurant-settings', 'getSettings');
+    });
+
+    Route::controller(PaymentWebhookController::class)
+            ->group(function () {
+            Route::post('/webhook/payment/{gateway}', 'paymentCallback');
+        });
 });

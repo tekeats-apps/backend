@@ -18,4 +18,18 @@ class OrderTransactionRepository
         return $this->model->create($data);
     }
 
+    public function updateTransaction($transactionId, $orderId, array $data)
+    {
+        $transaction = $this->model->where([
+            'order_id' => $orderId,
+            'transaction_id' => $transactionId
+        ])->first();
+
+        if (!$transaction) {
+            throw new \Exception("Transaction not found.");
+        }
+
+        return $transaction->update($data);
+    }
+
 }

@@ -20,7 +20,6 @@ class TenantService
 
     public function isDomainUnique($domain): bool
     {
-        $domain = $domain . '.' . env('TENANT_DOMAIN');
         return !Domain::where('domain', $domain)->exists();
     }
 

@@ -70,8 +70,9 @@ class StripeGateway implements PaymentGatewayInterface
                 'payment_method_types' => ['card'],
                 'customer' => $customer->id,
                 'metadata' => [
-                    'ephemeral_key' => $ephemeralKey->id,
+                    'ephemeral_key' => $ephemeralKey->secret,
                     'customer_email' => $customer->email,
+                    'order_id' => $paymentDetails['order_id']
                 ],
             ]);
 

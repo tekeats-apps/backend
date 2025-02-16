@@ -16,14 +16,16 @@ class CategorySeeder extends Seeder
         $categoriesData = json_decode(file_get_contents(database_path('seeds/categories.json')), true);
 
         foreach ($categoriesData['categories'] as $categoryData) {
-            Category::create([
-                'name' => $categoryData['name'],
-                'slug' => $categoryData['slug'],
-                'position' => $categoryData['position'],
-                'featured' => $categoryData['featured'],
-                'description' => $categoryData['description'],
-                'status' => $categoryData['status'],
-            ]);
+            Category::updateOrCreate(
+                ['slug' => $categoryData['slug']],
+                [
+                    'name' => $categoryData['name'],
+                    'position' => $categoryData['position'],
+                    'featured' => $categoryData['featured'],
+                    'description' => $categoryData['description'],
+                    'status' => $categoryData['status'],
+                ]
+            );
         }
     }
 }

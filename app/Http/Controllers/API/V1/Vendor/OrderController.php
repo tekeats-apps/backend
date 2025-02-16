@@ -14,7 +14,7 @@ use App\Services\Tenant\Order\Builders\OrderBuilder;
 use App\Services\Tenant\Order\DeliveryChargeService;
 use App\Http\Requests\Vendor\Orders\PlaceOrderRequest;
 use App\Services\Tenant\Order\Directors\OrderDirector;
-use App\Services\Tenant\Payment\PaymentGatewayFactory;
+use App\Repositories\Tenant\Order\OrderTransactionRepository;
 use App\Http\Requests\Vendor\Orders\GetDeliveryChargesRequest;
 
 /**
@@ -26,12 +26,14 @@ class OrderController extends Controller
     protected $orderService;
     protected $deliveryChargeService;
     protected $tenantService;
+    protected $orderTransactionRepository;
 
-    public function __construct(OrderService $orderService, DeliveryChargeService $deliveryChargeService, TenantService $tenantService)
+    public function __construct(OrderService $orderService, DeliveryChargeService $deliveryChargeService, TenantService $tenantService, OrderTransactionRepository $orderTransactionRepository)
     {
         $this->orderService = $orderService;
         $this->deliveryChargeService = $deliveryChargeService;
         $this->tenantService = $tenantService;
+        $this->orderTransactionRepository = $orderTransactionRepository;
     }
 
     /**
@@ -64,7 +66,7 @@ class OrderController extends Controller
             if (!$this->tenantService->isCurrentlyOpen()) {
                 return $this->errorResponse("The restaurant is currently closed.", Response::HTTP_BAD_REQUEST);
             }
-            
+
             $director = new OrderDirector();
             $order = $director->placeOrder(new OrderBuilder($this->orderService, $this->deliveryChargeService), $validated, $request->user());
         } catch (DeliveryUnavailableException $e) {
