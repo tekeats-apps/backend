@@ -23,11 +23,9 @@ class LeadController extends Controller
         try {
             $lead = $this->leadService->createLead($request->validated());
             return $this->successResponse(null, "Lead created successfully!");
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-
     }
 
     public function getLeads(): JsonResponse
@@ -36,7 +34,7 @@ class LeadController extends Controller
             $limit = 10;
             $leads = $this->leadService->getLeadsByStatus()->paginate($limit);
             return $this->successResponse($leads, "Leads retrieved successfully!");
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -44,12 +42,19 @@ class LeadController extends Controller
     public function getLeadDetails($lead): JsonResponse
     {
         try {
-            $lead = $this->leadService->getLeadDetails($lead);
-            if(!$lead){
+            $lead = $this->leadService->getLeadDetails($lead)->load('statusHistories.user:id,name');
+            if (!$lead) {
                 return $this->errorResponse("Lead not found", Response::HTTP_NOT_FOUND);
             }
+            $lead->available_statuses = array_map(function (LeadStatus $status) {
+                return [
+                    'value' => $status->value,
+                    'label' => $status->getLabel(),
+                    'requires_reason' => in_array($status, [LeadStatus::REJECTED, LeadStatus::CLOSED])
+                ];
+            }, $lead->getAvailableStatusTransitions());
             return $this->successResponse($lead, "Lead details retrieved successfully!");
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -59,12 +64,13 @@ class LeadController extends Controller
         try {
             $validatedData = $request->validated();
             $lead = $this->leadService->getLeadDetails($validatedData['lead_id']);
-            if(!$lead){
+            if (!$lead) {
                 return $this->errorResponse("Lead not found", Response::HTTP_NOT_FOUND);
             }
-            $this->leadService->updateLeadStatus($lead, $validatedData['status'], $validatedData['reason']);
+            $statusEnum = LeadStatus::tryFrom($validatedData['status']);
+            $this->leadService->updateLeadStatus($lead, $statusEnum, $validatedData['reason']);
             return $this->successResponse(null, "Lead status updated successfully!");
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

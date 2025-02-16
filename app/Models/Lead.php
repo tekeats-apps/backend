@@ -37,4 +37,30 @@ class Lead extends Model
     {
         return ucfirst(str_replace('-', ' ', $this->attributes['experience_level']));
     }
+
+    public function statusHistories()
+    {
+        return $this->hasMany(LeadStatusHistory::class)->orderBy('created_at', 'desc');
+    }
+
+    public function getAvailableStatusTransitions(): array
+    {
+        if (!$this->status instanceof LeadStatus) {
+            return [];
+        }
+
+        return $this->status->getAllowedTransitions();
+    }
+
+     /**
+     * Check if lead can transition to given status
+     */
+    public function canTransitionTo(LeadStatus $status): bool
+    {
+        if (!$this->status instanceof LeadStatus) {
+            return false;
+        }
+
+        return $this->status->canTransitionTo($status);
+    }
 }
