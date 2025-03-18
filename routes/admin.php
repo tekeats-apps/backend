@@ -39,7 +39,7 @@ Route::middleware(['auth:admin-api'])->group(function () {
         ->group(function () {
             Route::get('/list', 'getLeads');
             Route::get('/details/{lead}', 'getLeadDetails');
-            Route::post('/update/status', [LeadController::class, 'updateStatus']);
+            Route::post('/status/update', [LeadController::class, 'updateStatus']);
         });
 
     Route::controller(PluginController::class)
