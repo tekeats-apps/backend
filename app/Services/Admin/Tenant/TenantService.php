@@ -50,4 +50,9 @@ class TenantService
             $tenant->load(['subscriptions:id,subscriber_id,name', 'domains:id,tenant_id,domain,status,type']);
             return $tenant;
     }
+
+    public function updateStatus(Tenant $tenant, bool $status): bool
+    {
+        return $tenant->update(['status' => $status]);
+    }
 }

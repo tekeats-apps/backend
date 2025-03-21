@@ -32,6 +32,7 @@ Route::middleware(['auth:admin-api'])->group(function () {
             Route::post('/register', 'registerTenant');
             Route::post('/validate/business', 'checkBusinessName');
             Route::post('/validate/business/domain', 'checkDomain');
+            Route::post('/status/update/{tenant}', 'updateStatus');
         });
 
     Route::controller(LeadController::class)

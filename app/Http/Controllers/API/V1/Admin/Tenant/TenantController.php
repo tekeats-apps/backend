@@ -13,6 +13,7 @@ use App\Http\Requests\Admin\Api\Tenants\ListTenantsRequest;
 use App\Http\Requests\Admin\Api\Tenants\RegisterTenantRequest;
 use App\Http\Requests\Admin\Api\Tenants\ValidateDomainRequest;
 use App\Http\Requests\Admin\Api\Tenants\ValidateBusinessRequest;
+use App\Http\Requests\Admin\Api\Tenants\UpdateTenantStatusRequest;
 
 /**
  * @tags Admin
@@ -135,5 +136,23 @@ class TenantController extends Controller
         }
     }
 
+    /**
+     * Update Restaurant Status.
+     *
+     * 🔄 Use this endpoint to update the status of a restaurant.
+     */
+    public function updateStatus(UpdateTenantStatusRequest $request, Tenant $tenant): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $data = $request->validated();
 
+            if ($this->tenantService->updateStatus($tenant, $data['status'])) {
+                return $this->successResponse(null, "Restaurant status updated successfully!");
+            }
+
+            return $this->errorResponse("Failed to update restaurant status.", Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }
