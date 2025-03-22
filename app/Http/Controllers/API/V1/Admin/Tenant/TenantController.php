@@ -126,7 +126,7 @@ class TenantController extends Controller
      *
      * 📋 Use this endpoint to get a details of tenants.
      */
-    public function getDetails(Tenant $tenant): \Illuminate\Http\JsonResponse
+    public function getDetails($tenant): \Illuminate\Http\JsonResponse
     {
         try {
             $tenantDetails = $this->tenantService->getTenantDetails($tenant);

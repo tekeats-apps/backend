@@ -45,10 +45,10 @@ class TenantService
         return Tenant::getTenantsList();
     }
 
-    public function getTenantDetails(Tenant $tenant): Tenant
+    public function getTenantDetails($tenant_id): Tenant
     {
-            $tenant->load(['subscriptions:id,subscriber_id,name', 'domains:id,tenant_id,domain,status,type']);
-            return $tenant;
+        $tenant = Tenant::with('domains')->find($tenant_id);
+        return $tenant;
     }
 
     public function updateStatus(Tenant $tenant, bool $status): bool
