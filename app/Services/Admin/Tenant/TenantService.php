@@ -45,7 +45,7 @@ class TenantService
         return Tenant::getTenantsList();
     }
 
-    public function getTenantDetails($tenant_id): Tenant
+    public function getTenantDetails($tenant_id)
     {
         $tenant = Tenant::with('domains')->find($tenant_id);
         return $tenant;
