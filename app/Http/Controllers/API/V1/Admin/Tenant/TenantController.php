@@ -141,10 +141,15 @@ class TenantController extends Controller
      *
      * 🔄 Use this endpoint to update the status of a restaurant.
      */
-    public function updateStatus(UpdateTenantStatusRequest $request, Tenant $tenant): \Illuminate\Http\JsonResponse
+    public function updateStatus(UpdateTenantStatusRequest $request, $tenant): \Illuminate\Http\JsonResponse
     {
         try {
             $data = $request->validated();
+
+            $tenant = $this->tenantService->getTenantDetails($tenant);
+            if (!$tenant) {
+                return $this->errorResponse("Invalid restaurant id.", Response::HTTP_NOT_FOUND);
+            }
 
             if ($this->tenantService->updateStatus($tenant, $data['status'])) {
                 return $this->successResponse(null, "Restaurant status updated successfully!");
