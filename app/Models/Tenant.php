@@ -25,7 +25,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     }
 
     protected $dates = ['deleted_at'];
-    protected $fillable = ['business_name', 'email', 'domain', 'tenancy_db_name', 'deleted_at'];
+    protected $fillable = ['business_name', 'email', 'domain', 'tenancy_db_name', 'deleted_at', 'status'];
 
     protected $casts = [
         'created_at' => 'datetime:M d, Y H:i',
