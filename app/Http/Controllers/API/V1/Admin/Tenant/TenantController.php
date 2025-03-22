@@ -160,4 +160,63 @@ class TenantController extends Controller
             return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * Delete Restaurant.
+     *
+     * 🔄 Use this endpoint to delete a restaurant.
+     */
+    public function deleteTenant($type, $tenant): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $tenant = $this->tenantService->getTenantDetails($tenant);
+
+            if (!$tenant) {
+                return $this->errorResponse("Tenant not found.", Response::HTTP_NOT_FOUND);
+            }
+
+            // Validate delete type
+            if (!in_array($type, ['soft', 'permanent'])) {
+                return $this->errorResponse("Invalid delete type. Use 'soft' or 'permanent'.", Response::HTTP_BAD_REQUEST);
+            }
+
+            if ($type === 'soft') {
+                $result = $this->tenantService->softDeleteTenant($tenant);
+                $message = "Restaurant has been deleted successfully.";
+            } else {
+                $result = $this->tenantService->permanentDeleteTenant($tenant);
+                $message = "Restaurant has been permanently deleted.";
+            }
+
+            if (!$result) {
+                return $this->errorResponse("Failed to delete restaurant.", Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+
+            return $this->successResponse(null, $message);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Restore Restaurant.
+     *
+     * 🔄 Use this endpoint to restore a restaurant.
+     */
+    public function restoreTenant($tenant): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $tenant = $this->tenantService->getTenantDetails($tenant, true);
+
+            if (!$tenant) {
+                return $this->errorResponse("Restaurant not found.", Response::HTTP_NOT_FOUND);
+            }
+
+            $this->tenantService->restoreTenant($tenant);
+
+            return $this->successResponse(null, "Restaurant restored successfully.");
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

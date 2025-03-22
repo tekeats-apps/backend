@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Vendor\User as StoreUser;
 use Bpuig\Subby\Traits\HasSubscriptions;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
@@ -14,7 +15,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
 
 class Tenant extends BaseTenant implements TenantWithDatabase
 {
-    use HasDatabase, HasDomains, HasSubscriptions;
+    use HasDatabase, HasDomains, HasSubscriptions, SoftDeletes;
 
     public static function getCustomColumns(): array
     {
@@ -22,6 +23,9 @@ class Tenant extends BaseTenant implements TenantWithDatabase
             'id'
         ];
     }
+
+    protected $dates = ['deleted_at'];
+    protected $fillable = ['business_name', 'email', 'domain', 'tenancy_db_name', 'deleted_at'];
 
     protected $casts = [
         'created_at' => 'datetime:M d, Y H:i',
