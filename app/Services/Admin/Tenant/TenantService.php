@@ -41,12 +41,12 @@ class TenantService
         return Tenant::registerTenantUser($tenant, $data, $role);
     }
 
-    public function getTenantsList($showDeleted = false)
+    public function getTenantsList($showDeleted = 0)
     {
         return Tenant::getTenantsList($showDeleted);
     }
 
-    public function getTenantDetails($tenant_id, $withDeleted = false)
+    public function getTenantDetails($tenant_id, $withDeleted = 0)
     {
         $tenant = Tenant::with('domains');
         if ($withDeleted) {
