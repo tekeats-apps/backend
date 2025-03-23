@@ -111,7 +111,7 @@ class TenantController extends Controller
     {
         try {
             $limit = $request->input('limit', 10);
-            $showDeleted = $request->input('showDeleted', 0);
+            $showDeleted = $request->input('show_deleted', false);
 
             $tenants = $this->tenantService->getTenantsList($showDeleted)->paginate($limit);
             $tenants->load('subscriptions');
