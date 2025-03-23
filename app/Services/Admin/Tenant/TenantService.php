@@ -41,9 +41,14 @@ class TenantService
         return Tenant::registerTenantUser($tenant, $data, $role);
     }
 
-    public function getTenantsList($showDeleted = false)
+    public function getTenantsList($params = [])
     {
-        return Tenant::getTenantsList($showDeleted);
+        $status = $params['status'] ?? 1;
+        $sortField = $params['sort_field'] ?? 'id';
+        $sortDirection = $params['sort_direction'] ?? 'desc';
+        $showDeleted = $params['show_deleted'] ?? 0;
+
+        return Tenant::getTenantsList($status, $sortField, $sortDirection, $showDeleted);
     }
 
     public function getTenantDetails($tenant_id, $withDeleted = false)
