@@ -50,9 +50,12 @@ class Tenant extends BaseTenant implements TenantWithDatabase
         return $tenant;
     }
 
-    public function scopeGetTenantsList($query, $status = 1, $sortField = 'id', $sortDirection = 'desc')
+    public function scopeGetTenantsList($query, $status = 1, $sortField = 'id', $sortDirection = 'desc', $showDeleted = false)
     {
         $query->where('status', $status);
+        if ($showDeleted) {
+            $query->withTrashed();
+        }
         return $query->orderBy($sortField, $sortDirection);
     }
 

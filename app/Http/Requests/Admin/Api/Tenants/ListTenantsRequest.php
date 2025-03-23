@@ -24,6 +24,7 @@ class ListTenantsRequest extends FormRequest
         return [
             'page' => 'nullable|integer|min:1',
             'limit' => 'nullable|integer|min:1|max:50',
+            'showDeleted' => 'nullable|in:1,0',
         ];
     }
 }

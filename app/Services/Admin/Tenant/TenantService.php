@@ -41,9 +41,9 @@ class TenantService
         return Tenant::registerTenantUser($tenant, $data, $role);
     }
 
-    public function getTenantsList()
+    public function getTenantsList($showDeleted = false)
     {
-        return Tenant::getTenantsList();
+        return Tenant::getTenantsList($showDeleted);
     }
 
     public function getTenantDetails($tenant_id, $withDeleted = false)
